@@ -1,0 +1,112 @@
+﻿@page "/todo"
+@if (visible)
+{
+<div class="input-style mt-5">
+    <input @bind="newTodo" class="form-control" placeholder="Enter a new todo..." @onkeydown="HandleEnter" />
+</div>
+<button class="btn btn-primary my-4" @onclick="AddTodo">Add Todo</button>
+
+
+
+<!-- List of todos -->
+
+<ul class="list-group">
+    @foreach (var todo in todos)
+    {  @if (todos.Count > 0)
+        {
+
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span style="text-decoration: @(todo.Completed ? "line-through" : null);">
+                    @todo.Title
+                </span>
+                <div>
+                    <button class="btn btn-success btn-sm " @onclick="() => ToggleComplete(todo)">
+                        @(todo.Completed ? "Undo" : "Complete")
+                    </button>
+                    <button class="btn btn-danger btn-sm " @onclick="() => DeleteTodo(todo)">Delete</button>
+                </div>
+            </li>
+        }
+    }
+</ul>
+}
+else 
+{
+<div>
+<CascadingValue Value="GetCompletedTodos()">
+    <DoneComponent completedTasks="GetCompletedTodos()" OnTakeBack="HandleTakeBack" />
+</CascadingValue>
+ </div>
+}
+<!--********************************************************************************************************-->
+
+
+@code {
+
+    [Parameter] public bool visible { get; set; }  // Parameter passed from DynamicComponent
+
+     private string newTodo = string.Empty;
+      private List<TodoItem> todos = new();
+
+    protected override void OnInitialized()
+{
+    base.OnInitialized();
+        Console.WriteLine($"visible:{visible}");
+
+}
+
+     private void AddTodo()
+ {
+     if (!string.IsNullOrWhiteSpace(newTodo))
+     {
+         var todo = new TodoItem { Title = newTodo };
+         todos.Add(todo);
+         newTodo = string.Empty;
+     }
+ }
+    private void HandleEnter(KeyboardEventArgs e)
+{
+    if (e.Key == "Enter")
+    {
+        AddTodo();
+    }
+}
+
+    public List<TodoItem> GetCompletedTodos()
+    {
+        if (todos?.Count > 0)
+        {
+            return todos.Where(t => t.Completed).ToList();
+        }
+        else { return new List<TodoItem>(); }
+    }
+
+
+    
+
+    private void ToggleComplete(TodoItem todo)
+    {
+        todo.Completed = !todo.Completed;
+        Console.WriteLine($"Todo ID:{todo.Id}, IsCompleted: {todo.Completed}");
+
+    }
+
+
+    private void DeleteTodo(TodoItem todo)
+    {
+        todos?.Remove(todo);
+        Console.WriteLine($"Deleted Todo ID:{todo.Id} from todos.");
+
+
+    }
+
+  
+    private void HandleTakeBack(TodoItem todo)
+    {
+        ToggleComplete(todo);
+    }
+    
+}
+
+    
+
