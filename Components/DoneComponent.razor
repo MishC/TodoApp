@@ -11,11 +11,14 @@
     <span class="col-md-5 text-justify" style="margin-left:-20px">Title</span>
     <span class="col-md-2"></span>
       </li>
-
+    @{
+        var isFirst = true; 
+    }
     @foreach (var todo in completedTasks.AsEnumerable().Reverse())
     { 
             
-    <li class="d-flex flex-column flex-md-row list-group-item border-1 align-items-center w-100" @key="todo.Id">
+    <li class="d-flex flex-column flex-md-row list-group-item border-1 align-items-center w-100 @(isFirst ? "border-top-1" : "border-top-0")" 
+        @key="todo.Id">
         <span class="col-md-5 col mb-2 mb-md-0" style="color: #5C4033" >
             @todo.TimeDifference
         </span> 
@@ -26,6 +29,7 @@
             <button class="btn btn-danger btn-sm mx-1 w-20 rounded px-2 col-md-2 mb-2 mb-md-0" @onclick="() => TakeBack(todo)" data-dismiss="alert">Take back</button>
             
      </li>
+    isFirst=false;
     }
 </ul>
    

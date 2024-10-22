@@ -8,10 +8,14 @@
     <div class="d-flex flex-sm-row flex-column w-75 mx-auto my-5 pt-2">
         <input type="text" @bind="newTodo" class="form-control" aria-label="Todo"
             placeholder="Enter a new todo..." @onkeydown="HandleEnter" />
-        <button class="btn btn-success px-md-4  custom-btn-width" type="button" 
+        <button class="btn btn-success px-md-4 mt-3 mt-sm-0 mx-auto mx-sm-0 custom-btn-width" type="button" 
             @onclick="AddTodo">Add</button>
 </div>
     <!-- List of todos -->
+@{
+    bool isFirstVisible = true; // Track the first visible <li>
+}
+
    @if (todos?.Count > 0 && todos?.Any(todo => !todo.Completed) == true)
     {
         <ul class="list-group my-5 pt-2 mx-1 w-75 mx-auto">
@@ -21,11 +25,13 @@
                 <div class="col-xl-6 col-md-6">Title</div>
                 <div class="col-xl-3 col-md-2"></div>
             </li>
-            @foreach (var todo in todos)
+           
+        @foreach (var todo in todos)
             { 
        if (!todo.Completed) 
             {
-           <li class="d-flex flex-column flex-md-row list-group-item border-1 align-items-center w-100" @key="todo.Id">
+           <li class="d-flex flex-column flex-md-row list-group-item border-1 align-items-center w-100 border-sm-2 @(isFirstVisible ? "border-top-1" : "border-top-0")" 
+               @key="todo.Id">
     <!-- Date and Time Section -->
     <div class="d-flex flex-md-column flex-lg-row justify-content-start col-xl-3 col-md-4 mx-md-1 mb-2 mb-md-0">
         <span class="" style="color: #5C4033">
@@ -53,12 +59,13 @@
         </button>
     </div>
 </li>
+  isFirstVisible = false;
 
-
-            }
-            }
+}
+ }
+        
         </ul>
-    }
+  }
    
 }
 
