@@ -1,5 +1,5 @@
 :root {
-    --bs-indigo: #6610f2; /* Ensure --bs-indigo is defined */
+    --bs-indigo: #6610f2; 
 }
 .clicked, .clicked1, .active {
     background-color: #0056b3 !important; /* Change background color when button is clicked */
