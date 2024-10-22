@@ -1,24 +1,30 @@
 ﻿@page "/done"
 
-<div class="mt-5 pt-2 mx-auto w-100">
+<div class="mt-5 pt-3 mx-auto w-100">
 <h2 class="mt-5 mb-2 text-center">Completed task! @EmojiString</h2>
 @if (completedTasks?.Count>0)
 {
-<div class="mt-5">
-<ul class="list-group mt-5 w-75 mx-auto">
+<ul class="list-group mt-5 pt-5 w-75 mx-auto">
+      <li class="list-group-item list-group-item-primary d-flex justify-content-between align-items-center  text-white"
+          style="background-color:#0056b3">
+      <span>Completed in</span> <span class="text-justify" style="margin-left:-40px">Title</span><span></span></li>
+
     @foreach (var todo in completedTasks.AsEnumerable().Reverse())
-    {
-            <li class="list-group-item d-flex justify-content-between align-items-center w-100">
-            <span class="px-4">
-                @todo.Title
-            </span>
+    { 
+            
+    <li class="list-group-item d-flex justify-content-between align-items-center w-100" @key="todo.Id">
+        <span style="color: #5C4033">
+            @todo.TimeDifference
+        </span> 
+        <span class="text-justify justify-content-start">
+            @todo.Title
+        </span>
 
             <button class="btn btn-danger btn-sm mx-1 w-20 rounded px-2" @onclick="() => TakeBack(todo)" data-dismiss="alert">Take back</button>
-               
-        </li>
+            
+     </li>
     }
 </ul>
-</div>
    
 }
  </div>

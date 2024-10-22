@@ -16,7 +16,7 @@
         </div>
     </div>
     <!-- List of todos -->
-    @if (todos?.Count > 0)
+   @if (todos?.Count > 0 && todos?.Any(todo => !todo.Completed) == true)
     {
         <ul class="list-group mt-5 pt-2 mx-1 w-75 mx-auto">
               <li class="list-group-item list-group-item-primary d-flex justify-content-between align-items-center px-4 text-white"
@@ -30,12 +30,12 @@
             {
            <li class="list-group-item d-flex justify-content-between align-items-center px-4" @key="todo.Id">
                <div class="justify-content-start"> 
-                   <span class="mr-3" style="color: #814141"> 
+                   <span class="mr-3" style="color: #5C4033"> 
                     @todo.CurrentDate.ToString("HH:mm")  &nbsp;&nbsp; </span> 
                    <span class="" style="color: #5C4033"> 
- @todo.CurrentDate.ToString("dd/MM/yyyy")   </span> 
+                   @todo.CurrentDate.ToString("dd/MM/yyyy")   </span> 
                </div>
-                    <span class="mx-5 px-5">@todo.Title</span>
+                    <span class="mx-5 px-4 text-justify text-break">@todo.Title</span>
       
       
            
@@ -169,8 +169,9 @@ else
       await Task.Delay(500); 
      ShowCompletionAlert(todo.Title);
      await Task.Delay(500); 
-    todo.Completed = !todo.Completed;
+     todo.TimeCompleted=DateTime.Now;
 
+    todo.Completed = !todo.Completed;
     await UpdateCompletedTasksAsync();
     }
 
