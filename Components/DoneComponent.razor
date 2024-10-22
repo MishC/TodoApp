@@ -11,9 +11,7 @@
     <span class="col-md-5 text-justify" style="margin-left:-20px">Title</span>
     <span class="col-md-2"></span>
       </li>
-    @{
-        var isFirst = true; 
-    }
+   
     @foreach (var todo in completedTasks.AsEnumerable().Reverse())
     { 
             
@@ -41,6 +39,8 @@
 
     private byte[] emojiBytes { get; set; } = Array.Empty<byte>();
     private string EmojiString => System.Text.Encoding.Unicode.GetString(emojiBytes);
+
+    private bool isFirst =true;
 
      protected override void OnInitialized()
     {

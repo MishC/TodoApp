@@ -11,10 +11,7 @@
         <button class="btn btn-success px-md-4 mt-3 mt-sm-0 mx-auto mx-sm-0 custom-btn-width" type="button" 
             @onclick="AddTodo">Add</button>
 </div>
-    <!-- List of todos -->
-@{
-    bool isFirstVisible = true; // Track the first visible <li>
-}
+
 
    @if (todos?.Count > 0 && todos?.Any(todo => !todo.Completed) == true)
     {
@@ -25,7 +22,9 @@
                 <div class="col-xl-6 col-md-6">Title</div>
                 <div class="col-xl-3 col-md-2"></div>
             </li>
-           
+            @{
+                bool isFirstVisible = true;
+            }
         @foreach (var todo in todos)
             { 
        if (!todo.Completed) 
@@ -79,7 +78,7 @@ else
 
 @* Bootstrap Modal alert*@
 <div class="modal fade" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
-    <div class="modal-dialog ">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content"> 
             <div class="modal-header alert-primary">
                 <h5 class="modal-title" id="alertModalLabel">Completed!</h5>
@@ -97,7 +96,7 @@ else
 
 @* Bootstrao Modal confirmDelete*@
 <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog alert-danger">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content alert-danger">
             <div class="modal-header alert-danger border-0">
                 <h5 class="modal-title" id="confirmDeleteModalLabel">Confirm Deletion</h5>
