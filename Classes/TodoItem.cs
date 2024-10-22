@@ -5,7 +5,7 @@
     public string Title { get; set; } = string.Empty;
     public bool Completed { get; set; } = false;
     public DateTime CurrentDate { get; private set; } = DateTime.Now;
-    public DateTime TimeCompleted { get; set; }
+    public DateTime? TimeCompleted { get; set; }
 
     public TodoItem()
     {
@@ -16,8 +16,15 @@
     {
         get
         {
-            TimeSpan timeSpan = CurrentDate - TimeCompleted;
-            return $"{timeSpan.Days} days and {timeSpan.Hours} hours";
+            if (TimeCompleted != null)
+            {
+                TimeSpan timeSpan = CurrentDate - TimeCompleted.Value; // Use .Value to get the DateTime
+                return $"{timeSpan.Days} days and {timeSpan.Hours} hours";
+            }
+            else
+            {
+                return "Not completed yet";
+            }
         }
     }
 }
