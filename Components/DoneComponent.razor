@@ -1,26 +1,44 @@
 ﻿@page "/done"
+
+<div class="mt-5 pt-2 mx-auto w-100">
+<h2 class="mt-5 mb-2 text-center">Completed task! @EmojiString</h2>
 @if (completedTasks?.Count>0)
 {
-<ul class="list-group mt-4">
+<div class="mt-5">
+<ul class="list-group mt-5 w-75 mx-auto">
     @foreach (var todo in completedTasks.AsEnumerable().Reverse())
     {
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-            <span>
+            <li class="list-group-item d-flex justify-content-between align-items-center w-100">
+            <span class="px-4">
                 @todo.Title
             </span>
 
-            <button class="btn btn-danger btn-sm mx-4" @onclick="() => TakeBack(todo)">Take back</button>
+            <button class="btn btn-danger btn-sm mx-1 w-20 rounded px-2" @onclick="() => TakeBack(todo)" data-dismiss="alert">Take back</button>
+               
         </li>
     }
 </ul>
+</div>
+   
 }
-
+ </div>
 @code {
     [Parameter] public List<TodoItem>? completedTasks { get; set; }
     [Parameter] public EventCallback<TodoItem> OnTakeBack { get; set; }
 
+    private byte[] emojiBytes { get; set; } = Array.Empty<byte>();
+    private string EmojiString => System.Text.Encoding.Unicode.GetString(emojiBytes);
+
+     protected override void OnInitialized()
+    {
+       EmojiService.HighSurrogate=0xD83D;
+       EmojiService.LowSurrogate=0xDC4F;
+      emojiBytes= EmojiService.GetEmojiBytes(); 
+    }
+    
     private async Task TakeBack(TodoItem todo)
     {
+
         if (OnTakeBack.HasDelegate)
         {
             await OnTakeBack.InvokeAsync(todo);

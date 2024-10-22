@@ -2,25 +2,7 @@
 
 <PageTitle>Home</PageTitle>
 
-<h1 class="mt-2">Hello!</h1>
-
-<button class="btn btn-success btn-sm mt-3" @onclick="ShowComponentA">Show TodoList</button>
-<button class="btn btn-success btn-sm mt-3 mx-3" @onclick="ShowComponentB">Show Done list</button>
+<h1 class="mb-4">Hello!</h1>
+<p><a href="/todo">Click to open Todo app.</a></p>
 
 
-<DynamicComponent Type="typeof(TodoComponent)" Parameters="@(new Dictionary<string, object> { { "visible", isTodoVisible } })" />
-
-
-@code {
-    private bool isTodoVisible = true;
-
-    private void ShowComponentA()
-    {
-        isTodoVisible = true;
-    }
-
-    private void ShowComponentB()
-    {
-        isTodoVisible = false;
-    }
-}

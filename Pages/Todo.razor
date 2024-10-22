@@ -1,0 +1,36 @@
+@page "/todo"
+<div class="row d-flex justify-content-center mx-1 my-5">
+<button type="button" class="btn btn-success btn-md  col-lg-2 col-md-3 col-sm-4  col-xs-6  @clickedClass1 " @onclick="ShowComponentA">Your Todos</button>
+    <span class="col-md-1 col-sm-1 mt-3 ">  </span>
+<button class="btn btn-success btn-md  col-lg-2 col-md-3  col-sm-4 col-xs-6  @clickedClass2" @onclick="ShowComponentB">Completed Tasks</button>
+
+</div>
+
+@if (isTodoVisible.HasValue)
+{
+<DynamicComponent Type="typeof(TodoComponent)" Parameters="@(new Dictionary<string, object> { { "visible", isTodoVisible } })" />
+}
+
+@code {
+    private bool isClicked1 = false;
+    private bool isClicked2 = false;
+
+    private string clickedClass1 => isClicked1 ? "clicked" : "";
+    private string clickedClass2 => isClicked2 ? "clicked1" : "";
+
+    private bool? isTodoVisible = null;
+
+    private void ShowComponentA()
+    {
+        isTodoVisible = true;
+        isClicked1 = true;
+        isClicked2 = false; 
+    }
+
+    private void ShowComponentB()
+    {
+        isTodoVisible = false;
+        isClicked1 = false; 
+        isClicked2 = true;
+    }
+}
