@@ -18,8 +18,9 @@
         {
             if (TimeCompleted != null)
             {
-                TimeSpan timeSpan = CurrentDate - TimeCompleted.Value; // Use .Value to get the DateTime
-                return $"{timeSpan.Days} days and {timeSpan.Hours} hours";
+                TimeSpan timeSpan = 
+                    TimeCompleted.Value - CurrentDate; 
+                return $"{timeSpan.Days} days {timeSpan.Hours} hours";
             }
             else
             {

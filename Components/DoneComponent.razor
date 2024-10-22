@@ -5,22 +5,25 @@
 @if (completedTasks?.Count>0)
 {
 <ul class="list-group mt-5 pt-5 w-75 mx-auto">
-      <li class="list-group-item list-group-item-primary d-flex justify-content-between align-items-center  text-white"
+      <li class="d-none d-md-flex list-group-item list-group-item-primary justify-content-between px-4 text-white"
           style="background-color:#0056b3">
-      <span>Completed in</span> <span class="text-justify" style="margin-left:-40px">Title</span><span></span></li>
+      <span class="col-md-5">Time span</span> 
+    <span class="col-md-5 text-justify" style="margin-left:-20px">Title</span>
+    <span class="col-md-2"></span>
+      </li>
 
     @foreach (var todo in completedTasks.AsEnumerable().Reverse())
     { 
             
-    <li class="list-group-item d-flex justify-content-between align-items-center w-100" @key="todo.Id">
-        <span style="color: #5C4033">
+    <li class="d-flex flex-column flex-md-row list-group-item border-1 align-items-center w-100" @key="todo.Id">
+        <span class="col-md-5 col mb-2 mb-md-0" style="color: #5C4033" >
             @todo.TimeDifference
         </span> 
-        <span class="text-justify justify-content-start">
+        <span class="col-md-5 text-justify justify-content-start mb-2 mb-md-0">
             @todo.Title
         </span>
 
-            <button class="btn btn-danger btn-sm mx-1 w-20 rounded px-2" @onclick="() => TakeBack(todo)" data-dismiss="alert">Take back</button>
+            <button class="btn btn-danger btn-sm mx-1 w-20 rounded px-2 col-md-2 mb-2 mb-md-0" @onclick="() => TakeBack(todo)" data-dismiss="alert">Take back</button>
             
      </li>
     }
