@@ -1,10 +1,11 @@
 ﻿@page "/done"
 
 <div class="mt-5 pt-3 mx-auto w-100">
-<h2 class="mt-5 mb-2 text-center">Completed task! @EmojiString</h2>
 @if (completedTasks?.Count>0)
 {
-<ul class="list-group mt-5 pt-5 w-75 mx-auto">
+<h2 class="mt-5 mb-2 text-center text-md-start mx-md-4">Completed task! @EmojiString</h2>
+
+<ul class="list-group mt-5 pt-5 w-75 mx-auto mx-md-4">
       <li class="d-none d-md-flex list-group-item list-group-item-primary justify-content-between px-4 text-white"
           style="background-color:#0056b3">
       <span class="col-md-5">Time span</span> 
@@ -32,6 +33,7 @@
 </ul>
    
 }
+else {<div class="mt-5 mx-auto mx-md-4 text-primary">No completed task yet.</div>}
  </div>
 @code {
     [Parameter] public List<TodoItem>? completedTasks { get; set; }
