@@ -193,13 +193,7 @@ else
     }-->
 
     private async void ShowCompletionAlert(string title)
-    {    <!--AlertMessage=title;
-        await JSRuntime.InvokeVoidAsync("alert", $"The task '{title}' has been marked as completed.");
-     AlertMessage="";
-    AlertMessage =$"The task '{title}' has been marked as completed.";
-        StateHasChanged(); 
-
-        await JSRuntime.InvokeVoidAsync("bootstrapInterop.showModal");-->
+    {    
     AlertMessage = $"The task '{title}' has been marked as completed.";
     StateHasChanged(); 
     await JSRuntime.InvokeVoidAsync("bootstrapInterop.showModal", "alertModal");
@@ -208,18 +202,18 @@ else
 
     private TodoItem? todoToDelete;
 
-    public async Task ShowDeleteModalAsync(TodoItem todo)
+    private async Task ShowDeleteModalAsync(TodoItem todo)
     {
         todoToDelete = todo;
         await JSRuntime.InvokeVoidAsync("bootstrapInterop.showModal", "deleteModal");
     }
 
-    public async Task ConfirmDelete()
+    private async Task ConfirmDelete()
     { 
     
        if (todoToDelete != null)
          {
-            DeleteTodo(todoToDelete);
+            DeleteTodo(todoToDeleted
           }
         await JSRuntime.InvokeVoidAsync("bootstrapInterop.hideModal", "deleteModal");
        
