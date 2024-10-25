@@ -94,6 +94,8 @@ else
     private byte[] emojiBytes { get; set; } = Array.Empty<byte>();
     private string EmojiString => System.Text.Encoding.Unicode.GetString(emojiBytes);
 
+
+
     private AlertModal? alertModal;
     private DeleteModal? deleteModal;
 
@@ -209,14 +211,13 @@ else
     }
 
     private async Task ConfirmDelete()
-    { 
-    
-       if (todoToDelete != null)
-         {
-            DeleteTodo(todoToDeleted
-          }
-        await JSRuntime.InvokeVoidAsync("bootstrapInterop.hideModal", "deleteModal");
-       
+{
+    if (todoToDelete != null)
+    {
+        DeleteTodo(todoToDelete);
+        todoToDelete = null; 
     }
+    await JSRuntime.InvokeVoidAsync("bootstrapInterop.hideModal", "deleteModal");
+}
 
     }
