@@ -1,3 +1,7 @@
+.text-md-left {
+    text-align: left !important;
+}
+
 @media (max-width: 576px) {
     .custom-btn-width {
        width: fit-content; 

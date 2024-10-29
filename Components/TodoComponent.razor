@@ -1,19 +1,20 @@
-﻿@page "/todos"
-@inject IJSRuntime JSRuntime
+﻿@inject IJSRuntime JSRuntime
+@inject ILocalStorageService LocalStorage
+
 
 
 @if (visible)
-{          <h2 class="mt-5 mb-2 text-center text-md-start pt-5 mx-md-4"> Todos @EmojiString</h2>
+{
+    <h2 class="mt-md-1 mt-5 mb-2 text-center text-md-start pt-3 mx-md-4"> Todos @EmojiString</h2>
 
     <div class="d-flex flex-sm-row flex-column w-75 mx-md-4 mx-auto my-5 pt-2">
         <input type="text" @bind="newTodo" class="form-control" aria-label="Todo"
-            placeholder="Enter a new todo..." @onkeydown="HandleEnter" />
+               placeholder="Enter a new todo..." @onkeydown="HandleEnter" />
         <button class="btn btn-success px-md-4 mt-3 mt-sm-0 mx-auto mx-sm-0 custom-btn-width" type="button" 
-            @onclick="AddTodo">Add</button>
-</div>
+                @onclick="AddTodo">Add</button>
+    </div>
 
-
-   @if (todos?.Count > 0 && todos?.Any(todo => !todo.Completed) == true)
+    @if (todos?.Count > 0 && todos?.Any(todo => !todo.Completed) == true)
     {
         <ul class="list-group my-5 pt-2 mx-1 w-75 mx-auto mx-md-4">
              <li class="d-none d-md-flex list-group-item list-group-item-primary justify-content-between px-4 text-white"
@@ -25,182 +26,162 @@
             @{
                 bool isFirstVisible = true;
             }
-        @foreach (var todo in todos)
+            @foreach (var todo in todos)
             { 
-       if (!todo.Completed) 
-            {
-           <li class="d-flex flex-column flex-md-row list-group-item border-1 align-items-center w-100 border-sm-2 @(isFirstVisible ? "border-top-1" : "border-top-0")" 
-               @key="todo.Id">
-    <!-- Date and Time Section -->
-    <div class="d-flex flex-md-column flex-lg-row justify-content-start col-xl-3 col-md-4 mx-md-1 mb-2 mb-md-0">
-        <span class="" style="color: #5C4033">
-            @todo.CurrentDate.ToString("HH:mm")&nbsp;&nbsp;
-        </span>
-        <span style="color: #5C4033">
-            @todo.CurrentDate.ToString("dd/MM/yyyy")
-        </span>
-    </div>
+                if (!todo.Completed) 
+                {
+                    <li class="d-flex flex-column flex-md-row list-group-item border-1 align-items-center w-100 border-sm-2 @(isFirstVisible ? "border-top-1" : "border-top-0")" 
+                        @key="todo.Id">
+                        <div class="d-flex flex-md-column flex-lg-row justify-content-start col-xl-3 col-md-4 mx-md-1 mb-2 mb-md-0">
+                            <span style="color: #5C4033">
+                                @todo.CurrentDate.ToString("HH:mm")&nbsp;&nbsp;
+                            </span>
+                            <span style="color: #5C4033">
+                                @todo.CurrentDate.ToString("dd/MM/yyyy")
+                            </span>
+                        </div>
 
-    <!-- Title Section -->
-    <span class="col-xl-6 col-md-6 text-justify text-break mx-md-0 px-md-0 mb-2 mb-md-0">
-        @todo.Title
-    </span>
-                
-    <!-- Checkbox and Button Section -->
-    <div class="col-xl-3 col-md-2 d-flex justify-content-end align-items-center text-md-right px-4 mb-2 mb-md-0">
-        <div class="form-check cursor-pointer">
-            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1"
-                @onchange="async () => await ToggleAsync(todo)" unchecked />
-        </div>
+                        <span class="col-xl-6 col-md-6 text-justify text-break mx-md-0 px-md-0 mb-2 mb-md-0">
+                            @todo.Title
+                        </span>
+                        
+                        <div class="col-xl-3 col-md-2 d-flex justify-content-end align-items-center text-md-right px-4 mb-2 mb-md-0">
+                            <div class="form-check cursor-pointer">
+                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1"
+                                       @onchange="async () => await ToggleAsync(todo)" unchecked />
+                            </div>
 
-        <button type="button" class="btn btn-sm" @onclick="() => ShowDeleteModalAsync(todo)">
-            @emoji[2]
-        </button>
-    </div>
-</li>
-  isFirstVisible = false;
-
-}
- }
-        
+                            <button type="button" class="btn btn-sm" @onclick="() => ShowDeleteModalAsync(todo)">
+                                @emoji[2]
+                            </button>
+                        </div>
+                    </li>
+                    isFirstVisible = false;
+                }
+            }
         </ul>
-  }
-   
+    }
 }
-
 else
 {
     <CascadingValue Value="completedTasks">
-        <DoneComponent completedTasks="completedTasks" OnTakeBack="HandleTakeBack" />
+        <DoneComponent OnTakeBack="HandleTakeBack"/>
     </CascadingValue>
 }
 
-
-<!-- Include Modals -->
 <AlertModal @ref="alertModal" AlertMessage="@AlertMessage" />
 <DeleteModal @ref="deleteModal" OnConfirm="ConfirmDelete" />
 
-
-
 @code {
     [Parameter] public bool visible { get; set; }  
+    [Parameter] public string TodoStorageKey { get; set; }
+
 
     private string newTodo = string.Empty;
     private List<TodoItem> todos = new();
-    private List<TodoItem> completedTasks = new();
+    protected List<TodoItem>? completedTasks {get;set;}
     private List<char> emoji = new(){ (char)0x2610, (char)0x2705,(char)0x274C };
     private string AlertMessage { get; set; }= string.Empty;
 
     private byte[] emojiBytes { get; set; } = Array.Empty<byte>();
     private string EmojiString => System.Text.Encoding.Unicode.GetString(emojiBytes);
-
-
-
+    
+    
+    //**-----------------------------------------------------------**//
+    
     private AlertModal? alertModal;
-    private DeleteModal? deleteModal;
+    private DeleteModal? deleteModal;        
+    
+    //**-----------------------------------------------------------**//
 
-    protected override void OnInitialized()
+   
+
+    protected override async Task OnInitializedAsync()
     {
-        base.OnInitialized();
-        UpdateCompletedTasks(); 
-         EmojiService.HighSurrogate=0xD83D;
+        await AuthService.InitializeUsernameAsync(); 
+        todos = await LoadTodosAsync();
+        UpdateCompletedTasks();
+
+        EmojiService.HighSurrogate=0xD83D;
         EmojiService.LowSurrogate=0xDD59;
-       emojiBytes= EmojiService.GetEmojiBytes();
-      
+        emojiBytes= EmojiService.GetEmojiBytes();
     }
 
-    private void AddTodo()
+    private async Task AddTodo()
     {
         if (!string.IsNullOrWhiteSpace(newTodo))
         {
             var todo = new TodoItem { Title = newTodo };
             todos.Add(todo);
             newTodo = string.Empty;
-            UpdateCompletedTasks(); 
+            UpdateCompletedTasks();
+            await SaveTodosAsync();
         }
     }
-
-    private void HandleEnter(KeyboardEventArgs e)
+    private async Task HandleEnter(KeyboardEventArgs e)
+{
+    if (e.Key == "Enter")
     {
-        if (e.Key == "Enter")
-        {
-            AddTodo();
-        }
+        await AddTodo();
     }
-    
-    public List<TodoItem> GetCompletedTodos()
-    {
-        return todos.Where(t => t.Completed).ToList();
-    }
-    
-    private void UpdateCompletedTasks()
-    {
-        completedTasks = GetCompletedTodos();
-    }
-    
-    
-    private async Task UpdateCompletedTasksAsync()
-    {
-    await Task.Delay(500); 
-    completedTasks = GetCompletedTodos();
-    }
+}
 
     private async Task ToggleAsync(TodoItem todo)
     { 
-      await Task.Delay(500); 
-     ShowCompletionAlert(todo.Title);
-     await Task.Delay(500); 
-     todo.TimeCompleted=DateTime.Now;
-
-    todo.Completed = !todo.Completed;
-    await UpdateCompletedTasksAsync();
-    }
-
-    private void ToggleComplete(TodoItem todo)
-
-    { 
-        todo.Completed = !todo.Completed;
+        await Task.Delay(500);
         
-        if (todo.Completed)
-        {
-            ShowCompletionAlert(todo.Title);
-        }
 
-        UpdateCompletedTasks(); 
+        UpdateCompletedTasks();
+        todo.TimeCompleted = DateTime.Now;
+        todo.Completed = !todo.Completed;
+
+         if (todo.Completed)
+          {        await Task.Delay(500);
+
+           await ShowCompletionAlert(todo.Title);
+             }
+        UpdateCompletedTasks();
+        await SaveTodosAsync();
     }
 
-   
-
-    private void DeleteTodo(TodoItem todo)
+    private void UpdateCompletedTasks()
     {
-        todos?.Remove(todo);
-        UpdateCompletedTasks(); 
+        completedTasks = todos.Where(t => t.Completed).ToList();
+    }
+
+    private async Task DeleteTodoAsync(TodoItem todo)
+    {
+        todos.Remove(todo);
+        UpdateCompletedTasks();
+        await SaveTodosAsync();
+    }
+
+    private async Task SaveTodosAsync()
+    {
+        var todosJson = JsonSerializer.Serialize(todos);
+        await LocalStorage.SetItemAsync(TodoStorageKey, todosJson);//
+    }
+
+    private async Task<List<TodoItem>> LoadTodosAsync()
+    {
+    
+        var todosJson = await LocalStorage.GetItemAsync<string>(TodoStorageKey);//
+        return string.IsNullOrEmpty(todosJson) ? new List<TodoItem>() : JsonSerializer.Deserialize<List<TodoItem>>(todosJson);
     }
 
     private void HandleTakeBack(TodoItem todo)
     {
-        ToggleComplete(todo);
-        todo.TimeCompleted=null;
+        todo.Completed = false;
+        todo.TimeCompleted = null;
+        UpdateCompletedTasks();
     }
 
-  
-
-  <!--  private async Task ConfirmDelete(TodoItem todo)
-    {
-        bool confirmed = await JSRuntime.InvokeAsync<bool>("confirm", "You are going to DELETE your todo. Are you sure?");
-        if (confirmed)
-        {
-            DeleteTodo(todo);
-        }
-    }-->
-
-    private async void ShowCompletionAlert(string title)
-    {    
+   private async Task ShowCompletionAlert(string title) 
+{    
     AlertMessage = $"The task '{title}' has been marked as completed.";
+    await JSRuntime.InvokeVoidAsync("bootstrapInterop.showAlertModal","alertModal"); 
     StateHasChanged(); 
-    await JSRuntime.InvokeVoidAsync("bootstrapInterop.showModal", "alertModal");
-
-    }
+}
 
     private TodoItem? todoToDelete;
 
@@ -214,10 +195,10 @@ else
 {
     if (todoToDelete != null)
     {
-        DeleteTodo(todoToDelete);
+        await DeleteTodoAsync(todoToDelete);
         todoToDelete = null; 
     }
     await JSRuntime.InvokeVoidAsync("bootstrapInterop.hideModal", "deleteModal");
 }
-
-    }
+    
+}

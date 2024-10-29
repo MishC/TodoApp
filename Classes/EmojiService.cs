@@ -1,26 +1,28 @@
 using System;
 using System.Text;
-
-public class EmojiService
+namespace TodoApp.Classes
 {
-    public int HighSurrogate;
-    public int? LowSurrogate;
-
-    public byte[] GetEmojiBytes()
+    public class EmojiService
     {
-        char[] emojiChars;
+        public int HighSurrogate;
+        public int? LowSurrogate;
 
-        if (LowSurrogate.HasValue)
+        public byte[] GetEmojiBytes()
         {
-            emojiChars = new char[] { (char)HighSurrogate, (char)LowSurrogate.Value };
-        }
-        else
-        {
-            emojiChars = new char[] { (char)HighSurrogate };
-        }
+            char[] emojiChars;
 
-        byte[] bytes = Encoding.Unicode.GetBytes(emojiChars);
+            if (LowSurrogate.HasValue)
+            {
+                emojiChars = new char[] { (char)HighSurrogate, (char)LowSurrogate.Value };
+            }
+            else
+            {
+                emojiChars = new char[] { (char)HighSurrogate };
+            }
 
-        return bytes;
+            byte[] bytes = Encoding.Unicode.GetBytes(emojiChars);
+
+            return bytes;
+        }
     }
 }

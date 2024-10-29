@@ -1,17 +1,33 @@
-@page "/todo"
-<div class="d-flex justify-content-center justify-content-md-start mx-1 mx-xs-0 mb-5 mt-2">
-<button type="button" class="btn btn-success btn-md col-lg-1 col-md-2  @clickedClass1" @onclick="ShowComponentA">Todos</button>
-    <span class="col-1">  </span>
-<button class="btn btn-success btn-md col-lg-1 col-md-2  @clickedClass2" @onclick="ShowComponentB">Done</button>
-     
-</div>
+@page "/todos"
 
-@if (isTodoVisible.HasValue)
+@if (isAuthenticated)
+
+{   
+     <div class="d-flex justify-content-center justify-content-md-start  my-5">
+     <h1>Welcome @TodoStorageKey.Split("_",2)[1]! </h1>
+     </div>
+    <div class="row d-flex justify-content-center justify-content-md-start mx-1 mx-xs-0 mb-md-2 mb-0 mt-2">
+        <button type="button" class="btn btn-success btn-md col-lg-2 col-md-2  @clickedClass1 mb-5" @onclick="ShowComponentA">Todos</button>
+        <span class="col-1"></span>
+        <button class="btn btn-success btn-md col-lg-2 col-md-2  @clickedClass2 mb-md-5 mb-0 " @onclick="ShowComponentB">Done</button>
+    </div>
+
+    @if (isTodoVisible.HasValue)
+    {
+            <DynamicComponent Type="typeof(TodoComponent)" Parameters="@(new Dictionary<string, object>
+            {
+                { "visible", isTodoVisible },{"todoStorageKey", TodoStorageKey}
+            })" />
+    }
+}
+else
 {
-<DynamicComponent Type="typeof(TodoComponent)" Parameters="@(new Dictionary<string, object> { { "visible", isTodoVisible } })" />
+    <div class="mt-5">Sorry, you are not authenticated. First, <a href="/login">log in</a></div>
 }
 
 @code {
+     private bool isAuthenticated { get; set; }
+
     private bool isClicked1 = false;
     private bool isClicked2 = false;
 
@@ -19,6 +35,23 @@
     private string clickedClass2 => isClicked2 ? "clicked1" : "";
 
     private bool? isTodoVisible = null;
+
+    private string TodoStorageKey => $"todoItems_{AuthService.CurrentUsername}";
+
+
+
+   protected override async Task OnInitializedAsync()
+    {
+       
+      isAuthenticated = await AuthService.IsAuthenticated();
+ 
+     if (isAuthenticated)
+     {
+     navigation.NavigateTo($"/todos");
+     }
+           
+
+    }
 
     private void ShowComponentA()
     {

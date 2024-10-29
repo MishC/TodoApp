@@ -41,7 +41,7 @@
     .nav-item:first-of-type {
         padding-top: 1rem;
     }
-
+    NavLink, .nav-link {color:white !important;}
     .nav-item:last-of-type {
         padding-bottom: 1rem;
     }

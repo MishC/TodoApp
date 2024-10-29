@@ -1,11 +1,15 @@
-﻿@page "/done"
+﻿@page "/todos/done"
 
-<div class="mt-5 pt-3 mx-auto w-100">
+@if (!isAuthenticated) 
+{<div class="mt-5">Sorry, you are not authenticated. First, <a href="/login">log in</a></div>}
+else {
+<div class="mb-5 pt-0 mx-auto w-100">
 @if (completedTasks?.Count>0)
 {
-<h2 class="mt-5 mb-2 text-center text-md-start mx-md-4">Completed task! @EmojiString</h2>
+<h2 class="mt-md-1 mt-5 pt-1 mb-3 text-center text-md-start pt-3 mx-md-4">Completed task! @EmojiString</h2>
+    
 
-<ul class="list-group mt-5 pt-5 w-75 mx-auto mx-md-4">
+<ul class="list-group mt-2 pt-5 w-75 mx-auto mx-md-4">
       <li class="d-none d-md-flex list-group-item list-group-item-primary justify-content-between px-4 text-white"
           style="background-color:#0056b3">
       <span class="col-md-5">Time span</span> 
@@ -13,7 +17,7 @@
     <span class="col-md-2"></span>
       </li>
    
-    @foreach (var todo in completedTasks.AsEnumerable().Reverse())
+    @foreach (var todo in completedTasks.OrderBy(task => task.Id))
     { 
             
     <li class="d-flex flex-column flex-md-row list-group-item border-1 align-items-center w-100 @(isFirst ? "border-top-1" : "border-top-0")" 
@@ -31,26 +35,36 @@
     isFirst=false;
     }
 </ul>
-   
-}
+  } 
+
 else {<div class="mt-5 mx-auto mx-md-4 text-primary">No completed task yet.</div>}
  </div>
+}
 @code {
-    [Parameter] public List<TodoItem>? completedTasks { get; set; }
+    [CascadingParameter] protected List<TodoItem>? completedTasks { get; set; }
     [Parameter] public EventCallback<TodoItem> OnTakeBack { get; set; }
+         private bool isAuthenticated { get; set; }
+
+
 
     private byte[] emojiBytes { get; set; } = Array.Empty<byte>();
     private string EmojiString => System.Text.Encoding.Unicode.GetString(emojiBytes);
 
     private bool isFirst =true;
 
-     protected override void OnInitialized()
-    {
+     protected override async Task OnInitializedAsync()
+    {   
        EmojiService.HighSurrogate=0xD83D;
        EmojiService.LowSurrogate=0xDC4F;
-      emojiBytes= EmojiService.GetEmojiBytes(); 
+      emojiBytes= EmojiService.GetEmojiBytes();
+     isAuthenticated = await AuthService.IsAuthenticated();
+ 
+if (isAuthenticated)
+{
+     navigation.NavigateTo("/todos?done");
+ }
     }
-    
+   
     private async Task TakeBack(TodoItem todo)
     {
 
