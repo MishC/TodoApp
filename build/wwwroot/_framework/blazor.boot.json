@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "TodoApp",
   "resources": {
-    "hash": "sha256-SbNudwydCJC06wXFHn7JHF7HdT7TAk+bd0NIRU0TNfc=",
+    "hash": "sha256-+4kv6KByWCNbEK1lnxqWqNVMnnKegcetf5UQRAAPYwI=",
     "jsModuleNative": {
       "dotnet.native.js": "sha256-juC5sA7gHTLXFEhAKgdM2/RavswpwCtDfjYGsAz2FXg="
     },
@@ -59,7 +59,7 @@
       "System.Text.RegularExpressions.wasm": "sha256-tT2saG5F7mxMdkLBYCwZxFhsqHfEbRne+2sAOtORypo=",
       "System.Threading.wasm": "sha256-gQrANwX5Wu2Ch7DsQIAfEPPHw/xt+6oHhkCGnIJG9Io=",
       "System.wasm": "sha256-/0hjS3VGnsxXB2nXEncUuQUpR1zFysoJkzzh9nbS4Ek=",
-      "TodoApp.wasm": "sha256-FAy5Yb884SYOduOR41sFOOmxpFcz3zyNjCxtk7B8HyE="
+      "TodoApp.wasm": "sha256-iPnuMwqXIpazXljDZXj6TlTmZONiOYsnxWD577Fzacg="
     }
   },
   "cacheBootResources": true,
