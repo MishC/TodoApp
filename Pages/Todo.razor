@@ -3,9 +3,7 @@
 @if (isAuthenticated)
 
 {   
-     <div class="d-flex justify-content-center justify-content-md-start  my-5">
-     <h1>Welcome @TodoStorageKey.Split("_",2)[1]! </h1>
-     </div>
+     
     <div class="row d-flex justify-content-center justify-content-md-start mx-1 mx-xs-0 mb-md-2 mb-0 mt-2">
         <button type="button" class="btn btn-success btn-md col-lg-2 col-md-2  @clickedClass1 mb-5" @onclick="ShowComponentA">Todos</button>
         <span class="col-1"></span>
@@ -16,7 +14,7 @@
     {
             <DynamicComponent Type="typeof(TodoComponent)" Parameters="@(new Dictionary<string, object>
             {
-                { "visible", isTodoVisible },{"todoStorageKey", TodoStorageKey}
+                { "visible", isTodoVisible }
             })" />
     }
 }
@@ -36,7 +34,6 @@ else
 
     private bool? isTodoVisible = null;
 
-    private string? TodoStorageKey => $"todoItems_{AuthService.CurrentUsername}";
 
 
 

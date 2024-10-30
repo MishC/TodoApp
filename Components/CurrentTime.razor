@@ -1,0 +1,38 @@
+@implements IDisposable
+@inject IJSRuntime JSRuntime
+
+<h2 class="d-inline text-primary">&nbsp; Today is @currentDate, @currentTime</h2>
+
+@code {
+    private string currentTime;
+    private string currentDate;
+
+    private System.Timers.Timer timer;
+
+    protected override void OnInitialized()
+    {
+        UpdateTime(); 
+        SetTimer();  
+    }
+
+    private void UpdateTime()
+    {
+        currentDate = DateTime.Now.ToString("MMM dd yyyy");
+        currentTime = DateTime.Now.ToString("HH:mm tt");
+        StateHasChanged(); 
+    }
+
+    private void SetTimer()
+    {
+        // Initialize a timer to tick every 5 minutes (300000 milliseconds)
+        timer = new System.Timers.Timer(300000);
+        timer.Elapsed += (sender, args) => UpdateTime(); // Update time on tick
+        timer.Start();
+    }
+
+    public void Dispose()
+    {
+        // Clean up the timer
+        timer?.Dispose();
+    }
+}
