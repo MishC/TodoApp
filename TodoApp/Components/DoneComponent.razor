@@ -1,0 +1,86 @@
+﻿@page "/todos/done"
+
+@if (!isAuthenticated) 
+{<div class="mt-5">Sorry, you are not authenticated. First, <a href="/login">log in</a></div>}
+else {
+<div class="mb-5 pt-0 mx-auto w-100">
+@if (completedTasks?.Count>0)
+{
+<h2 class="mt-md-1 mt-5 pt-1 mb-3 text-center text-md-start pt-3 mx-md-4">Completed tasks! @EmojiString</h2>
+    
+
+<ul class="list-group mt-2 pt-5 w-75 mx-auto mx-md-4">
+      <li class="d-none d-md-flex list-group-item list-group-item-primary justify-content-between px-4 text-white"
+          style="background-color:#0056b3">
+      <span class="col-md-4">Time span</span> 
+    <span class="col-md-6 text-justify" style="margin-left:-20px">Title</span>
+    <span class="col-md-2"></span>
+      </li>
+    @{
+    bool isFirstVisible = true;
+}
+   
+    @foreach (var todo in completedTasks.OrderBy(task => task.Id))
+    { 
+            
+    <li class="d-flex flex-column flex-md-row justify-content-start align-items-center list-group-item border-1  p-md-2 pe-0 m-0 p-0 border-sm-2 col-12 w-100 @(isFirstVisible ? "border-top-1" : "border-top-0")" 
+        @key="todo.Id">
+
+        <span class="col-12 col-md-4 mb-2 mb-md-0  px-2 py-2 py-md-0 text-md-start text-center brown" >
+            @todo.TimeDifference
+        </span>  
+<div class="d-flex justify-content-between col-8 align-items-center"> 
+      
+  <span class="justify-content-start mb-2 me-4 me-md-2 mb-md-0  text-start text-wrap text-justify text-break">
+      @todo.Title
+  </span>
+    <span class="justify-content-end col-3 text-end me-lg-3 me-1 pe-1">
+      <button class="btn btn-danger custom-btn-width btn-sm rounded mb-2 mb-md-0 font-weight-bold p-sm-2 px-1 px-lg-4" @onclick="() => TakeBack(todo)">Back</button>
+  </span>
+        </div>  
+
+     </li>
+    isFirstVisible=false;
+    }
+</ul>
+  } 
+
+else {<div class="mt-5 mx-auto mx-md-4 text-primary">No completed task yet.</div>}
+ </div>
+}
+@code {
+    [CascadingParameter] protected List<TodoItem>? completedTasks { get; set; }
+    [Parameter] public EventCallback<TodoItem> OnTakeBack { get; set; }
+         private bool isAuthenticated { get; set; }
+
+
+
+    private byte[] emojiBytes { get; set; } = Array.Empty<byte>();
+    private string EmojiString => System.Text.Encoding.Unicode.GetString(emojiBytes);
+
+    private bool isFirstVisible =true;
+
+     protected override async Task OnInitializedAsync()
+    {   
+       EmojiService.HighSurrogate=0xD83D;
+       EmojiService.LowSurrogate=0xDC4F;
+      emojiBytes= EmojiService.GetEmojiBytes();
+     isAuthenticated = await AuthService.IsAuthenticated();
+ 
+if (isAuthenticated)
+{
+     navigation.NavigateTo("/todos?done");
+ }
+    }
+   
+  
+    
+ private async Task TakeBack(TodoItem todo)
+    {
+
+        if (OnTakeBack.HasDelegate)
+        {
+            await OnTakeBack.InvokeAsync(todo);
+        }
+    }
+}

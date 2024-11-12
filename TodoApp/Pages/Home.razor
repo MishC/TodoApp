@@ -1,0 +1,21 @@
+﻿@page "/"
+
+   
+        <Todo />
+
+
+@code {
+    protected bool isAuthenticated=false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        isAuthenticated = await AuthService.IsAuthenticated();
+        
+        if (!isAuthenticated)
+        {
+            navigation.NavigateTo("/login");
+        }
+       
+       
+    }
+}

@@ -1,0 +1,34 @@
+@implements IDisposable
+@inject IJSRuntime JSRuntime
+<h2 class="d-md-block d-none text-primary">Today is @currentDate, @currentTime</h2>
+@code {
+    private string currentTime = string.Empty;
+   private string currentDate = string.Empty;
+
+    private System.Timers.Timer timer = null;
+
+    protected override void OnInitialized()
+    {
+        UpdateTime(); 
+        SetTimer();  
+    }
+
+    private void UpdateTime()
+    {
+        currentDate = DateTime.Now.ToString("MMM dd yyyy");
+        currentTime = DateTime.Now.ToString("HH:mm tt");
+        StateHasChanged(); 
+    }
+
+    private void SetTimer()
+    {
+        timer = new System.Timers.Timer(300000);
+        timer.Elapsed += (sender, args) => UpdateTime(); 
+        timer.Start();
+    }
+
+    public void Dispose()
+    {
+        timer?.Dispose();
+    }
+}

@@ -1,0 +1,5 @@
+@media (max-width: 641px) {
+    .custom-btn-width {
+        width: fit-content;
+    }
+}

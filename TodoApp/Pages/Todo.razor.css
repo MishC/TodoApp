@@ -1,0 +1,5 @@
+.clicked,  .active {
+    background-color: #0056b3 !important; /* Change background color when button is clicked */
+    transform: scale(0.98); /* Slightly shrink the button for a pressed effect */
+}
+

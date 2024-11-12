@@ -1,0 +1,12 @@
+@page "/logout"
+@using TodoApp.Classes
+
+<h3>Logging out.......</h3>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await AuthService.Logout();
+        navigation.NavigateTo("/login");
+    }
+}

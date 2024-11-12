@@ -1,0 +1,18 @@
+.brown {
+    color: #4A0404; /*#5C4033*/
+}
+.text-md-left {
+    text-align: left !important;
+}
+
+@media (max-width: 741px) {
+    .custom-btn-width {
+       width: fit-content; 
+    }
+    .brown {
+        color: #fff;
+        background: #0056b3;
+        padding: 0.4em;
+        margin: 0;
+    }
+}

@@ -1,0 +1,74 @@
+﻿@inject AuthService AuthService
+
+<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">TODO App</a>
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+        </button>
+    </div>
+</div>
+
+<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
+    <nav class="flex-column" style="color:#fff">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All" style="color:lemonchiffon">
+                 Home
+            </NavLink>
+        </div>
+    
+   
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="/todos" style="color:lemonchiffon">
+              TODO
+            </NavLink>
+        </div>
+    @if (isAuthenticated)
+        {
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="/logout" style="color:lemonchiffon">
+                    Logout
+                </NavLink>
+            </div>
+        }
+        else
+        {
+            <div class="nav-item px-3">
+            <NavLink class="nav-link" href="/login" style="color:lemonchiffon">
+                Login
+            </NavLink>
+        </div>
+        }
+    </nav>
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+private bool isAuthenticated=false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        isAuthenticated = await AuthService.IsAuthenticated();
+        AuthService.OnAuthStateChanged += UpdateAuthState;
+    }
+
+    private void UpdateAuthState()
+    {
+        InvokeAsync(async()=> {
+            isAuthenticated = await AuthService.IsAuthenticated();
+            StateHasChanged();
+        });
+    }
+
+
+private string NavMenuCssClass => collapseNavMenu ? "collapse" : "";
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+
+ public void Dispose()
+    {
+        AuthService.OnAuthStateChanged -= UpdateAuthState;
+    }
+}

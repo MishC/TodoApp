@@ -1,0 +1,72 @@
+@page "/todos"
+
+@if (isAuthenticated)
+
+{   
+     
+    <div class="row d-flex justify-content-center justify-content-md-start mx-1 mx-xs-0 mb-md-2 mb-0 mt-2">
+        <button type="button" class="btn btn-success btn-md col-lg-2 col-md-2  @clickedClass1 mb-5" @onclick="ShowComponentA">Todos</button>
+        <span class="col-1"></span>
+        <button class="btn btn-success btn-md col-lg-2 col-md-2  @clickedClass2 mb-md-5 mb-0 " @onclick="ShowComponentB">Done</button>
+    </div>
+   
+    <div class="d-flex flex-column justify-content-center justify-content-md-start  my-5 mx-md-4">
+<h2 class="text-primary text-md-start text-center">Hi @AuthService.CurrentUsername!  </h2>
+    <div><CurrentTime /></div>
+</div>
+
+    @if (isTodoVisible.HasValue)
+    {
+            <DynamicComponent Type="typeof(TodoComponent)" Parameters="@(new Dictionary<string, object>
+            {
+                { "visible", isTodoVisible }
+            })" />
+    }
+}
+else
+{
+    <div class="mt-5">Sorry, you are not authenticated. First, <a href="/login">log in</a></div>
+}
+
+@code {
+     private bool isAuthenticated { get; set; }
+
+    private bool isClicked1 = false;
+    private bool isClicked2 = false;
+
+    private string clickedClass1 => isClicked1 ? "clicked" : "";
+    private string clickedClass2 => isClicked2 ? "clicked" : "";
+
+    private bool? isTodoVisible = null;
+
+
+
+
+   protected override async Task OnInitializedAsync()
+    {
+               await AuthService.InitializeUsernameAsync(); 
+
+      isAuthenticated = await AuthService.IsAuthenticated();
+ 
+     if (isAuthenticated)
+     {
+     navigation.NavigateTo($"/todos");
+     }
+           
+
+    }
+
+    private void ShowComponentA()
+    {
+        isTodoVisible = true;
+        isClicked1 = true;
+        isClicked2 = false; 
+    }
+
+    private void ShowComponentB()
+    {
+        isTodoVisible = false;
+        isClicked1 = false; 
+        isClicked2 = true;
+    }
+}
