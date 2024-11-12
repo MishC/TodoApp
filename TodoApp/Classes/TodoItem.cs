@@ -14,7 +14,7 @@ namespace TodoApp.Classes
 
         }
 
-        public bool Completed { get; set; } = false;
+        public bool isCompleted { get; set; } = false;
         public DateTime CurrentDate { get; private set; } = DateTime.Now;
         public DateTime? TimeCompleted { get; set; }
         public string? Description { get; set; }

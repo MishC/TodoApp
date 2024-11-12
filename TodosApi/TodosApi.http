@@ -17,8 +17,7 @@ POST {{TodosApi_HostAddress}}/api/todos
 Content-Type: application/json
 
 {
-  "id": 1,
-  "title": "New Todo Item",
+  "title": "Clean shoes",
   "isCompleted": false
 }
 

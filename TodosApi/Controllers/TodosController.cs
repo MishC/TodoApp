@@ -51,8 +51,14 @@ namespace TodosApi.Controllers
 				return NotFound();
 			}
 			existingTodo.Title = updatedTodo.Title;
-			
-			return NoContent();
+
+			if (updatedTodo.isCompleted)
+			{
+				existingTodo.isCompleted = updatedTodo.isCompleted;
+  		    }
+
+
+            return NoContent();
 		}
 
 		[HttpDelete("{id}")]
