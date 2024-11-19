@@ -19,11 +19,23 @@
 
 ### Running TodoApp
 
+#### From Parent Directory TodoAppSolution
+
 dotnet run --project TodoApp
+
+#### From TodoApp directory
+
+dotnet run 
 
 ### Running TodosApi
 
+#### From Parent Directory TodoAppSolution
+
 dotnet run --project TodosApi
+
+#### From TodosApi directory
+
+dotnet run 
 
 ## Building the Solution
 
