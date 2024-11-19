@@ -7,7 +7,7 @@ Accept: application/json
 ###
 
 # Get a Specific Todo by ID
-GET {{TodosApi_HostAddress}}/api/todos/1
+GET {{TodosApi_HostAddress}}/api/todos/2
 Accept: application/json
 
 ###
@@ -36,5 +36,5 @@ Content-Type: application/json
 ###
 
 # Delete a Todo
-DELETE {{TodosApi_HostAddress}}/api/todos/1
+DELETE {{TodosApi_HostAddress}}/api/todos/4
 
