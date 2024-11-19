@@ -66,10 +66,6 @@ namespace TodosApi.Controllers
         [HttpDelete("{id}")]
 		public ActionResult DeleteTodo(int id)
 		{
-			if (todo == null)
-			{
-				return NotFound();
-			}
 
 			_todosService.DeleteTodo(id);
 			return NoContent();

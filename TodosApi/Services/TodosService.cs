@@ -1,4 +1,4 @@
-using TodoApp.Classes
+using TodoApp.Classes;
 
 public class TodosService : ITodosService
 {
@@ -23,7 +23,7 @@ public class TodosService : ITodosService
 		existingTodo.Title = updatedTodo.Title;
 		if (updatedTodo.isCompleted)
 		{
-			existingTodo.IsCompleted = true;
+			existingTodo.isCompleted = true;
 		}
 	}
 

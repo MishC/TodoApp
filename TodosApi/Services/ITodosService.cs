@@ -1,10 +1,10 @@
-using TodoApp.Classes
+using TodoApp.Classes;
 
 public interface ITodosService
 {
     IEnumerable<TodoItem> GetTodos();           
-    Book? GetTodo(int id);              
+    TodoItem? GetTodo(int id);              
     void AddTodo(TodoItem todo);               
-    void UpdateTodo(int id, TodoItem todo);     
+    void UpdateTodo(TodoItem oldTodo, TodoItem newTodo);     
     void DeleteTodo(int id);                
 }
