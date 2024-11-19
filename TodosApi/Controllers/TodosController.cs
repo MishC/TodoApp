@@ -7,24 +7,29 @@ namespace TodosApi.Controllers
 	[Route("api/[controller]")]
 	public class TodosController : ControllerBase
 	{
-		public static List<TodoItem> todos = new List<TodoItem>
-		{
-			new TodoItem {  Title = "Run for 30 min" },
-			new TodoItem {  Title = "Take kids from school before 4 pm" }
-		};
 
-		// GET: api/todos
-		[HttpGet]
+        private readonly ITodosService _todosService;
+
+        public TodosController(ITodosService todosService)
+        {
+            _todosService = todosService;
+        }
+
+
+        // GET: api/todos
+        [HttpGet]
 		public ActionResult<IEnumerable<TodoItem>> GetTodos()
 		{
-			return Ok(todos);
+            var todos = _todosService.GetTodos();
+
+            return Ok(todos);
 		}
 
 		// GET: api/todos/{id}
 		[HttpGet("{id}")]
 		public ActionResult<TodoItem> GetTodo(int id)
 		{
-			var todo = todos.FirstOrDefault(b => b.Id == id);
+			var todo = _todosService.GetTodo(id);
 			if (todo == null)
 			{
 				NotFound();
@@ -32,45 +37,41 @@ namespace TodosApi.Controllers
 			return Ok(todo);
 		}
 
+		//POST: api/todos/
+
 		[HttpPost]
 		public ActionResult<TodoItem> CreateTodo(TodoItem newTodo)
 		{
-			newTodo.Id = todos.Max(b => b.Id) + 1;
-			todos.Add(newTodo);
+			_todosService.AddTodo(newTodo);
 			return CreatedAtAction(nameof(GetTodo), new { id = newTodo.Id }, newTodo);
 		}
 
-		// PUT: api/todos/{id}
+        // PUT: api/todos/{id}
 
-		[HttpPut("{id}")]
-		public ActionResult UpdateTodo(int id, TodoItem updatedTodo)
-		{
-			var existingTodo = todos.FirstOrDefault(b => b.Id == id);
-			if (existingTodo == null)
-			{
-				return NotFound();
-			}
-			existingTodo.Title = updatedTodo.Title;
+        [HttpPut("{id}")]
+        public ActionResult UpdateTodo(int id, TodoItem updatedTodo)
+        {
+            var existingTodo = _todosService.GetTodo(id);
+            if (existingTodo == null)
+            {
+                return NotFound();
+            }
 
-			if (updatedTodo.isCompleted)
-			{
-				existingTodo.isCompleted = updatedTodo.isCompleted;
-  		    }
-
+            _todosService.UpdateTodo(existingTodo, updatedTodo);
 
             return NoContent();
-		}
+        }
 
-		[HttpDelete("{id}")]
+        //DELETE: api/todos/{id}
+        [HttpDelete("{id}")]
 		public ActionResult DeleteTodo(int id)
 		{
-			var todo = todos.FirstOrDefault(b => b.Id == id);
 			if (todo == null)
 			{
 				return NotFound();
 			}
 
-			todos.Remove(todo);
+			_todosService.DeleteTodo(id);
 			return NoContent();
 		}
 	}
