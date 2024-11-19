@@ -20,10 +20,14 @@ public class TodosService : ITodosService
 
 	public void UpdateTodo(TodoItem existingTodo, TodoItem updatedTodo)
 	{
-		existingTodo.Title = updatedTodo.Title;
-		if (updatedTodo.isCompleted)
+		/*if (updatedTodo.Title == null)
+		{ updatedTodo.Title = existingTodo.Title; } //This can we implemented if  title is not required*/
+		
+			existingTodo.Title = updatedTodo.Title;
+		
+		if (updatedTodo.IsCompleted==true)
 		{
-			existingTodo.isCompleted = true;
+			existingTodo.IsCompleted = true;
 		}
 	}
 

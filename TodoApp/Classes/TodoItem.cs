@@ -1,21 +1,19 @@
 ﻿using Microsoft.AspNetCore.Components.RenderTree;
 using System.Threading;
+using System.ComponentModel.DataAnnotations;
+
 namespace TodoApp.Classes
+
 {
     public class TodoItem
     {
         private static int _nextId = 0;
         public int Id { get; set; }
-        private string? _title;
-        public string Title
-        {
-            get => _title ?? throw new NullReferenceException();
-            set => _title = value?.Trim() ?? throw new ArgumentNullException(nameof(value));
+        [Required]
+        public string Title { get; set; }
 
-        }
-
-        public bool isCompleted { get; set; } = false;
-        public DateTime CurrentDate { get; private set; } = DateTime.Now;
+        public bool IsCompleted { get; set; } = false; //default value
+        public DateTime CurrentDate { get; private set; } = DateTime.Now; //default value
         public DateTime? TimeCompleted { get; set; }
         public string? Description { get; set; }
 

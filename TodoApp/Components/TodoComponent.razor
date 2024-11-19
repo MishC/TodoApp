@@ -12,7 +12,7 @@
                 @onclick="AddTodo">Add</button>
     </div>
 
-    @if (todos?.Count > 0 && todos?.Any(todo => !todo.isCompleted) == true)
+    @if (todos?.Count > 0 && todos?.Any(todo => !todo.IsCompleted) == true)
     {
         <ul class="list-group my-5 pt-2 mx-1 w-75 mx-auto mx-md-4 mb-5">
              <li class="d-none d-md-flex list-group-item list-group-item-primary justify-content-between px-4 text-white"
@@ -26,7 +26,7 @@
             }
             @foreach (var todo in todos)
             { 
-                if (!todo.isCompleted) 
+                if (!todo.IsCompleted) 
                 {
 <li class="d-flex flex-column flex-md-row justify-content-md-between list-group-item border-1 w-100 p-md-2 pe-0 m-0 p-0 border-sm-2 @(isFirstVisible ? "border-top-1" : "border-top-0")" 
     @key="todo.Id">
@@ -135,9 +135,9 @@ else
 
         UpdateCompletedTasks();
         todo.TimeCompleted = DateTime.Now;
-        todo.isCompleted = !todo.isCompleted;
+        todo.IsCompleted = !todo.IsCompleted;
 
-         if (todo.isCompleted)
+         if (todo.IsCompleted)
           {        await Task.Delay(500);
 
            await ShowCompletionAlert(todo.Title);
@@ -148,7 +148,7 @@ else
 
     private void UpdateCompletedTasks()
     {
-        completedTasks = todos.Where(t => t.isCompleted).ToList();
+        completedTasks = todos.Where(t => t.IsCompleted).ToList();
     }
 
     private async Task DeleteTodoAsync(TodoItem todo)
@@ -162,7 +162,7 @@ else
 
     private void HandleTakeBack(TodoItem todo)
     {
-        todo.isCompleted = false;
+        todo.IsCompleted = false;
         todo.TimeCompleted = null;
         UpdateCompletedTasks();
     }
