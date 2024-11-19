@@ -4,7 +4,7 @@ namespace TodoApp.Classes
 {
     public class TodoItem
     {
-        private static int _nextId = 1;
+        private static int _nextId = 0;
         public int Id { get; set; }
         private string? _title;
         public string Title
