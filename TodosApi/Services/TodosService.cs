@@ -34,6 +34,8 @@ public class TodosService : ITodosService
 	public void DeleteTodo(int id)
 	{
 		var todo = GetTodo(id);
-		if (todo != null) todos.Remove(todo);
+		if (todo != null)
+		{ todos.Remove(todo); }
+	
 	}
 }

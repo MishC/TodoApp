@@ -1,12 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
 using TodoApp.Classes;
+using Serilog;
+
 
 namespace TodosApi.Controllers
 {
-	[ApiController]
-	[Route("api/[controller]")]
-	public class TodosController : ControllerBase
-	{
+    [ApiController]
+    [Route("api/[controller]")]
+    public class TodosController : ControllerBase
+    {
 
         private readonly ITodosService _todosService;
 
@@ -18,33 +20,41 @@ namespace TodosApi.Controllers
 
         // GET: api/todos
         [HttpGet]
-		public ActionResult<IEnumerable<TodoItem>> GetTodos()
-		{
+        public ActionResult<IEnumerable<TodoItem>> GetTodos()
+        {
             var todos = _todosService.GetTodos();
-
+            Log.Information("Fetching all todos");
             return Ok(todos);
-		}
+            if (todos == null)
+            {
+                Log.Error($"There is any todo to be fetched.");
+                throw new NotFoundException($"No todos");
+            }
+        }
 
-		// GET: api/todos/{id}
-		[HttpGet("{id}")]
-		public ActionResult<TodoItem> GetTodo(int id)
-		{
-			var todo = _todosService.GetTodo(id);
-			if (todo == null)
-			{
-				NotFound();
-			}
-			return Ok(todo);
-		}
+        // GET: api/todos/{id}
+        [HttpGet("{id}")]
+        public ActionResult<TodoItem> GetTodo(int id)
+        {
+            var todo = _todosService.GetTodo(id);
+            Log.Information($"Fetching todo with id: {id}");
+            if (todo == null)
+            {
+                Log.Error($"Todo with id {id} doesn't exist.");
+                 throw new NotFoundException($"Todo item with id {id} was not found.");
 
-		//POST: api/todos/
+            }
+            return Ok(todo);
+        }
 
-		[HttpPost]
-		public ActionResult<TodoItem> CreateTodo(TodoItem newTodo)
-		{
-			_todosService.AddTodo(newTodo);
-			return CreatedAtAction(nameof(GetTodo), new { id = newTodo.Id }, newTodo);
-		}
+        //POST: api/todos/
+
+        [HttpPost]
+        public ActionResult<TodoItem> CreateTodo(TodoItem newTodo)
+        {
+            _todosService.AddTodo(newTodo);
+            return CreatedAtAction(nameof(GetTodo), new { id = newTodo.Id }, newTodo);
+        }
 
         // PUT: api/todos/{id}
 
@@ -54,7 +64,9 @@ namespace TodosApi.Controllers
             var existingTodo = _todosService.GetTodo(id);
             if (existingTodo == null)
             {
-                return NotFound();
+                Log.Error($"No such Todo.");
+
+                throw new NotFoundException($"Todo item with id {id} was not found.");
             }
 
             _todosService.UpdateTodo(existingTodo, updatedTodo);
@@ -64,11 +76,20 @@ namespace TodosApi.Controllers
 
         //DELETE: api/todos/{id}
         [HttpDelete("{id}")]
-		public ActionResult DeleteTodo(int id)
-		{
+        public ActionResult DeleteTodo(int id)
+        {
+           
 
-			_todosService.DeleteTodo(id);
-			return NoContent();
-		}
-	}
+                var todo = _todosService.GetTodo(id);
+                if (todo == null)
+                {
+                    Log.Error($"No such Todo.");
+                    throw new NotFoundException($"Todo item with id {id} was not found.");
+                }
+                _todosService.DeleteTodo(id);
+                return NoContent();
+
+           
+        }
+    }
 }

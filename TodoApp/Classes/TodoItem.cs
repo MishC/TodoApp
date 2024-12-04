@@ -1,33 +1,50 @@
-﻿using Microsoft.AspNetCore.Components.RenderTree;
-using System.Threading;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Threading;
 
 namespace TodoApp.Classes
-
 {
     public class TodoItem
     {
         private static int _nextId = 0;
+
         public int Id { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "Title is required")]
+        [StringLength(100, MinimumLength = 3)]
         public string Title { get; set; }
 
-        public bool IsCompleted { get; set; } = false; //default value
-        public DateTime CurrentDate { get; private set; } = DateTime.Now; //default value
-        public DateTime? TimeCompleted { get; set; }
-        public string? Description { get; set; }
+        [IsFalse(ErrorMessage = "IsCompleted must be false during initialization.")]
+        public bool IsCompleted { get; set; } = false;
 
+        public DateTime CurrentDate { get; private set; } // Initial value set in constructor
+        public DateTime? TimeCompleted { get; set; }
+
+        [MinLength(10, ErrorMessage = "Description must have at least 10 characters.")]
+        public string? Description { get; set; }
 
         public TodoItem()
         {
             Id = Interlocked.Increment(ref _nextId);
-
             CurrentDate = DateTime.Now;
         }
-        //expression-bodied syntax for get
-        public string TimeDifference => TimeCompleted != null ?
-            $"{(TimeCompleted.Value - CurrentDate).Duration().Days} days {(TimeCompleted.Value - CurrentDate).Duration().Hours} hours"
-         : "Not completed yet";
 
+        public string TimeDifference => TimeCompleted != null ?
+            $"{(TimeCompleted.Value - DateTime.Now).Duration().Days} days {(TimeCompleted.Value - DateTime.Now).Duration().Hours} hours"
+            : "Not completed yet";
+    }
+
+    // Custom validation attribute
+    public class IsFalseAttribute : ValidationAttribute
+    {
+        protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
+        {
+            if (value is bool boolValue && boolValue)
+            {
+                return new ValidationResult(ErrorMessage ?? "The value must be false.");
+            }
+
+            return ValidationResult.Success;
+        }
     }
 }
