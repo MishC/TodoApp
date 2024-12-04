@@ -1,6 +1,9 @@
 using TodoApp.Classes;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+
+
 
 public class AppDbContext : DbContext
 {
@@ -15,5 +18,10 @@ public class AppDbContext : DbContext
 			new TodoItem { Id = 2, Title = "Take kids from the school before 4pm"  }
 		);
 	}
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.ConfigureWarnings(warnings => 
+            warnings.Ignore(RelationalEventId.PendingModelChangesWarning));
+    }
 
 }

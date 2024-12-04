@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TodoApp.Classes;
 using Serilog;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 
 namespace TodosApi.Controllers
@@ -51,7 +52,7 @@ namespace TodosApi.Controllers
 
         [HttpPost]
         public ActionResult<TodoItem> CreateTodo(TodoItem newTodo)
-        {
+        {   
             _todosService.AddTodo(newTodo);
             return CreatedAtAction(nameof(GetTodo), new { id = newTodo.Id }, newTodo);
         }
