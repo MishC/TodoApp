@@ -11,38 +11,39 @@ namespace TodosApi.Controllers
     public class TodosController : ControllerBase
     {
 
-        private readonly ITodosService _todosService;
+        private readonly AppDbContext _context;
 
-        public TodosController(ITodosService todosService)
+        public TodosController(AppDbContext context)
         {
-            _todosService = todosService;
+            _context = context;
         }
 
 
         // GET: api/todos
         [HttpGet]
-        public ActionResult<IEnumerable<TodoItem>> GetTodos()
+        public IActionResult GetTodos()
         {
-            var todos = _todosService.GetTodos();
             Log.Information("Fetching all todos");
-            return Ok(todos);
-            if (todos == null)
+            return Ok(_context.Todos.ToList());
+            if (_context.Todos.ToList().Count == 0)
             {
                 Log.Error($"There is any todo to be fetched.");
-                throw new NotFoundException($"No todos");
+                throw new NotFoundException($"Todos are empty"); 
+
+
             }
         }
 
+
         // GET: api/todos/{id}
         [HttpGet("{id}")]
-        public ActionResult<TodoItem> GetTodo(int id)
+        public IActionResult GetById(int id)
         {
-            var todo = _todosService.GetTodo(id);
-            Log.Information($"Fetching todo with id: {id}");
+            var todo = _context.Todos.Find(id);
             if (todo == null)
             {
                 Log.Error($"Todo with id {id} doesn't exist.");
-                 throw new NotFoundException($"Todo item with id {id} was not found.");
+                throw new NotFoundException($"Todo item with id {id} was not found.");
 
             }
             return Ok(todo);
@@ -51,18 +52,21 @@ namespace TodosApi.Controllers
         //POST: api/todos/
 
         [HttpPost]
-        public ActionResult<TodoItem> CreateTodo(TodoItem newTodo)
-        {   
-            _todosService.AddTodo(newTodo);
-            return CreatedAtAction(nameof(GetTodo), new { id = newTodo.Id }, newTodo);
+        public IActionResult Create(TodoItem todo)
+        {
+            
+            _context.Todos.Add(todo);
+            _context.SaveChanges();
+            return Ok();
         }
+
 
         // PUT: api/todos/{id}
 
         [HttpPut("{id}")]
-        public ActionResult UpdateTodo(int id, TodoItem updatedTodo)
+        public IActionResult Update(int id, TodoItem newTodo)
         {
-            var existingTodo = _todosService.GetTodo(id);
+            var existingTodo = _context.Todos.Find(id);
             if (existingTodo == null)
             {
                 Log.Error($"No such Todo.");
@@ -70,27 +74,33 @@ namespace TodosApi.Controllers
                 throw new NotFoundException($"Todo item with id {id} was not found.");
             }
 
-            _todosService.UpdateTodo(existingTodo, updatedTodo);
+            existingTodo.Title = newTodo.Title;
+            if (newTodo.Description!=null) existingTodo.Description = newTodo.Description;
+            if (newTodo.IsCompleted==true) existingTodo.IsCompleted = newTodo.IsCompleted;
+            if (newTodo.TimeCompleted!=null) existingTodo.TimeCompleted = newTodo.TimeCompleted;
+
+            _context.SaveChanges();
 
             return NoContent();
         }
 
+
         //DELETE: api/todos/{id}
         [HttpDelete("{id}")]
-        public ActionResult DeleteTodo(int id)
+        public IActionResult Delete(int id)
         {
-           
+            var todo = _context.Todos.Find(id);
+            if (todo == null)
+            {
+                Log.Error($"No such Todo.");
+                throw new NotFoundException($"Todo item with id {id} was not found.");
+            }
+            Log.Information("Todo with id {TodoId} deleted successfully.", id);
+            _context.Todos.Remove(todo);
+            _context.SaveChanges();
 
-                var todo = _todosService.GetTodo(id);
-                if (todo == null)
-                {
-                    Log.Error($"No such Todo.");
-                    throw new NotFoundException($"Todo item with id {id} was not found.");
-                }
-                _todosService.DeleteTodo(id);
-                return NoContent();
-
-           
+            return Ok();
         }
+
     }
 }

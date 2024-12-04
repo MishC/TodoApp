@@ -18,7 +18,7 @@ namespace TodoApp.Classes
         [IsFalse(ErrorMessage = "IsCompleted must be false during initialization.")]
         public bool IsCompleted { get; set; } = false;
 
-        public DateTime CurrentDate { get; private set; } // Initial value set in constructor
+        public DateTime CurrentDate { get; private set; } 
         public DateTime? TimeCompleted { get; set; }
 
         [MinLength(10, ErrorMessage = "Your description is too short. Your description must have at least 10 characters.")]
