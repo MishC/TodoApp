@@ -44,9 +44,16 @@ namespace TodosApi.Controllers
         [HttpPost]
         public IActionResult CreateCategory(Category category)
         {
-            _context.Categories.Add(category);
-            _context.SaveChanges();
-            return CreatedAtAction(nameof(GetCategories), new { id = category.Id }, category);
+            try
+            {
+                _context.Categories.Add(category);
+                _context.SaveChanges();
+                return CreatedAtAction(nameof(GetCategories), new { id = category.Id }, category);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
         }
 
         //DELETE: api/categories/{id}

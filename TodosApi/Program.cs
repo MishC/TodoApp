@@ -49,7 +49,7 @@ app.UseHttpsRedirection();
 // Log all incoming requests using Serilog
 app.UseSerilogRequestLogging();
 
-// Exception handling middleware should come first to catch exceptions in subsequent middlewares
+// Middlewares: Exception Handling
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 // Map controllers for endpoints
