@@ -4,13 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using TodosApi.Data;
 
 #nullable disable
 
 namespace TodosApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241204103516_InitialCreate")]
+    [Migration("20241210094811_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -51,14 +52,14 @@ namespace TodosApi.Migrations
                         new
                         {
                             Id = 1,
-                            CurrentDate = new DateTime(2024, 12, 4, 11, 35, 15, 610, DateTimeKind.Local).AddTicks(8845),
+                            CurrentDate = new DateTime(2024, 12, 10, 10, 48, 10, 582, DateTimeKind.Local).AddTicks(9756),
                             IsCompleted = false,
                             Title = "Run for 30 min"
                         },
                         new
                         {
                             Id = 2,
-                            CurrentDate = new DateTime(2024, 12, 4, 11, 35, 15, 616, DateTimeKind.Local).AddTicks(1240),
+                            CurrentDate = new DateTime(2024, 12, 10, 10, 48, 10, 588, DateTimeKind.Local).AddTicks(1139),
                             IsCompleted = false,
                             Title = "Take kids from the school before 4pm"
                         });

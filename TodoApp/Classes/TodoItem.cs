@@ -21,8 +21,7 @@ namespace TodoApp.Classes
         public DateTime CurrentDate { get; private set; } 
         public DateTime? TimeCompleted { get; set; }
 
-        [MinLength(10, ErrorMessage = "Your description is too short. Your description must have at least 10 characters.")]
-        [MaxLength(500, ErrorMessage = "Too long description. Description cannot exceed 500 characters.")]
+        [StringLength(500, MinimumLength = 10, ErrorMessage = "Description must have between 10 to 500 characters.")]
         public string? Description { get; set; }
 
         public TodoItem()

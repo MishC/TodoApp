@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using TodoApp.Classes;
+using TodosApi.Data;
 using Serilog;
 using Microsoft.AspNetCore.Http.HttpResults;
 
@@ -29,6 +30,7 @@ namespace TodosApi.Controllers
             {
                 Log.Error($"There is any todo to be fetched.");
                 throw new NotFoundException($"Todos are empty"); 
+
 
 
             }
