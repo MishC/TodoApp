@@ -59,6 +59,8 @@ namespace TodosApi.Controllers
             
             _context.Todos.Add(todo);
             _context.SaveChanges();
+            Log.Information($"New todo: {newTodo.Title} has been added.")
+
             return Ok();
         }
 
@@ -71,18 +73,20 @@ namespace TodosApi.Controllers
             var existingTodo = _context.Todos.Find(id);
             if (existingTodo == null)
             {
-                Log.Error($"No such Todo.");
+                Log.Error($"No such todo with {id}. Cannot be updated.");
 
                 throw new NotFoundException($"Todo item with id {id} was not found.");
             }
 
             existingTodo.Title = newTodo.Title;
-            if (newTodo.Description!=null) existingTodo.Description = newTodo.Description;
-            if (newTodo.IsCompleted==true) existingTodo.IsCompleted = newTodo.IsCompleted;
-            if (newTodo.TimeCompleted!=null) existingTodo.TimeCompleted = newTodo.TimeCompleted;
+            if (newTodo.Description != null) existingTodo.Description = newTodo.Description;
+            if (newTodo.IsCompleted == true) existingTodo.IsCompleted = newTodo.IsCompleted;
+            if (newTodo.TimeCompleted != null) existingTodo.TimeCompleted = newTodo.TimeCompleted;
+            if (newTodo.TimeCompleted != null) existingTodo.TimeCompleted = newTodo.TimeCompleted;
+
 
             _context.SaveChanges();
-
+            Log.Information($"Todo with id: {id} has been updated.")
             return NoContent();
         }
 
@@ -99,6 +103,8 @@ namespace TodosApi.Controllers
             }
             Log.Information("Todo with id {TodoId} deleted successfully.", id);
             _context.Todos.Remove(todo);
+            Log.Information($"Todo with id: {id} has been removed.")
+
             _context.SaveChanges();
 
             return Ok();

@@ -24,6 +24,10 @@ namespace TodoApp.Classes
         [StringLength(500, MinimumLength = 10, ErrorMessage = "Description must have between 10 to 500 characters.")]
         public string? Description { get; set; }
 
+        [ForeignKey("Category")]
+        public int CategoryId { get; set; } 
+
+
         public TodoItem()
         {
             Id = Interlocked.Increment(ref _nextId);

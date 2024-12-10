@@ -13,10 +13,16 @@ namespace TodosApi.Data
 		public DbSet<TodoItem> Todos { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder builder)
-		{
-			builder.Entity<TodoItem>().HasData(
-				new TodoItem { Id = 1, Title = "Run for 30 min" },
-				new TodoItem { Id = 2, Title = "Take kids from the school before 4pm" }
+        {
+            builder.Entity<Category>().HasData(
+                new Category { Id = 1, Name = "Sport" },
+                new Category { Id = 2, Name = "Family" }
+            );
+
+            
+            builder.Entity<TodoItem>().HasData(
+				new TodoItem { Id = 1, Title = "Run for 30 min", CategoryId = 1 },
+				new TodoItem { Id = 2, Title = "Take kids from the school before 4pm", CategoryId = 2 }
 			);
 		}
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
