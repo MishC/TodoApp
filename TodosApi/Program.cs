@@ -2,6 +2,7 @@ using Serilog;
 using Microsoft.EntityFrameworkCore;
 using TodosApi.Repository;
 using TodosApi.Data;
+using TodosApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,8 +20,12 @@ builder.Host.UseSerilog();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ITodosService, TodosService>();
+builder.Services.AddScoped<ICategoriesService, CategoriesService>();
+
 //Add repositories 
 builder.Services.AddScoped<ITodosRepository, TodosRepository>();
+builder.Services.AddScoped<ICategoriesRepository, CategoriesRepository>();
+
 
 // Configure SQLite (todos.db)
 builder.Services.AddDbContext<AppDbContext>(options =>

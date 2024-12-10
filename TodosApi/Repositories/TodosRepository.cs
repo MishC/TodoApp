@@ -13,9 +13,22 @@ namespace TodosApi.Repository
             _context = context;
         }
 
+
+        public IQueryable<TodoItem> GetTodos() => _context.Todos.ToList();
+
+
+        public TodoItem GetTodoById(int id) => _context.Todos
+                   .FirstOrDefault(b => b.Id == id) ?? new TodoItem();
+
         public void AddTodo(TodoItem todo)
         {
             _context.Todos.Add(todo);
+            _context.SaveChanges();
+        }
+
+        public void UpdateTodo(TodoItem todo)
+        {
+            _context.Todos.Update(todo);
             _context.SaveChanges();
         }
 
@@ -27,19 +40,6 @@ namespace TodosApi.Repository
                 _context.Todos.Remove(todo);
                 _context.SaveChanges();
             }
-        }
-
-        public IQueryable<TodoItem> GetTodos() => _context.Todos;
-                   
-
-        public TodoItem GetTodoById(int id) => _context.Todos
-                   .FirstOrDefault(b => b.Id == id) ?? new TodoItem();
-
-
-        public void UpdateTodo(TodoItem todo)
-        {
-            _context.Todos.Update(todo);
-            _context.SaveChanges();
         }
     }
 }

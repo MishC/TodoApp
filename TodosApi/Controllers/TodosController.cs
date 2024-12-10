@@ -96,21 +96,25 @@ namespace TodosApi.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var todo = _context.Todos.Find(id);
-            if (todo == null)
-            {
-                Log.Error($"No such Todo.");
-                throw new NotFoundException($"Todo item with id {id} was not found.");
-            }
-            Log.Information("Todo with id {TodoId} deleted successfully.", id);
-            _context.Todos.Remove(todo);
-            Log.Information($"Todo with id: {id} has been removed.")
+            try {
+                var todo = _context.Todos.Find(id);
+                if (todo == null)
+                {
+                    Log.Error($"No such Todo.");
+                    throw new NotFoundException($"Todo item with id {id} was not found.");
+                }
+                Log.Information("Todo with id {TodoId} deleted successfully.", id);
+                _context.Todos.Remove(todo);
+                Log.Information($"Todo with id: {id} has been removed.")
 
             _context.SaveChanges();
 
-            return Ok();
-        }
+                return Ok();
 
-        
+            }
+            catch (Exception ex) { return ex.Message}
+
+
+
     }
 }
