@@ -1,8 +1,6 @@
-using Serilog;
-
-using System.Text.Json;
 using System.Net;
-
+using System.Text.Json;
+using Serilog;
 
 public class ExceptionHandlingMiddleware : IExceptionHandler
 {
@@ -18,7 +16,6 @@ public class ExceptionHandlingMiddleware : IExceptionHandler
         try
         {
             await _next(context);
-            
         }
         catch (ValidationException ex)
         {
@@ -34,17 +31,18 @@ public class ExceptionHandlingMiddleware : IExceptionHandler
         {
             Log.Fatal(ex, "Internal Server Error.");
             await WriteJsonResponseAsync(context, (int)HttpStatusCode.InternalServerError, $"Internal Server Error: {ex.Message}");
+            throw; // Optional: Rethrow for further propagation
         }
         finally
         {
             Log.Information("HTTP {Method} {Url} responded {StatusCode}",
                 context.Request.Method,
                 context.Request.Path,
-                context.Response.StatusCode);
+                context.Response.HasStarted ? context.Response.StatusCode : 0);
         }
     }
 
-    public async Task WriteJsonResponseAsync(HttpContext context, int statusCode, string message)
+    private async Task WriteJsonResponseAsync(HttpContext context, int statusCode, string message)
     {
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = statusCode;
@@ -52,7 +50,8 @@ public class ExceptionHandlingMiddleware : IExceptionHandler
         var errorResponse = new
         {
             StatusCode = statusCode,
-            Message = message
+            Message = message,
+            Timestamp = DateTime.UtcNow
         };
 
         await context.Response.WriteAsync(JsonSerializer.Serialize(errorResponse));
