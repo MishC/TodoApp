@@ -12,17 +12,15 @@ namespace TodosApi.Service
 
         public TodosService(ITodosRepository todosRepository)
         {
-            _todosRepository = todosRepository; //through repository to the context
+            _todosRepository = todosRepository; 
         }
 
         public IQueryable<TodoItem> GetTodos()
         {
             Log.Information("Fetching all todos.");
 
-            // Fetch todos from the repository
             var todos = _todosRepository.GetTodos();
 
-            // Check if the collection is empty
             if (!todos.Any())
             {
                 Log.Warning("No todos available to fetch.");
@@ -36,7 +34,6 @@ namespace TodosApi.Service
         {
             Log.Information($"Fetching todo with id {id}.");
 
-            // Fetch the todo from the repository
             var todo = _todosRepository.GetTodoById(id);
             if (todo == null)
             {

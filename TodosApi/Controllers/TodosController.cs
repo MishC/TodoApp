@@ -52,8 +52,6 @@ namespace TodosApi.Controllers
         }
 
         
-
-
         //POST: api/todos/
 
         [HttpPost]
@@ -84,7 +82,6 @@ namespace TodosApi.Controllers
         {  
 
             _todosService.DeleteTodo(id);
-            Log.Information($"Todo with id: {id} has been removed.");
             return Ok();
         }
 
