@@ -6,6 +6,7 @@ using TodosApi.Service;
 using Serilog;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.Linq.Expressions;
 
 
 namespace TodosApi.Controllers
@@ -89,7 +90,10 @@ namespace TodosApi.Controllers
 
             if (newTodo.Title != null) existingTodo.Title = newTodo.Title;
             if (newTodo.Description != null) existingTodo.Description = newTodo.Description;
-            if (newTodo.IsCompleted == true) existingTodo.IsCompleted = newTodo.IsCompleted;
+            if (newTodo.IsCompleted == true)
+            { existingTodo.IsCompleted = newTodo.IsCompleted; 
+              existingTodo.TimeCompleted = DateTime.Now;
+            }
             if (newTodo.TimeCompleted != null) existingTodo.TimeCompleted = newTodo.TimeCompleted;
             if (newTodo.TimeCompleted != null) existingTodo.TimeCompleted = newTodo.TimeCompleted;
 
