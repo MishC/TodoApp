@@ -23,6 +23,10 @@ namespace TodosApi.Service
         public void AddTodo(TodoItem todo)
         {
             if (todo == null) return;
+            
+            
+
+
             if (todo.IsCompleted == true && todo.TimeCompleted == null)
             {
                 todo.TimeCompleted = DateTime.Now;
@@ -66,7 +70,7 @@ namespace TodosApi.Service
             var todo = _todosRepository.GetTodoById(id);
             if (todo == null)
             {
-                Log.Warning($"Todo with id {id} doesn't exist.");
+                Log.Error($"Todo with id {id} doesn't exist.");
 
                 return;
             }
@@ -78,6 +82,10 @@ namespace TodosApi.Service
             }
 
         }
+
+
+        
+
 
         public IEnumerable<TodoItem> GetTodosByCategoryId(int categoryId)
         {

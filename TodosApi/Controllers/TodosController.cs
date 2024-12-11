@@ -20,10 +20,11 @@ namespace TodosApi.Controllers
         private readonly ITodosService _todosService;
 
 
-        public TodosController(AppDbContext context, ITodosService todosService)
+        public TodosController(AppDbContext context, ITodosService todosService, ICategoriesService categoriesService)
         {
             _context = context;
             _todosService = todosService;
+            _categoriesService=categoriesService;
         }
 
 
@@ -31,14 +32,15 @@ namespace TodosApi.Controllers
         [HttpGet]
         public IActionResult GetTodos()
         {
-            Log.Information("Fetching all todos");
-            return Ok(_context.Todos.ToList());
-            if (_context.Todos.ToList().Count == 0)
+            Log.Information("Fetching all todos")            if (_context.Todos.ToList().Count == 0)
             {
                 Log.Error($"There is any todo to be fetched.");
                 throw new NotFoundException($"Todos are empty"); 
 
             }
+
+            return Ok(_context.Todos.ToList());
+
         }
 
 
@@ -83,21 +85,11 @@ namespace TodosApi.Controllers
         //DELETE: api/todos/{id}
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
-        {
+        {  
 
-            var todo = _context.Todos.Find(id);
-            if (todo == null)
-            {
-                Log.Error($"No such Todo.");
-                throw new NotFoundException($"Todo item with id {id} was not found.");
-            }
-            _context.Todos.Remove(todo);
+            _todosService.DeleteTodo(id);
             Log.Information($"Todo with id: {id} has been removed.");
-
-            _context.SaveChanges();
-
             return Ok();
-
         }
 
         // GET: api/todos/category/{categoryId}
