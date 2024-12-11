@@ -18,13 +18,15 @@ namespace TodosApi.Controllers
 
         private readonly AppDbContext _context;
         private readonly ITodosService _todosService;
+        private readonly ICategoriesService _categoriesService;
+
 
 
         public TodosController(AppDbContext context, ITodosService todosService, ICategoriesService categoriesService)
         {
             _context = context;
             _todosService = todosService;
-            _categoriesService=categoriesService;
+            _categoriesService = categoriesService;
         }
 
 

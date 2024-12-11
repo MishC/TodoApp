@@ -64,7 +64,8 @@ namespace TodosApi.Service
                                          .Where(c => c.Priority)
                                          .ToList();
         }
-
+        
+        /////////////
         public bool CategoryExists(int categoryId)
         {
             return _categoriesRepository.GetCategoryById(categoryId) != null;
