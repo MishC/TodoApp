@@ -78,31 +78,9 @@ namespace TodosApi.Controllers
 
 
         // PUT: api/todos/{id}
-
-        [HttpPut("{id}")]
         public IActionResult Update(int id, TodoItem newTodo)
         {
-            var existingTodo = _context.Todos.Find(id);
-            if (existingTodo == null)
-            {
-                Log.Error($"No such todo with id: {id}. Cannot be updated.");
-
-                throw new NotFoundException($"Todo item with id {id} was not found.");
-            }
-            if (newTodo.Title != null) existingTodo.Title = newTodo.Title;
-            if (newTodo.Description != null) existingTodo.Description = newTodo.Description;
-            if (newTodo.IsCompleted == true &&  newTodo.TimeCompleted == null)
-            { existingTodo.IsCompleted = newTodo.IsCompleted; 
-              existingTodo.TimeCompleted = DateTime.Now;
-            }
-            if (newTodo.IsCompleted == false) existingTodo.TimeCompleted = null;
-
-                if (newTodo.TimeCompleted != null) existingTodo.TimeCompleted = newTodo.TimeCompleted;
-            if (newTodo.TimeCompleted != null) existingTodo.TimeCompleted = newTodo.TimeCompleted;
-
-
-            _context.SaveChanges();
-            Log.Information($"Todo with id: {id} has been updated.");
+            _todosService.UpdateTodo(id, newTodo);
             return NoContent();
         }
 

@@ -27,19 +27,31 @@ namespace TodosApi.Service
             Log.Information($"Todo {todo.Title} added");
         }
 
-        public void UpdateTodo(int id, TodoItem updatedTodo)
+        public void UpdateTodo(int id, TodoItem newTodo)
 
         {
 
-            var todo = _todosRepository.GetTodoById(id);
-            if (todo == null)
+            var existingTodo = _todosRepository.GetTodoById(id);
+            if (existingTodo == null)
             {
                 Log.Warning($"Todo with id {id} doesn't exist.");
 
             }
-            todo.Title = updatedTodo.Title;
+            if (newTodo.Title != null) existingTodo.Title = newTodo.Title;
+            if (newTodo.Description != null) existingTodo.Description = newTodo.Description;
+            if (newTodo.IsCompleted == true && newTodo.TimeCompleted == null)
+            {
+                existingTodo.IsCompleted = newTodo.IsCompleted;
+                existingTodo.TimeCompleted = DateTime.Now;
+            }
+            if (newTodo.IsCompleted == false) existingTodo.TimeCompleted = null;
 
-            _todosRepository.UpdateTodo(todo);
+            if (newTodo.TimeCompleted != null) existingTodo.TimeCompleted = newTodo.TimeCompleted;
+            if (newTodo.TimeCompleted != null) existingTodo.TimeCompleted = newTodo.TimeCompleted;
+            if (newTodo.CategoryId != null) existingTodo.CategoryId = newTodo.CategoryId;
+
+
+                _todosRepository.UpdateTodo(existingTodo);
             Log.Information($"Todo with id {id} was updated.");
 
 
