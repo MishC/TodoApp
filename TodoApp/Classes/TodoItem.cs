@@ -19,7 +19,6 @@ namespace TodoApp.Classes
         [StringLength(100, MinimumLength = 3)]
         public string Title { get; set; }
 
-        [IsFalse(ErrorMessage = "IsCompleted must be false during initialization.")]
         public bool IsCompleted { get; set; } = false;
 
         public DateTime CurrentDate { get; private set; }
@@ -50,21 +49,4 @@ namespace TodoApp.Classes
     } //end of class
 
 
-    /// /////////////////////////////// / /
-    /// Custom DataValidation Attribute///
-    /// ////////////////////////////// / 
-    
-    //isFalse
-    class IsFalseAttribute : ValidationAttribute
-    {
-        protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
-        {
-            if (value is bool boolValue && boolValue)
-            {
-                return new ValidationResult(ErrorMessage ?? "The value must be false.");
-            }
-
-            return ValidationResult.Success;
-        }
-    }
 }
