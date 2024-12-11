@@ -5,9 +5,9 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 
+namespace SharedModels 
+{ 
 
-namespace TodoApi.Models
-{
     public class TodoItem
     {
         private static int _nextId = 0;
@@ -63,3 +63,4 @@ namespace TodoApi.Models
         }
     }
 }
+

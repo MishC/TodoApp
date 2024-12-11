@@ -2,8 +2,8 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace TodoApi.Models
-{
+namespace SharedModels
+{ 
     public class Category
     {
       

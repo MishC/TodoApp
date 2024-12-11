@@ -16,7 +16,7 @@ namespace TodoApp.Classes
         public string Name {  get; set; }
 
         public string CategoryDescription { get; set; }= string.Empty;
-        public bool Priority { get; set; } = string.Empty;
+        public bool Priority { get; set; }
 
         [JsonIgnore]
         public ICollection<TodoItem> Todos { get; set; } // many todos

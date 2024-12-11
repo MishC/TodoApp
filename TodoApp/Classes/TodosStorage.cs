@@ -1,6 +1,6 @@
 using Blazored.LocalStorage;
 using System.Text.Json;
-using TodoApi.Models;
+using TodoApp.Classes;
 namespace TodoApp.Classes
 {
     public class TodosStorage

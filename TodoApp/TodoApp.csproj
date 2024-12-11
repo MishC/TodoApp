@@ -14,9 +14,6 @@
 
 	</ItemGroup>
 
-	<ItemGroup>
-	  <ProjectReference Include="..\TodoApp.Shared\TodoApp.Shared.csproj" />
-	</ItemGroup>
 
 	
 
