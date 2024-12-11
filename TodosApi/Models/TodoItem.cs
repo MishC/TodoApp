@@ -20,7 +20,6 @@ namespace TodosApi.Models
         [StringLength(100, MinimumLength = 3)]
         public string Title { get; set; }
 
-        [IsFalse(ErrorMessage = "IsCompleted must be false during initialization.")]
         public bool IsCompleted { get; set; } = false;
 
         public DateTime CurrentDate { get; private set; }
@@ -50,20 +49,6 @@ namespace TodosApi.Models
 
     } //end of class
 
-    /////////////////////////////////////////////////////
-    // Custom data validation function attribute ////////
-    /////////////////////////////////////////////////////
-
-    public class IsFalseAttribute : ValidationAttribute
-    {
-        protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
-        {
-            if (value is bool boolValue && boolValue)
-            {
-                return new ValidationResult(ErrorMessage ?? "The value must be false.");
-            }
-
-            return ValidationResult.Success;
-        }
-    }
+    
+    
 }
