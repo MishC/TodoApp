@@ -52,6 +52,21 @@ namespace TodosApi.Controllers
             return Ok(todo);
         }
 
+        //GET: api/todos/category/{id}
+        [HttpGet("category/{id}")]
+        public IActionResult GetByCategoryId(int id)
+        {
+            var todos = _context.Todos.Where(b=>b.CategoryId == id).ToList()
+            if (!todos.Any())
+            {
+                throw new NotFoundException($"Todo items in this category was not found.");
+            }
+            return Ok(todos);
+
+
+        }
+
+
         //POST: api/todos/
 
         [HttpPost]
