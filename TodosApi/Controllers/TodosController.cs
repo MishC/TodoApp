@@ -38,8 +38,6 @@ namespace TodosApi.Controllers
                 Log.Error($"There is any todo to be fetched.");
                 throw new NotFoundException($"Todos are empty"); 
 
-
-
             }
         }
 
@@ -68,6 +66,10 @@ namespace TodosApi.Controllers
         {
             
             _context.Todos.Add(todo);
+            if (todo.IsCompleted == true)
+            {
+                todo.TimeCompleted = DateTime.Now;
+            }
             _context.SaveChanges();
             Log.Information($"New todo: {todo.Title} has been added.");
 
