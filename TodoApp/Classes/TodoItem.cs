@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 using System.Text.Json.Serialization;
-//using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+
 
 
 namespace TodoApp.Classes
@@ -27,7 +27,13 @@ namespace TodoApp.Classes
         [StringLength(500, MinimumLength = 10, ErrorMessage = "Description must have between 10 to 500 characters.")]
         public string? Description { get; set; }
 
+        [Display(Name = "Due Date", Prompt = "YYYY-MM-DD")] // Hint for user
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+      
 
+        public DateTime? DueDate { get; set; }
+        
+        public bool Priority { get; set; }
 
         public TodoItem()
         {
@@ -40,13 +46,10 @@ namespace TodoApp.Classes
             : "Not completed yet";
 
 
-        //[ForeignKey("Category")]
-        public int CategoryId { get; set; }
-
-       // [ValidateNever]
-        public Category Category { get; set; }
+    
 
     } //end of class
 
-
+    
+    
 }

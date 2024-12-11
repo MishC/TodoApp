@@ -38,7 +38,7 @@ namespace TodosApi.Controllers
         [HttpGet("{id}")]      
         public IActionResult GetCategoryById(int id)
         {
-            _categoriesService.GetCategoryById(id);
+           var category= _categoriesService.GetCategoryById(id);
             return Ok(category);
         }
 
