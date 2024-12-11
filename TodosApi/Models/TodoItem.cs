@@ -30,7 +30,7 @@ namespace TodosApi.Models
 
         [Display(Name = "Due Date", Prompt = "YYYY-MM-DD")] // Hint for user
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [DateFormat(ErrorMessage = "Date must be in the format YYYY-MM-DD")]
+      
 
         public DateTime? DueDate { get; set; }
         
