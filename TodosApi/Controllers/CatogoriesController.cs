@@ -49,7 +49,7 @@ namespace TodosApi.Controllers
         {
             
            _categoriesService.AddCategory(category);
-            return Ok();
+            return NoContent();
         }
 
        
@@ -61,7 +61,7 @@ namespace TodosApi.Controllers
         public IActionResult UpdateCategory(int id, Category category)
         {
             _categoriesService.UpdateCategory(id, category);
-            return Ok();
+            return NoContent();
         }
 
 
@@ -70,7 +70,7 @@ namespace TodosApi.Controllers
         public IActionResult Delete(int id)
         {             
             _categoriesService?.DeleteCategory(id);
-            return Ok();
+            return NoContent();
          }
     }
 
