@@ -66,7 +66,7 @@ namespace TodosApi.Controllers
         {
             
             _context.Todos.Add(todo);
-            if (todo.IsCompleted == true)
+            if (todo.IsCompleted == true && todo.TimeCompleted==null)
             {
                 todo.TimeCompleted = DateTime.Now;
             }
@@ -89,14 +89,15 @@ namespace TodosApi.Controllers
 
                 throw new NotFoundException($"Todo item with id {id} was not found.");
             }
-
             if (newTodo.Title != null) existingTodo.Title = newTodo.Title;
             if (newTodo.Description != null) existingTodo.Description = newTodo.Description;
-            if (newTodo.IsCompleted == true)
+            if (newTodo.IsCompleted == true &&  newTodo.TimeCompleted == null)
             { existingTodo.IsCompleted = newTodo.IsCompleted; 
               existingTodo.TimeCompleted = DateTime.Now;
             }
-            if (newTodo.TimeCompleted != null) existingTodo.TimeCompleted = newTodo.TimeCompleted;
+            if (newTodo.IsCompleted == false) existingTodo.TimeCompleted = null;
+
+                if (newTodo.TimeCompleted != null) existingTodo.TimeCompleted = newTodo.TimeCompleted;
             if (newTodo.TimeCompleted != null) existingTodo.TimeCompleted = newTodo.TimeCompleted;
 
 
