@@ -41,5 +41,28 @@ namespace TodosApi.Repository
                 _context.SaveChanges();
             }
         }
+
+        // Get all todos by category ID
+        public IEnumerable<TodoItem> GetTodosByCategoryId(int categoryId)
+        {
+            return _context.Todos.Where(todo => todo.CategoryId == categoryId).ToList();
+        }
+
+        // Get todo count per category
+        public int GetTodoCountPerCategory(int categoryId)
+        {
+            
+                return _context.Todos.Count(todo => todo.CategoryId == categoryId);
+           
+        }
+
+        // Get all completed todos with category info
+        public IEnumerable<TodoItem> GetCompletedTodosWithCategoryInfo()
+        {
+            return _context.Todos
+                .Where(todo => todo.IsCompleted)
+                .Include(todo => todo.CategoryId) 
+                .ToList();
+        }
     }
 }

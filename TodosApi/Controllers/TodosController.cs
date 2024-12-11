@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using TodosApi.Models;
 using TodosApi.Data;
+using TodosApi.Service;
+
 using Serilog;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -14,10 +16,13 @@ namespace TodosApi.Controllers
     {
 
         private readonly AppDbContext _context;
+        private readonly ITodosService _todosService;
 
-        public TodosController(AppDbContext context)
+
+        public TodosController(AppDbContext context, ITodosService todosService)
         {
             _context = context;
+            _todosService = todosService;
         }
 
 
@@ -52,19 +57,7 @@ namespace TodosApi.Controllers
             return Ok(todo);
         }
 
-        //GET: api/todos/category/{id}
-        [HttpGet("category/{id}")]
-        public IActionResult GetByCategoryId(int id)
-        {
-            var todos = _context.Todos.Where(b => b.CategoryId == id).ToList();
-            if (!todos.Any())
-            {
-                throw new NotFoundException($"Todo items in this category was not found.");
-            }
-            return Ok(todos);
-
-
-        }
+        
 
 
         //POST: api/todos/
@@ -125,6 +118,34 @@ namespace TodosApi.Controllers
 
             return Ok();
 
+        }
+
+        // GET: api/todos/category/{categoryId}
+        [HttpGet("category/{categoryId}")]
+        public IActionResult GetTodosByCategoryId(int categoryId)
+        {
+            var todos = _todosService.GetTodosByCategoryId(categoryId);
+            if (!todos.Any())
+                return NotFound("No todos found for this category.");
+            return Ok(todos);
+        }
+
+        // GET: api/todos/category/{categoryId}/count
+        [HttpGet("category/{categoryId}/count")]
+        public IActionResult GetTodoCountPerCategory(int categoryId)
+        {
+            var count = _todosService.GetTodoCountPerCategory(categoryId);
+            return Ok(count);
+        }
+
+        // GET: api/todos/completed
+        [HttpGet("completed")]
+        public IActionResult GetCompletedTodosWithCategoryInfo()
+        {
+            var completedTodos = _todosService.GetCompletedTodosWithCategoryInfo();
+            if (!completedTodos.Any())
+                return NotFound("No completed todos found.");
+            return Ok(completedTodos);
         }
     }
 }

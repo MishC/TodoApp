@@ -66,7 +66,7 @@ namespace TodosApi.Controllers
         }
 
 
-        // PUT: api/todos/{id}
+        // PUT: api/categories/{id}
 
         [HttpPut("{id}")]
         public IActionResult UpdateCategory(int id, Category category)

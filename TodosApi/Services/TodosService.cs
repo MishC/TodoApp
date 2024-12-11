@@ -62,5 +62,20 @@ namespace TodosApi.Service
             }
 
         }
+
+        public IEnumerable<TodoItem> GetTodosByCategoryId(int categoryId)
+        {
+            return _todosRepository.GetTodos().Where(todo => todo.CategoryId == categoryId).ToList();
+        }
+
+        public int GetTodoCountPerCategory(int categoryId)
+        {
+            return _todosRepository.GetTodos().Count(todo => todo.CategoryId == categoryId);
+        }
+
+        public IEnumerable<TodoItem> GetCompletedTodosWithCategoryInfo()
+        {
+            return _todosRepository.GetTodos().Where(todo => todo.IsCompleted).ToList();
+        }
     }
 }
