@@ -17,7 +17,6 @@ namespace TodosApi.Models
         public string Name {  get; set; }
 
         public string CategoryDescription { get; set; }= string.Empty;
-        public bool Priority { get; set; } 
 
         [JsonIgnore]
         [ValidateNever]

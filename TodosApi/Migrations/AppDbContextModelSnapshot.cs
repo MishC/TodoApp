@@ -32,9 +32,6 @@ namespace TodosApi.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("Priority")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
@@ -43,51 +40,44 @@ namespace TodosApi.Migrations
                         new
                         {
                             Id = 1,
-                            CategoryDescription = "Practical things which need to be done as first",
-                            Name = "Personal",
-                            Priority = true
+                            CategoryDescription = "Appointment at offices, government institutions, doctor's",
+                            Name = "Appointments"
                         },
                         new
                         {
                             Id = 2,
-                            CategoryDescription = "Spend time with loved ones",
-                            Name = "Family",
-                            Priority = false
+                            CategoryDescription = "Todos related to family and friends",
+                            Name = "Family&Friends"
                         },
                         new
                         {
                             Id = 3,
-                            CategoryDescription = "Stay fit and healthy",
-                            Name = "Sport",
-                            Priority = false
+                            CategoryDescription = "Sport activities",
+                            Name = "Sport"
                         },
                         new
                         {
                             Id = 4,
                             CategoryDescription = "Work-related tasks",
-                            Name = "Job",
-                            Priority = true
+                            Name = "Job"
                         },
                         new
                         {
                             Id = 5,
-                            CategoryDescription = "Groceries and essentials",
-                            Name = "Shopping",
-                            Priority = false
+                            CategoryDescription = "Buy things",
+                            Name = "Shopping"
                         },
                         new
                         {
                             Id = 6,
-                            CategoryDescription = "Take care of yourself",
-                            Name = "Beauty & Wellness",
-                            Priority = false
+                            CategoryDescription = "Beauty procedures",
+                            Name = "Beauty & Wellness"
                         },
                         new
                         {
                             Id = 7,
                             CategoryDescription = "What to do at home",
-                            Name = "Home",
-                            Priority = false
+                            Name = "Home"
                         });
                 });
 
@@ -107,7 +97,13 @@ namespace TodosApi.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime?>("DueDate")
+                        .HasColumnType("TEXT");
+
                     b.Property<bool>("IsCompleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Priority")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime?>("TimeCompleted")
@@ -129,16 +125,18 @@ namespace TodosApi.Migrations
                         {
                             Id = 1,
                             CategoryId = 3,
-                            CurrentDate = new DateTime(2024, 12, 11, 10, 33, 45, 543, DateTimeKind.Local).AddTicks(381),
+                            CurrentDate = new DateTime(2024, 12, 11, 20, 29, 21, 912, DateTimeKind.Local).AddTicks(2282),
                             IsCompleted = false,
+                            Priority = false,
                             Title = "Run for 30 min"
                         },
                         new
                         {
                             Id = 2,
-                            CategoryId = 1,
-                            CurrentDate = new DateTime(2024, 12, 11, 10, 33, 45, 548, DateTimeKind.Local).AddTicks(4145),
+                            CategoryId = 2,
+                            CurrentDate = new DateTime(2024, 12, 11, 20, 29, 21, 917, DateTimeKind.Local).AddTicks(9902),
                             IsCompleted = false,
+                            Priority = true,
                             Title = "Take kids from the school before 4.20pm"
                         });
                 });

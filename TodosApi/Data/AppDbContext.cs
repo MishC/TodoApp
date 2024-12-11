@@ -16,20 +16,20 @@ namespace TodosApi.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Category>().HasData(
-                new Category { Id = 1, Name = "Personal", CategoryDescription = "Practical things which need to be done as first", Priority = true },
-                new Category { Id = 2, Name = "Family", CategoryDescription = "Spend time with loved ones", Priority = false },
-                new Category { Id = 3, Name = "Sport", CategoryDescription = "Stay fit and healthy", Priority = false },
-                new Category { Id = 4, Name = "Job", CategoryDescription = "Work-related tasks", Priority = true },
-                new Category { Id = 5, Name = "Shopping", CategoryDescription = "Groceries and essentials", Priority = false },
-                new Category { Id = 6, Name = "Beauty & Wellness", CategoryDescription = "Take care of yourself", Priority = false },
-                new Category { Id = 7, Name = "Home", CategoryDescription = "What to do at home", Priority = false }
+                new Category { Id = 1, Name = "Appointments", CategoryDescription = "Appointment at offices, government institutions, doctor's"},
+                new Category { Id = 2, Name = "Family&Friends", CategoryDescription = "Todos related to family and friends"},
+                new Category { Id = 3, Name = "Sport", CategoryDescription = "Sport activities" },
+                new Category { Id = 4, Name = "Job", CategoryDescription = "Work-related tasks" },
+                new Category { Id = 5, Name = "Shopping", CategoryDescription = "Buy things" },
+                new Category { Id = 6, Name = "Beauty & Wellness", CategoryDescription = "Beauty procedures" },
+                new Category { Id = 7, Name = "Home", CategoryDescription = "What to do at home" }
             );
 
-            
+
             builder.Entity<TodoItem>().HasData(
-				new TodoItem { Id = 1, Title = "Run for 30 min", CategoryId = 3 },
-				new TodoItem { Id = 2, Title = "Take kids from the school before 4.20pm", CategoryId = 1 }
-			);
+                new TodoItem { Id = 1, Title = "Run for 30 min", CategoryId = 3, Priority = false },
+                new TodoItem { Id = 2, Title = "Take kids from the school before 4.20pm", CategoryId = 2, Priority = true }
+            );
 		}
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{

@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using TodosApi.Models;
 using TodosApi.Data;
+using TodosApi.Service;
+
 using Serilog;
 using Microsoft.AspNetCore.Http.HttpResults;
 
@@ -12,12 +14,16 @@ namespace TodosApi.Controllers
     public class CategoriesController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly ICategoriesService _categoriesService;
 
-        public CategoriesController(AppDbContext context)
+
+        public CategoriesController(AppDbContext context, ICategoriesService categoriesService)
         {
             _context = context;
+            _categoriesService = categoriesService;
         }
-
+    
+        
 
         //GET: api/categories/
 
@@ -57,15 +63,9 @@ namespace TodosApi.Controllers
             return Ok();
         }
 
-        //GET: api/categories/important
-        [HttpGet("important")]
-        public IActionResult GetImportantCategories()
-        {
-            var importantCategories = _context.Categories.ToList().Where(c => c.Priority);
-            return Ok(importantCategories);
-        }
+       
 
-
+        
         // PUT: api/categories/{id}
 
         [HttpPut("{id}")]
@@ -106,7 +106,7 @@ namespace TodosApi.Controllers
             _context.SaveChanges();
 
             return Ok();
-        }
+         }
     }
 
 

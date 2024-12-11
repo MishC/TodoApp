@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TodosApi.Migrations
 {
     /// <inheritdoc />
-    public partial class Categories : Migration
+    public partial class newTodos : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -20,6 +20,19 @@ namespace TodosApi.Migrations
                 nullable: false,
                 defaultValue: 0);
 
+            migrationBuilder.AddColumn<DateTime>(
+                name: "DueDate",
+                table: "Todos",
+                type: "TEXT",
+                nullable: true);
+
+            migrationBuilder.AddColumn<bool>(
+                name: "Priority",
+                table: "Todos",
+                type: "INTEGER",
+                nullable: false,
+                defaultValue: false);
+
             migrationBuilder.CreateTable(
                 name: "Categories",
                 columns: table => new
@@ -27,8 +40,7 @@ namespace TodosApi.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", maxLength: 30, nullable: false),
-                    CategoryDescription = table.Column<string>(type: "TEXT", nullable: false),
-                    Priority = table.Column<bool>(type: "INTEGER", nullable: false)
+                    CategoryDescription = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -37,31 +49,31 @@ namespace TodosApi.Migrations
 
             migrationBuilder.InsertData(
                 table: "Categories",
-                columns: new[] { "Id", "CategoryDescription", "Name", "Priority" },
+                columns: new[] { "Id", "CategoryDescription", "Name" },
                 values: new object[,]
                 {
-                    { 1, "Practical things which need to be done as first", "Personal", true },
-                    { 2, "Spend time with loved ones", "Family", false },
-                    { 3, "Stay fit and healthy", "Sport", false },
-                    { 4, "Work-related tasks", "Job", true },
-                    { 5, "Groceries and essentials", "Shopping", false },
-                    { 6, "Take care of yourself", "Beauty & Wellness", false },
-                    { 7, "What to do at home", "Home", false }
+                    { 1, "Appointment at offices, government institutions, doctor's", "Appointments" },
+                    { 2, "Todos related to family and friends", "Family&Friends" },
+                    { 3, "Sport activities", "Sport" },
+                    { 4, "Work-related tasks", "Job" },
+                    { 5, "Buy things", "Shopping" },
+                    { 6, "Beauty procedures", "Beauty & Wellness" },
+                    { 7, "What to do at home", "Home" }
                 });
 
             migrationBuilder.UpdateData(
                 table: "Todos",
                 keyColumn: "Id",
                 keyValue: 1,
-                columns: new[] { "CategoryId", "CurrentDate" },
-                values: new object[] { 3, new DateTime(2024, 12, 11, 10, 33, 45, 543, DateTimeKind.Local).AddTicks(381) });
+                columns: new[] { "CategoryId", "CurrentDate", "DueDate", "Priority" },
+                values: new object[] { 3, new DateTime(2024, 12, 11, 20, 29, 21, 912, DateTimeKind.Local).AddTicks(2282), null, false });
 
             migrationBuilder.UpdateData(
                 table: "Todos",
                 keyColumn: "Id",
                 keyValue: 2,
-                columns: new[] { "CategoryId", "CurrentDate", "Title" },
-                values: new object[] { 1, new DateTime(2024, 12, 11, 10, 33, 45, 548, DateTimeKind.Local).AddTicks(4145), "Take kids from the school before 4.20pm" });
+                columns: new[] { "CategoryId", "CurrentDate", "DueDate", "Priority", "Title" },
+                values: new object[] { 2, new DateTime(2024, 12, 11, 20, 29, 21, 917, DateTimeKind.Local).AddTicks(9902), null, true, "Take kids from the school before 4.20pm" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Todos_CategoryId",
@@ -93,6 +105,14 @@ namespace TodosApi.Migrations
 
             migrationBuilder.DropColumn(
                 name: "CategoryId",
+                table: "Todos");
+
+            migrationBuilder.DropColumn(
+                name: "DueDate",
+                table: "Todos");
+
+            migrationBuilder.DropColumn(
+                name: "Priority",
                 table: "Todos");
 
             migrationBuilder.UpdateData(

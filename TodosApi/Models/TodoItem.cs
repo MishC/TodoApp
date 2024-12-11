@@ -28,7 +28,8 @@ namespace TodosApi.Models
         [StringLength(500, MinimumLength = 10, ErrorMessage = "Description must have between 10 to 500 characters.")]
         public string? Description { get; set; }
 
-
+        public DateTime? DueDate { get; set; }  
+        public bool Priority { get; set; }
 
         public TodoItem()
         {

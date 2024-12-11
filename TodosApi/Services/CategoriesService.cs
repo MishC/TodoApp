@@ -58,12 +58,7 @@ namespace TodosApi.Service
             Log.Information($"Category with id:{id} was deleted.");
         }
 
-        public IEnumerable<Category> GetImportantCategories()
-        {
-            return _categoriesRepository.GetCategories()
-                                         .Where(c => c.Priority)
-                                         .ToList();
-        }
+        
         
         /////////////
         public bool CategoryExists(int categoryId)
