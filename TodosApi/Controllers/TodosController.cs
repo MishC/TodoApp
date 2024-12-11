@@ -32,7 +32,7 @@ namespace TodosApi.Controllers
         [HttpGet]
         public IActionResult GetTodos()
         {
-            Log.Information("Fetching all todos")           
+            Log.Information("Fetching all todos");         
                 if (_context.Todos.ToList().Count == 0)
             {
                 Log.Error($"There is any todo to be fetched.");
