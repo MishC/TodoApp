@@ -66,11 +66,14 @@ namespace TodosApi.Controllers
         [HttpPost]
         public IActionResult Create(TodoItem todo)
         {
+            if (_categoriesService.CategoryExist(todo.CategoryId))
+            {
+                _todosService.AddTodo(todo);
+                Log.Information($"New todo: {todo.Title} has been added.");
 
-            _todosService.AddTodo(todo);
-            Log.Information($"New todo: {todo.Title} has been added.");
-
-            return Ok();
+                return Ok();
+            }
+            else { return BadRequest(new { message = $"Category with ID {todo.CategoryId} does not exist." }); }
         }
 
 
