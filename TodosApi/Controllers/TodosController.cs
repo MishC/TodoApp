@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using TodoApp.Classes;
+using TodoApp.Shared.Models;
 using TodosApi.Data;
 using Serilog;
 using Microsoft.AspNetCore.Http.HttpResults;

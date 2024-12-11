@@ -1,4 +1,4 @@
-using TodoApp.Classes;
+using TodosApi.Models;
 using TodosApi.Repository;
 using TodosApi.Data;
 using Serilog;
