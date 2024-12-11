@@ -30,7 +30,7 @@ namespace TodosApi.Controllers
         [HttpGet]
         public IActionResult GetCategories()
         {
-            var categories = _context.Categories.ToList();
+            var categories = _categoriesService.GetCategories();
             return Ok(categories);
         }
 

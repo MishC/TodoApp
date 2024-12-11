@@ -28,7 +28,12 @@ namespace TodosApi.Models
         [StringLength(500, MinimumLength = 10, ErrorMessage = "Description must have between 10 to 500 characters.")]
         public string? Description { get; set; }
 
-        public DateTime? DueDate { get; set; }  
+        [Display(Name = "Due Date", Prompt = "YYYY-MM-DD")] // Hint for user
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DateFormat(ErrorMessage = "Date must be in the format YYYY-MM-DD")]
+
+        public DateTime? DueDate { get; set; }
+        
         public bool Priority { get; set; }
 
         public TodoItem()

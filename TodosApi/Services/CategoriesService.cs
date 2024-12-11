@@ -13,7 +13,7 @@ namespace TodosApi.Service
             _categoriesRepository = categoriesRepository;
         }
 
-        public IEnumerable<Category> GetCategories() => _categoriesRepository.GetCategories();
+        public IQueryable<Category> GetCategories() => _categoriesRepository.GetCategories();
 
         public Category? GetCategoryById(int id) => _categoriesRepository.GetCategoryById(id);
 

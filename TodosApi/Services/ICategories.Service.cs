@@ -4,7 +4,7 @@ namespace TodosApi.Service
 {
     public interface ICategoriesService
     {
-        IEnumerable<Category> GetCategories();
+        IQueryable<Category> GetCategories();
         Category? GetCategoryById(int id);
         void AddCategory(Category category);
         void UpdateCategory(int id, Category updatedCategory);
