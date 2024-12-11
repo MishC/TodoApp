@@ -35,17 +35,10 @@ namespace TodosApi.Controllers
         }
 
         //GET: api/categories/{id}
-        [HttpGet("{id}")]
-        
+        [HttpGet("{id}")]      
         public IActionResult GetCategoryById(int id)
         {
-            var category = _context.Categories.Find(id);
-            if (category == null)
-            {
-                Log.Error($"Category with id \"{id}\" doesn't exist.");
-                throw new NotFoundException($"Category with id {id} was not found.");
-
-            }
+            _categoriesService.GetCategoryById(id);
             return Ok(category);
         }
 
@@ -55,11 +48,7 @@ namespace TodosApi.Controllers
         public IActionResult CreateCategory(Category category)
         {
             
-                _context.Categories.Add(category);
-                _context.SaveChanges();
-
-            Log.Information($"New category {category.Name} has been added.");
-
+           _categoriesService.AddCategory(category);
             return Ok();
         }
 
@@ -71,40 +60,16 @@ namespace TodosApi.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateCategory(int id, Category category)
         {
-            var oldCategory = _context.Categories.Find(id);
-            if (oldCategory == null)
-            {
-                Log.Error($"No such category with id: {id}. Cannot be updated.");
-                throw new NotFoundException($"Category with id {id} was not found.");
-            }
-
-            oldCategory.Name = category.Name ?? oldCategory.Name;
-            if (!string.IsNullOrEmpty(category.CategoryDescription))
-            {
-                oldCategory.CategoryDescription = category.CategoryDescription;
-            }
-
-            _context.SaveChanges();
-            Log.Information($"Category with id: {id} has been updated.");
-            return NoContent();
+            _categoriesService.UpdateCategory(id, category);
+            return Ok();
         }
 
 
         //DELETE: api/categories/{id}
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
-        {
-            var category = _context.Categories.Find(id);
-            if (category == null)
-            {
-                Log.Error($"No such category.");
-                throw new NotFoundException($"Category with id \"{id}\" was not found.");
-            }
-            _context.Categories.Remove(category);
-            Log.Information($"Category with id: {id} has been removed.");
-
-            _context.SaveChanges();
-
+        {             
+            _categoriesService?.DeleteCategory(id);
             return Ok();
          }
     }
