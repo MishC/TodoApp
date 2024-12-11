@@ -64,13 +64,8 @@ namespace TodosApi.Controllers
         [HttpPost]
         public IActionResult Create(TodoItem todo)
         {
-            
-            _context.Todos.Add(todo);
-            if (todo.IsCompleted == true && todo.TimeCompleted==null)
-            {
-                todo.TimeCompleted = DateTime.Now;
-            }
-            _context.SaveChanges();
+
+            _todosService.AddTodo(todo);
             Log.Information($"New todo: {todo.Title} has been added.");
 
             return Ok();

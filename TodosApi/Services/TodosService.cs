@@ -23,6 +23,10 @@ namespace TodosApi.Service
         public void AddTodo(TodoItem todo)
         {
             if (todo == null) return;
+            if (todo.IsCompleted == true && todo.TimeCompleted == null)
+            {
+                todo.TimeCompleted = DateTime.Now;
+            }
             _todosRepository.AddTodo(todo);
             Log.Information($"Todo {todo.Title} added");
         }
