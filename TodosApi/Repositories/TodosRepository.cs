@@ -16,9 +16,8 @@ namespace TodosApi.Repository
 
         public IQueryable<TodoItem> GetTodos() => _context.Todos;
 
-
-        public TodoItem GetTodoById(int id) => _context.Todos
-                   .FirstOrDefault(b => b.Id == id) ?? new TodoItem();
+        public TodoItem? GetTodoById(int id) => _context.Todos
+            .FirstOrDefault(b => b.Id == id);
 
         public void AddTodo(TodoItem todo)
         {

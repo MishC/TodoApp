@@ -35,14 +35,9 @@ namespace TodosApi.Controllers
         public IActionResult GetTodos()
         {
             Log.Information("Fetching all todos");         
-                if (_context.Todos.ToList().Count == 0)
-            {
-                Log.Error($"There is any todo to be fetched.");
-                throw new NotFoundException($"Todos are empty"); 
-
-            }
-
-            return Ok(_context.Todos.ToList());
+            
+           var todos= _todosService.GetTodos();
+            return Ok(todos);
 
         }
 
@@ -51,13 +46,8 @@ namespace TodosApi.Controllers
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            var todo = _context.Todos.Find(id);
-            if (todo == null)
-            {
-                Log.Error($"Todo with id {id} doesn't exist.");
-                throw new NotFoundException($"Todo item with id {id} was not found.");
-
-            }
+            var todo = _todosService.GetTodoById(id);
+            
             return Ok(todo);
         }
 

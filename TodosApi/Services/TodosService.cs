@@ -15,16 +15,43 @@ namespace TodosApi.Service
             _todosRepository = todosRepository; //through repository to the context
         }
 
-        public IEnumerable<TodoItem> GetTodos() => _todosRepository.GetTodos().ToList();
+        public IQueryable<TodoItem> GetTodos()
+        {
+            Log.Information("Fetching all todos.");
+
+            // Fetch todos from the repository
+            var todos = _todosRepository.GetTodos();
+
+            // Check if the collection is empty
+            if (!todos.Any())
+            {
+                Log.Warning("No todos available to fetch.");
+            }
+
+            return todos;
+        }
 
 
-        public TodoItem? GetTodoById(int id) => _todosRepository.GetTodoById(id);
+        public TodoItem GetTodoById(int id)
+        {
+            Log.Information($"Fetching todo with id {id}.");
+
+            // Fetch the todo from the repository
+            var todo = _todosRepository.GetTodoById(id);
+            if (todo == null)
+            {
+                Log.Warning($"Todo with id {id} does not exist.");
+                throw new NotFoundException($"Todo item with id {id} was not found.");
+            }
+
+            return todo;
+        }
+
 
         public void AddTodo(TodoItem todo)
         {
             if (todo == null) return;
-            
-            
+           
 
 
             if (todo.IsCompleted == true && todo.TimeCompleted == null)
