@@ -87,7 +87,7 @@ namespace TodosApi.Controllers
                 throw new NotFoundException($"Todo item with id {id} was not found.");
             }
 
-            existingTodo.Title = newTodo.Title;
+            if (newTodo.Title != null) existingTodo.Title = newTodo.Title;
             if (newTodo.Description != null) existingTodo.Description = newTodo.Description;
             if (newTodo.IsCompleted == true) existingTodo.IsCompleted = newTodo.IsCompleted;
             if (newTodo.TimeCompleted != null) existingTodo.TimeCompleted = newTodo.TimeCompleted;
