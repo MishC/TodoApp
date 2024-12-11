@@ -62,7 +62,7 @@ namespace TodosApi.Controllers
                 _todosService.AddTodo(todo);
                 Log.Information($"New todo: {todo.Title} has been added.");
 
-                return Ok();
+                return NoContent();
             }
             else { return BadRequest(new { message = $"Category with ID {todo.CategoryId} does not exist." }); };
         }
@@ -82,7 +82,7 @@ namespace TodosApi.Controllers
         {  
 
             _todosService.DeleteTodo(id);
-            return Ok();
+           return NoContent();
         }
 
         // GET: api/todos/category/{categoryId}
