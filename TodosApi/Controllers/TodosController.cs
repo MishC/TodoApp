@@ -73,7 +73,7 @@ namespace TodosApi.Controllers
 
                 return Ok();
             }
-            else { return BadRequest(new { message = $"Category with ID {todo.CategoryId} does not exist." }); }
+            else { return BadRequest(new { message = $"Category with ID {todo.CategoryId} does not exist." }); };
         }
 
 
