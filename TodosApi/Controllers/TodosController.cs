@@ -89,7 +89,7 @@ namespace TodosApi.Controllers
             var existingTodo = _context.Todos.Find(id);
             if (existingTodo == null)
             {
-                Log.Error($"No such todo with {id}. Cannot be updated.");
+                Log.Error($"No such todo with id: {id}. Cannot be updated.");
 
                 throw new NotFoundException($"Todo item with id {id} was not found.");
             }

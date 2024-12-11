@@ -38,9 +38,8 @@ namespace TodosApi.Service
                 return;
             }
 
-            category.Name = updatedCategory.Name;
-            category.CategoryDescription = updatedCategory.CategoryDescription;
-            category.Priority = updatedCategory.Priority;
+            if (updatedCategory.Name != null) category.Name = updatedCategory.Name;
+            if(updatedCategory.CategoryDescription!=null) category.CategoryDescription = updatedCategory.CategoryDescription;
 
             _categoriesRepository.UpdateCategory(category);
             Log.Information($"Category with id {id} was updated.");

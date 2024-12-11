@@ -51,9 +51,10 @@ namespace TodosApi.Controllers
             
                 _context.Categories.Add(category);
                 _context.SaveChanges();
-                return CreatedAtAction(nameof(GetCategories), new { id = category.Id }, category);
-           
-          
+
+            Log.Information($"New category {category.Name} has been added.");
+
+            return Ok();
         }
 
         //GET: api/categories/important
@@ -62,6 +63,30 @@ namespace TodosApi.Controllers
         {
             var importantCategories = _context.Categories.ToList().Where(c => c.Priority);
             return Ok(importantCategories);
+        }
+
+
+        // PUT: api/todos/{id}
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateCategory(int id, Category category)
+        {
+            var oldCategory = _context.Categories.Find(id);
+            if (oldCategory == null)
+            {
+                Log.Error($"No such category with id: {id}. Cannot be updated.");
+                throw new NotFoundException($"Category with id {id} was not found.");
+            }
+
+            oldCategory.Name = category.Name ?? oldCategory.Name;
+            if (!string.IsNullOrEmpty(category.CategoryDescription))
+            {
+                oldCategory.CategoryDescription = category.CategoryDescription;
+            }
+
+            _context.SaveChanges();
+            Log.Information($"Category with id: {id} has been updated.");
+            return NoContent();
         }
 
 

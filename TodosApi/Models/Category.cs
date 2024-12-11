@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace TodosApi.Models
 {
@@ -17,7 +18,9 @@ namespace TodosApi.Models
 
         public string CategoryDescription { get; set; }= string.Empty;
         public bool Priority { get; set; } 
+
         [JsonIgnore]
+        [ValidateNever]
         public ICollection<TodoItem> Todos { get; set; } // many todos
 
     }
