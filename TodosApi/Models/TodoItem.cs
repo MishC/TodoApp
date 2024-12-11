@@ -45,6 +45,7 @@ namespace TodosApi.Models
         public int CategoryId { get; set; }
 
         [ValidateNever]
+        [JsonIgnore]
         public Category Category { get; set; }
 
     } //end of class
