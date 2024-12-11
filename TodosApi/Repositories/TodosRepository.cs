@@ -1,5 +1,5 @@
 using TodosApi.Data;
-using TodoApp.Shared.Models;
+using TodosApi.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace TodosApi.Repository
@@ -14,7 +14,7 @@ namespace TodosApi.Repository
         }
 
 
-        public IQueryable<TodoItem> GetTodos() => _context.Todos.ToList();
+        public IQueryable<TodoItem> GetTodos() => _context.Todos;
 
 
         public TodoItem GetTodoById(int id) => _context.Todos

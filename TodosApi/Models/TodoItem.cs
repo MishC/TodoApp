@@ -1,12 +1,13 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 
 
-namespace TodoApi.Models
+namespace TodosApi.Models
 {
     public class TodoItem
     {
@@ -49,7 +50,10 @@ namespace TodoApi.Models
 
     } //end of class
 
-    // Custom validation attribute
+    /////////////////////////////////////////////////////
+    // Custom data validation function attribute ////////
+    /////////////////////////////////////////////////////
+
     public class IsFalseAttribute : ValidationAttribute
     {
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)

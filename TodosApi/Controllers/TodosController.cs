@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using TodoApp.Shared.Models;
+using TodosApi.Models;
 using TodosApi.Data;
 using Serilog;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -60,7 +60,7 @@ namespace TodosApi.Controllers
             
             _context.Todos.Add(todo);
             _context.SaveChanges();
-            Log.Information($"New todo: {newTodo.Title} has been added.")
+            Log.Information($"New todo: {todo.Title} has been added.");
 
             return Ok();
         }
@@ -87,7 +87,7 @@ namespace TodosApi.Controllers
 
 
             _context.SaveChanges();
-            Log.Information($"Todo with id: {id} has been updated.")
+            Log.Information($"Todo with id: {id} has been updated.");
             return NoContent();
         }
 
@@ -96,24 +96,20 @@ namespace TodosApi.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            try {
-                var todo = _context.Todos.Find(id);
-                if (todo == null)
-                {
-                    Log.Error($"No such Todo.");
-                    throw new NotFoundException($"Todo item with id {id} was not found.");
-                }
-                _context.Todos.Remove(todo);
-                Log.Information($"Todo with id: {id} has been removed.")
+
+            var todo = _context.Todos.Find(id);
+            if (todo == null)
+            {
+                Log.Error($"No such Todo.");
+                throw new NotFoundException($"Todo item with id {id} was not found.");
+            }
+            _context.Todos.Remove(todo);
+            Log.Information($"Todo with id: {id} has been removed.");
 
             _context.SaveChanges();
 
-                return Ok();
+            return Ok();
 
-            }
-            catch (Exception ex) { return ex.Message}
-
-
-
+        }
     }
 }

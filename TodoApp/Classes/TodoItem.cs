@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-//using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 //using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-
 
 
 namespace TodoApp.Classes
@@ -49,8 +49,13 @@ namespace TodoApp.Classes
 
     } //end of class
 
-    // Custom validation attribute
-    public class IsFalseAttribute : ValidationAttribute
+
+    /// /////////////////////////////// / /
+    /// Custom DataValidation Attribute///
+    /// ////////////////////////////// / 
+    
+    //isFalse
+    class IsFalseAttribute : ValidationAttribute
     {
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {

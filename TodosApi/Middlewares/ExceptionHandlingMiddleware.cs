@@ -42,7 +42,7 @@ public class ExceptionHandlingMiddleware : IExceptionHandler
         }
     }
 
-    private async Task WriteJsonResponseAsync(HttpContext context, int statusCode, string message)
+    public async Task WriteJsonResponseAsync(HttpContext context, int statusCode, string message)
     {
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = statusCode;

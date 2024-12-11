@@ -2,7 +2,9 @@ using Serilog;
 using Microsoft.EntityFrameworkCore;
 using TodosApi.Repository;
 using TodosApi.Data;
-using TodosApi.Services;
+using TodosApi.Service;
+using TodosApi.Models;
+
 
 var builder = WebApplication.CreateBuilder(args);
 

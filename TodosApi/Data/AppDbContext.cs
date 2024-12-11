@@ -1,4 +1,4 @@
-using TodoApp.Classes;
+using TodosApi.Models;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -11,17 +11,18 @@ namespace TodosApi.Data
 		public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
 		public DbSet<TodoItem> Todos { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
-		protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Category>().HasData(
-                new Category { Id = 1, CategoryName = "Personal", CategoryDescription = "Practical things which need to be done as first", Priority = true },
-                new Category { Id = 2, CategoryName = "Family", CategoryDescription = "Spend time with loved ones", Priority = false },
-                new Category { Id = 3, CategoryName = "Sport", CategoryDescription = "Stay fit and healthy", Priority = false },
-                new Category { Id = 4, CategoryName = "Job", CategoryDescription = "Work-related tasks", Priority = true },
-                new Category { Id = 5, CategoryName = "Shopping", CategoryDescription = "Groceries and essentials", Priority = false },
-                new Category { Id = 6, CategoryName = "Beauty & Wellness", CategoryDescription = "Take care of yourself", Priority = false },
-                new Category { Id = 7, CategoryName = "Home", CategoryDescription = "What to do at home", Priority = false }
+                new Category { Id = 1, Name = "Personal", CategoryDescription = "Practical things which need to be done as first", Priority = true },
+                new Category { Id = 2, Name = "Family", CategoryDescription = "Spend time with loved ones", Priority = false },
+                new Category { Id = 3, Name = "Sport", CategoryDescription = "Stay fit and healthy", Priority = false },
+                new Category { Id = 4, Name = "Job", CategoryDescription = "Work-related tasks", Priority = true },
+                new Category { Id = 5, Name = "Shopping", CategoryDescription = "Groceries and essentials", Priority = false },
+                new Category { Id = 6, Name = "Beauty & Wellness", CategoryDescription = "Take care of yourself", Priority = false },
+                new Category { Id = 7, Name = "Home", CategoryDescription = "What to do at home", Priority = false }
             );
 
             

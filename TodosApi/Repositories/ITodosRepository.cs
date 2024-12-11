@@ -1,4 +1,4 @@
-using TodoApp.Shared.Models;
+using TodosApi.Models;
 
 namespace TodosApi.Repository
 {

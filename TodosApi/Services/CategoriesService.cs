@@ -39,7 +39,7 @@ namespace TodosApi.Service
             }
 
             category.Name = updatedCategory.Name;
-            category.Description = updatedCategory.Description;
+            category.CategoryDescription = updatedCategory.CategoryDescription;
             category.Priority = updatedCategory.Priority;
 
             _categoriesRepository.UpdateCategory(category);

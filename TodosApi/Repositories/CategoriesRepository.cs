@@ -1,5 +1,5 @@
 using TodosApi.Data;
-using TodoApp.Classes;
+using TodosApi.Models;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -14,9 +14,9 @@ namespace TodosApi.Repository
             _context = context;
         }
 
-        public IQueryable<Category> GetCategories() => _context.Categories.ToList();
+        public IQueryable<Category> GetCategories() => _context.Categories;
 
-        public Category? GetCategoryById(int id) => _context.Categories.FirstOrDefault(c => c.Id == id) ?? new TodoItem();
+        public Category? GetCategoryById(int id) => _context.Categories.FirstOrDefault(c => c.Id == id);
 
         public void AddCategory(Category category)
         {

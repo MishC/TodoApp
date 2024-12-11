@@ -22,7 +22,6 @@ namespace TodosApi.Service
 
         public void AddTodo(TodoItem todo)
         {
-            todo.Id = todos.Max(b => b.Id) + 1;
             if (todo == null) return;
             _todosRepository.AddTodo(todo);
             Log.Information($"Todo {todo.Title} added");

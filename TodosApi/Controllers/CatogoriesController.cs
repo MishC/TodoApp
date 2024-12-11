@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using TodoApp.Classes;
+using TodosApi.Models;
 using TodosApi.Data;
 using Serilog;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -36,7 +36,7 @@ namespace TodosApi.Controllers
             var category = _context.Categories.Find(id);
             if (category == null)
             {
-                Log.Error($"Category with id "{id}" doesn't exist.");
+                Log.Error($"Category with id \"{id}\" doesn't exist.");
                 throw new NotFoundException($"Category with id {id} was not found.");
 
             }
@@ -60,7 +60,7 @@ namespace TodosApi.Controllers
         [HttpGet("important")]
         public IActionResult GetImportantCategories()
         {
-            var importantCategories = _categoriesService.GetImportantCategories();
+            var importantCategories = _context.Categories.ToList().Where(c => c.Priority);
             return Ok(importantCategories);
         }
 
@@ -73,10 +73,10 @@ namespace TodosApi.Controllers
             if (category == null)
             {
                 Log.Error($"No such category.");
-                throw new NotFoundException($"Category with id "{id}" was not found.");
+                throw new NotFoundException($"Category with id \"{id}\" was not found.");
             }
             _context.Categories.Remove(category);
-            Log.Information($"Category with id: {id} has been removed.")
+            Log.Information($"Category with id: {id} has been removed.");
 
             _context.SaveChanges();
 
