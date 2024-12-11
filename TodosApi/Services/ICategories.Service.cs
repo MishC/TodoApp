@@ -10,6 +10,6 @@ namespace TodosApi.Service
         void UpdateCategory(int id, Category updatedCategory);
         void DeleteCategory(int id);
         IEnumerable<Category> GetImportantCategories();
-        bool CategoriesExists(int id);
+        bool CategoryExists(int id);
     }
 }

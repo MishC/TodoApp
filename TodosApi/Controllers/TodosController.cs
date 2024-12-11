@@ -69,7 +69,7 @@ namespace TodosApi.Controllers
         [HttpPost]
         public IActionResult Create(TodoItem todo)
         {
-            if (_categoriesService.CategoryExist(todo.CategoryId))
+            if (_categoriesService.CategoryExists(todo.CategoryId))
             {
                 _todosService.AddTodo(todo);
                 Log.Information($"New todo: {todo.Title} has been added.");
