@@ -103,7 +103,6 @@ namespace TodosApi.Controllers
                     Log.Error($"No such Todo.");
                     throw new NotFoundException($"Todo item with id {id} was not found.");
                 }
-                Log.Information("Todo with id {TodoId} deleted successfully.", id);
                 _context.Todos.Remove(todo);
                 Log.Information($"Todo with id: {id} has been removed.")
 

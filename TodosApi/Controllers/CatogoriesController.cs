@@ -17,17 +17,21 @@ namespace TodosApi.Controllers
         {
             _context = context;
         }
+
+
         //GET: api/categories/
+
         [HttpGet]
         public IActionResult GetCategories()
         {
             var categories = _context.Categories.ToList();
             return Ok(categories);
         }
+
         //GET: api/categories/{id}
         [HttpGet("{id}")]
         
-        public IActionResult GetById(int id)
+        public IActionResult GetCategoryById(int id)
         {
             var category = _context.Categories.Find(id);
             if (category == null)
@@ -44,17 +48,22 @@ namespace TodosApi.Controllers
         [HttpPost]
         public IActionResult CreateCategory(Category category)
         {
-            try
-            {
+            
                 _context.Categories.Add(category);
                 _context.SaveChanges();
                 return CreatedAtAction(nameof(GetCategories), new { id = category.Id }, category);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
+           
+          
         }
+
+        //GET: api/categories/important
+        [HttpGet("important")]
+        public IActionResult GetImportantCategories()
+        {
+            var importantCategories = _categoriesService.GetImportantCategories();
+            return Ok(importantCategories);
+        }
+
 
         //DELETE: api/categories/{id}
         [HttpDelete("{id}")]
@@ -66,7 +75,6 @@ namespace TodosApi.Controllers
                 Log.Error($"No such category.");
                 throw new NotFoundException($"Category with id "{id}" was not found.");
             }
-            Log.Information($"Category with id: {id} deleted successfully.");
             _context.Categories.Remove(category);
             Log.Information($"Category with id: {id} has been removed.")
 

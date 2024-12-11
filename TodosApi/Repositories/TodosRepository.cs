@@ -1,5 +1,5 @@
 using TodosApi.Data;
-using TodoApp.Classes;
+using TodoApp.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace TodosApi.Repository

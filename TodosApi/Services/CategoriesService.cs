@@ -26,7 +26,7 @@ namespace TodosApi.Service
             }
 
             _categoriesRepository.AddCategory(category);
-            Log.Information($"Category {category.CategoryName} added.");
+            Log.Information($"Category {category.Name} added.");
         }
 
         public void UpdateCategory(int id, Category updatedCategory)
@@ -38,9 +38,9 @@ namespace TodosApi.Service
                 return;
             }
 
-            category.CategoryName = updatedCategory.CategoryName;
-            category.CategoryDescription = updatedCategory.CategoryDescription;
-            category.Importance = updatedCategory.Importance;
+            category.Name = updatedCategory.Name;
+            category.Description = updatedCategory.Description;
+            category.Priority = updatedCategory.Priority;
 
             _categoriesRepository.UpdateCategory(category);
             Log.Information($"Category with id {id} was updated.");
@@ -51,12 +51,19 @@ namespace TodosApi.Service
             var category = _categoriesRepository.GetCategoryById(id);
             if (category == null)
             {
-                Log.Warning($"Category with id {id} doesn't exist.");
+                Log.Warning($"Category with id:{id} doesn't exist.");
                 return;
             }
 
             _categoriesRepository.DeleteCategory(id);
-            Log.Information($"Category with id {id} was deleted.");
+            Log.Information($"Category with id:{id} was deleted.");
+        }
+
+        public IEnumerable<Category> GetImportantCategories()
+        {
+            return _categoriesRepository.GetCategories()
+                                         .Where(c => c.Priority)
+                                         .ToList();
         }
     }
 }

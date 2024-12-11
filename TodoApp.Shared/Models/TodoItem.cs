@@ -1,12 +1,12 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-//using System.Text.Json.Serialization;
-//using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 
 
-namespace TodoApp.Classes
+namespace TodoApi.Models
 {
     public class TodoItem
     {
@@ -41,10 +41,10 @@ namespace TodoApp.Classes
             : "Not completed yet";
 
 
-        //[ForeignKey("Category")]
+        [ForeignKey("Category")]
         public int CategoryId { get; set; }
 
-       // [ValidateNever]
+        [ValidateNever]
         public Category Category { get; set; }
 
     } //end of class
