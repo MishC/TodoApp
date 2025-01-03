@@ -7,12 +7,16 @@ using Serilog;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Linq.Expressions;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Principal;
 
 
 namespace TodosApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
+
     public class TodosController : ControllerBase
     {
 
