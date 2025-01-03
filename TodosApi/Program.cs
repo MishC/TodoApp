@@ -4,7 +4,8 @@ using TodosApi.Repository;
 using TodosApi.Data;
 using TodosApi.Service;
 using TodosApi.Models;
-
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,8 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
     .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day)
     .CreateLogger();
+
+
 
 // Use Serilog for the host
 builder.Host.UseSerilog();
@@ -28,6 +31,31 @@ builder.Services.AddScoped<ICategoriesService, CategoriesService>();
 builder.Services.AddScoped<ITodosRepository, TodosRepository>();
 builder.Services.AddScoped<ICategoriesRepository, CategoriesRepository>();
 
+//Configure Authentication
+
+var key = Encoding.ASCII.GetBytes(AuthConfig.SigningKey);
+
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.RequireHttpsMetadata = false;
+    options.SaveToken = true;
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(key)
+    };
+});
+
+builder.Services.AddAuthorization();
 
 // Configure SQLite (todos.db)
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -45,7 +73,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// Middlewares - Order is Important
 app.UseHttpsRedirection();
 
 // Log all incoming requests using Serilog
@@ -53,7 +80,9 @@ app.UseSerilogRequestLogging();
 
 // Middlewares: Exception Handling
 app.UseMiddleware<ExceptionHandlingMiddleware>();
-
+//Authentication
+app.UseAuthentication();
+app.UseAuthorization();
 // Map controllers for endpoints
 app.MapControllers();
 

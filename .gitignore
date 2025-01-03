@@ -328,6 +328,10 @@ __pycache__/
 
 # BizTalk build output
 *.btp.cs
+
+
+
+
 *.btm.cs
 *.odx.cs
 *.xsd.cs
@@ -341,7 +345,8 @@ ASALocalRun/
 # MSBuild Binary and Structured Log
 *.binlog
 
-# NVidia Nsight GPU debugger configuration file
+# NVidia Nsight GPU de
+bugger configuration file
 *.nvuser
 
 # MFractors (Xamarin productivity tool) working folder
@@ -364,3 +369,6 @@ FodyWeavers.xsd
 
 # Ignore the .vs directory
 .vs/
+
+# ignore Auth config files
+AuthConfig.cs
