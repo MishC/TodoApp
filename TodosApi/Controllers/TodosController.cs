@@ -73,6 +73,8 @@ namespace TodosApi.Controllers
 
 
         // PUT: api/todos/{id}
+        [HttpPut("{id}")]
+
         public IActionResult Update(int id, TodoItem newTodo)
         {
             _todosService.UpdateTodo(id, newTodo);

@@ -9,14 +9,14 @@ namespace TodosApi.Controllers
     [ApiController, Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        private readonly string _sercretKey = AuthConfig.SigningKey;
+        private readonly string _secretKey = AuthConfig.SigningKey;
         [HttpPost]
         public IActionResult Login(string username, string password)
         {
             if (username == "admin" && password == "password")
             {
                 var tokenHandler = new JwtSecurityTokenHandler();
-                var key = Encoding.ASCII.GetBytes(_sercretKey);
+                var key = Encoding.ASCII.GetBytes(_secretKey);
 
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
