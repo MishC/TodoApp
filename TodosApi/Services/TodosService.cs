@@ -44,11 +44,10 @@ namespace TodosApi.Service
             return todo;
         }
 
-
+      
         public void AddTodo(TodoItem todo)
         {
             if (todo == null) return;
-           
 
 
             if (todo.IsCompleted == true && todo.TimeCompleted == null)

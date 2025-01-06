@@ -6,13 +6,15 @@
 {  
     <h2 class="mt-md-1 mt-5 mb-2 text-center text-md-start pt-3 mx-md-4"> Todos @EmojiString</h2>
 
-    <div class="d-flex flex-sm-row flex-column w-75 mx-md-4 mx-auto my-5 pt-2">
-        <input type="text" @bind="newTodo" class="form-control" aria-label="Todo"
-               placeholder="Enter a new todo..." @onkeydown="HandleEnter" />
-        <button class="btn btn-success px-md-4 mt-3 mt-sm-0 mx-auto mx-sm-0 custom-btn-width" type="button" 
-                @onclick="AddTodo">Add</button>
-    </div>
+   
 
+<div class="d-flex flex-sm-row flex-column w-75 mx-md-4 mx-auto my-5 pt-2">
+    <input type="text" @bind="newTodo" class="form-control" aria-label="Todo"
+           placeholder="Enter a new todo..." @onkeydown="HandleEnter" />
+
+  </div>
+<button class="btn btn-success px-md-4 mt-3 mt-sm-0 mx-auto mx-sm-0 custom-btn-width" type="button" 
+            @onclick="AddTodo">Add</button>
     @if (todos?.Count > 0 && todos?.Any(todo => !todo.IsCompleted) == true)
     {
         <ul class="list-group my-5 pt-2 mx-1 w-75 mx-auto mx-md-4 mb-5">
@@ -20,6 +22,8 @@
                 style="background-color:#0056b3">
                 <span class="col-xl-3  col-sm-3 text-start">Created</span>
                 <span class="col-xl-7  col-sm-6 mx-1 text-start">Title</span>
+                <span class="col-xl-7  col-sm-6 mx-1 text-start">Title</span>
+
                 <span class="col-xl-2  col-sm-3"></span>
             </li>
             @{
@@ -73,8 +77,10 @@ else
     </CascadingValue>
 }
 
-<AlertModal @ref="alertModal" AlertMessage="@AlertMessage" />
-<DeleteModal @ref="deleteModal" OnConfirm="ConfirmDelete" />
+<AlertModal @ref="alertModal" AlertMessage="@AlertMessage"  />
+<ErrorModal @ref="errorModal" AlertMessage="@AlertMessage"  />
+
+<DeleteModal @ref="deleteModal" AlertMessage="@AlertMessage"  OnConfirm="ConfirmDelete" />
 
 @code {
     [Parameter] public bool visible { get; set; }  
@@ -82,10 +88,12 @@ else
 
 
     private string newTodo = string.Empty;
+    private int? selectedCategoryId;
     private List<TodoItem> todos = new();
+    private List<Category> categories = new();
+
     protected List<TodoItem>? completedTasks {get;set;}
     private List<char> emoji = new(){ (char)0x2610, (char)0x2705,(char)0x274C };
-    private string AlertMessage { get; set; }= string.Empty;
 
     private byte[] emojiBytes { get; set; } = Array.Empty<byte>();
     private string EmojiString => System.Text.Encoding.Unicode.GetString(emojiBytes);   
@@ -93,17 +101,21 @@ else
     //**-----------------------------------------------------------**//
     
     private AlertModal? alertModal;
-    private DeleteModal? deleteModal;        
-    
+    private DeleteModal? deleteModal; 
+    private ErrorModal? errorModal;        
+
+    private string AlertMessage { get; set; }= string.Empty;
+
+
     //**-----------------------------------------------------------**//
 
    
 
     protected override async Task OnInitializedAsync()
     {
-        //todos = await TodosStorage.LoadTodosAsync();
-           // await AuthService.InitializeUsernameAsync();
+        
         todos = await TodosStorage.GetTodosAsync();
+         categories = await TodosStorage.GetCategoriesAsync();
         UpdateCompletedTasks();
 
         EmojiService.HighSurrogate=0xD83D;
@@ -113,18 +125,26 @@ else
 
    private async Task AddTodo()
 {
-    if (!string.IsNullOrWhiteSpace(newTodo))
+    if (!string.IsNullOrWhiteSpace(newTodo) && selectedCategoryId.HasValue)
     {
-        var todo = new TodoItem { Title = newTodo };
+        var todo = new TodoItem
+            {
+                Title = newTodo,
+                CategoryId = selectedCategoryId.Value
+            };
         
-        // Save the new Todo to the backend
         await TodosStorage.AddTodoAsync(todo);
         
-        // Refresh the todos list from the backend
         todos = await TodosStorage.GetTodosAsync();
         
-        newTodo = string.Empty; // Clear the input
+        newTodo = string.Empty; 
+        selectedCategoryId = null;
+    UpdateCompletedTasks();
     }
+    else
+        {
+            await ShowErrorMessage("Please select a category and enter a title.");
+        }
 }
 
 
@@ -201,8 +221,17 @@ else
     
     //**-------------------------------------------------------------------------------------**//
 
-       private async Task ShowCompletionAlert(string title) 
-        {    
+    private async Task ShowErrorMessage(string message)
+    {
+        AlertMessage = message;
+        
+            await JSRuntime.InvokeVoidAsync("bootstrapInterop.showErrorModal", "errorModal");
+        
+        StateHasChanged(); 
+    }
+    
+    private async Task ShowCompletionAlert(string title) 
+        {
         AlertMessage = $"The task '{title}' has been marked as completed.";
         await JSRuntime.InvokeVoidAsync("bootstrapInterop.showAlertModal","alertModal"); 
         StateHasChanged(); 
@@ -211,7 +240,8 @@ else
         private TodoItem? todoToDelete;
 
         private async Task ShowDeleteModalAsync(TodoItem todo)
-        {
+
+        {   AlertMessage = "Are you sure you want to delete this todo?";
             todoToDelete = todo;
             await JSRuntime.InvokeVoidAsync("bootstrapInterop.showModal", "deleteModal");
         }

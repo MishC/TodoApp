@@ -46,7 +46,8 @@ namespace TodoApp.Classes
             : "Not completed yet";
 
 
-    
+        public int CategoryId { get; set; }
+        public string? Name { get; set; }
 
     } //end of class
 

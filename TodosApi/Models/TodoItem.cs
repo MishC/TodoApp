@@ -11,7 +11,7 @@ namespace TodosApi.Models
 {
     public class TodoItem
     {
-        private static int _nextId = 0;
+        
 
         [Key]
         public int Id { get; set; }
@@ -36,11 +36,7 @@ namespace TodosApi.Models
         
         public bool Priority { get; set; }
 
-        public TodoItem()
-        {
-            Id = Interlocked.Increment(ref _nextId);
-            CurrentDate = DateTime.Now;
-        }
+    
 
         public string TimeDifference => TimeCompleted != null ?
             $"{(TimeCompleted.Value - DateTime.Now).Duration().Days} days {(TimeCompleted.Value - DateTime.Now).Duration().Hours} hours"

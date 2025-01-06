@@ -1,6 +1,17 @@
 window.bootstrapInterop = {
     showAlertModal: function () {
-        var myModal = new bootstrap.Modal(document.getElementById('alertModal'), {
+        var myModal = new bootstrap.Modal(document.getElementById(modalId), {
+            keyboard: true
+        });
+        myModal.show();
+
+        setTimeout(function () {
+            myModal.hide();
+        }, 5000);
+    },
+    showErrorModal: function (modalId) {
+        var modalElement = document.getElementById(modalId);
+        var myModal = new bootstrap.Modal(modalElement, {
             keyboard: true
         });
         myModal.show();
