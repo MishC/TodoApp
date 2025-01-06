@@ -15,7 +15,7 @@ namespace TodosApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
+    //[Authorize]
 
     public class TodosController : ControllerBase
     {

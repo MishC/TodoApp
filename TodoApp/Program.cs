@@ -4,17 +4,23 @@ using TodoApp;
 using TodoApp.Classes;
 
 using Blazored.LocalStorage;
-
+using System.Net.Http.Headers;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+// Configure HttpClient with the backend API base address
+builder.Services.AddScoped(sp =>
+{
+    var httpClient = new HttpClient { BaseAddress = new Uri("http://localhost:5075/api/") }; 
+    return httpClient;
+});
+
+// Add other services
 builder.Services.AddScoped<EmojiService>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<TodosStorage>();
-
 
 builder.Services.AddBlazoredLocalStorage();
 

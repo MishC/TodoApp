@@ -1,4 +1,5 @@
-﻿@inject IJSRuntime JSRuntime
+﻿@inject HttpClient Http
+@inject IJSRuntime JSRuntime
 @inject TodosStorage TodosStorage
 
 @if (visible)
@@ -100,9 +101,9 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        todos = await TodosStorage.LoadTodosAsync();
-            await AuthService.InitializeUsernameAsync();
-
+        //todos = await TodosStorage.LoadTodosAsync();
+           // await AuthService.InitializeUsernameAsync();
+        todos = await TodosStorage.GetTodosAsync();
         UpdateCompletedTasks();
 
         EmojiService.HighSurrogate=0xD83D;
@@ -110,16 +111,22 @@ else
         emojiBytes= EmojiService.GetEmojiBytes();
     }
 
-    private async Task AddTodo()
+   private async Task AddTodo()
+{
+    if (!string.IsNullOrWhiteSpace(newTodo))
     {
-        if (!string.IsNullOrWhiteSpace(newTodo))
-        {
-            var todo = new TodoItem { Title = newTodo };
-            todos.Add(todo);
-            newTodo = string.Empty;
-            await TodosStorage.SaveTodosAsync(todos);
-        }
+        var todo = new TodoItem { Title = newTodo };
+        
+        // Save the new Todo to the backend
+        await TodosStorage.AddTodoAsync(todo);
+        
+        // Refresh the todos list from the backend
+        todos = await TodosStorage.GetTodosAsync();
+        
+        newTodo = string.Empty; // Clear the input
     }
+}
+
 
     private async Task HandleEnter(KeyboardEventArgs e)
     {
@@ -130,43 +137,66 @@ else
     }
 
     private async Task ToggleAsync(TodoItem todo)
-    { 
-        await Task.Delay(500);
-        
+{
+    todo.IsCompleted = !todo.IsCompleted;
+    todo.TimeCompleted = todo.IsCompleted ? DateTime.Now : null;
 
-        UpdateCompletedTasks();
-        todo.TimeCompleted = DateTime.Now;
-        todo.IsCompleted = !todo.IsCompleted;
+    // Update the Todo on the backend
+    await TodosStorage.UpdateTodoAsync(todo);
+    
+    // Optionally refresh the todos list to ensure consistency
+    todos = await TodosStorage.GetTodosAsync();
 
-         if (todo.IsCompleted)
-          {        await Task.Delay(500);
-
-           await ShowCompletionAlert(todo.Title);
-             }
-        UpdateCompletedTasks();
-        await TodosStorage.SaveTodosAsync(todos);
+    // Show an alert if the task is completed
+    if (todo.IsCompleted)
+    {
+        await ShowCompletionAlert(todo.Title);
     }
+
+    UpdateCompletedTasks();
+}
+
 
     private void UpdateCompletedTasks()
     {
         completedTasks = todos.Where(t => t.IsCompleted).ToList();
     }
 
-    private async Task DeleteTodoAsync(TodoItem todo)
-    {
-        todos.Remove(todo);
-        UpdateCompletedTasks();
-        await TodosStorage.SaveTodosAsync(todos);
-    }
+   private async Task DeleteTodoAsync(TodoItem todo)
+{
+    // Remove the Todo from the backend
+    await TodosStorage.DeleteTodoAsync(todo.Id);
+    
+    // Refresh the todos list from the backend
+    todos = await TodosStorage.GetTodosAsync();
+    
+    UpdateCompletedTasks();
+}
 
 
 
-    private void HandleTakeBack(TodoItem todo)
+
+    @*private void HandleTakeBack(TodoItem todo)
     {
         todo.IsCompleted = false;
         todo.TimeCompleted = null;
         UpdateCompletedTasks();
-    }
+    }*@
+
+    private async Task HandleTakeBack(TodoItem todo)
+{
+    todo.IsCompleted = false;
+    todo.TimeCompleted = null;
+
+    // Update the Todo on the backend
+    await TodosStorage.UpdateTodoAsync(todo);
+    
+    // Refresh the todos list to ensure consistency
+    todos = await TodosStorage.GetTodosAsync();
+
+    UpdateCompletedTasks();
+}
+
     
     
     //**-------------------------------------------------------------------------------------**//

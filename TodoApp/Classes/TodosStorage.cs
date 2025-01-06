@@ -1,31 +1,37 @@
-using Blazored.LocalStorage;
-using System.Text.Json;
+using System.Net.Http;
+using System.Net.Http.Json;
 using TodoApp.Classes;
+
 namespace TodoApp.Classes
 {
     public class TodosStorage
     {
-        private readonly ILocalStorageService _localStorage;
+        private readonly HttpClient _httpClient;
 
-        private string? TodoStorageKey => "todos";
-        public TodosStorage(ILocalStorageService localStorage)
+        public TodosStorage(HttpClient httpClient)
         {
-            _localStorage = localStorage;
+            _httpClient = httpClient;
         }
 
-        public async Task SaveTodosAsync(List<TodoItem> todos)
+        public async Task<List<TodoItem>> GetTodosAsync()
         {
-            var todosJson = JsonSerializer.Serialize(todos);
-            await _localStorage.SetItemAsync(TodoStorageKey, todosJson);
+            return await _httpClient.GetFromJsonAsync<List<TodoItem>>("todos") ?? new List<TodoItem>();
         }
 
-        public async Task<List<TodoItem>> LoadTodosAsync()
+        public async Task AddTodoAsync(TodoItem todo)
         {
-
-            var todosJson = await _localStorage.GetItemAsync<string>(TodoStorageKey);
-            return string.IsNullOrEmpty(todosJson) ? new List<TodoItem>() : JsonSerializer.Deserialize<List<TodoItem>>(todosJson);
+            await _httpClient.PostAsJsonAsync("todos", todo);
         }
 
+        public async Task UpdateTodoAsync(TodoItem todo)
+        {
+            await _httpClient.PutAsJsonAsync($"todos/{todo.Id}", todo);
+        }
+
+        public async Task DeleteTodoAsync(int id)
+        {
+            await _httpClient.DeleteAsync($"todos/{id}");
+        }
     }
-
 }
+

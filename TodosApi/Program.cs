@@ -86,6 +86,18 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins("http://localhost:5149") // Replace with your frontend's URL
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
+
+
 builder.Services.AddAuthorization();
 
 // Configure SQLite (todos.db)
@@ -104,6 +116,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors("AllowFrontend");
+app.UseRouting();
 app.UseHttpsRedirection();
 
 // Log all incoming requests using Serilog
