@@ -47,7 +47,7 @@ namespace TodoApp.Classes
 
 
         public int CategoryId { get; set; }
-        public string? Name { get; set; }
+        public string? CategoryName { get; set; }
 
     } //end of class
 
