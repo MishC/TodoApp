@@ -4,7 +4,7 @@
 
 @if (visible)
 {  
-    <h2 class="mt-md-1 mt-5 mb-2 text-center text-md-start pt-3 mx-md-4"> Todos @EmojiString</h2>
+    <h2 class="mt-md-1 mt-5 mb-2 text-center text-md-start pt-3 mx-md-4"> Add Todos @EmojiString</h2>
 
    
 <!-- -->
@@ -71,7 +71,7 @@
         
             <span class="justify-content-start px-1 mb-2 mb-sm-0 text-start text-wrap text-justify text-break ps-3">
             <span class="@(todo.Priority ? "text-danger" : "")">@todo.Title</span>   
-            <span>@todo.CategoryId</span>
+            <span>@todo.CategoryName</span><span>@todo.CategoryId</span><span>@todo.Id</span>
             </span>
        
  

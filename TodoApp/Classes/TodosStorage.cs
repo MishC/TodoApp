@@ -53,6 +53,25 @@ namespace TodoApp.Classes
         {
             await _httpClient.DeleteAsync($"categories/{id}");
         }
+
+        //others
+        // GET: api/todos/category/{categoryId}
+        public async Task<List<TodoItem>> GetTodosByCategoryAsync(int categoryId)
+        {
+            return await _httpClient.GetFromJsonAsync<List<TodoItem>>($"todos/category/{categoryId}");
+        }
+
+        // GET: api/todos/category/{categoryId}/count
+        public async Task<int> GetTodoCountByCategoryAsync(int categoryId)
+        {
+            return await _httpClient.GetFromJsonAsync<int>($"todos/category/{categoryId}/count");
+        }
+
+        // GET: api/todos/completed
+        public async Task<List<TodoItem>> GetCompletedTodosAsync()
+        {
+            return await _httpClient.GetFromJsonAsync<List<TodoItem>>("todos/completed");
+        }
     }
 }
 
