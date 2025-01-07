@@ -1,5 +1,5 @@
 window.bootstrapInterop = {
-    showAlertModal: function () {
+    showAlertModal: function (modalId) {
         var myModal = new bootstrap.Modal(document.getElementById(modalId), {
             keyboard: true
         });

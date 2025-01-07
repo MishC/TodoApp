@@ -7,7 +7,6 @@ namespace TodoApp.Classes
     public class Category
     {
 
-
         [Key]
         public int Id { get; set; }
 

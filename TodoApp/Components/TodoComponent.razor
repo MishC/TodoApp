@@ -155,7 +155,8 @@ else
         var todo = new TodoItem
             {
                 Title = newTodo,
-                CategoryId = selectedCategoryId.Value
+                CategoryId = selectedCategoryId.Value,
+                IsCompleted = false
             };
         
         await TodosStorage.AddTodoAsync(todo);
@@ -202,31 +203,21 @@ else
 }
 
 
-    private void UpdateCompletedTasks()
-    {
+    private async Task UpdateCompletedTasks()
+
+    {       todos = await TodosStorage.GetTodosAsync();
+
         completedTasks = todos.Where(t => t.IsCompleted).ToList();
     }
 
    private async Task DeleteTodoAsync(TodoItem todo)
 {
-    // Remove the Todo from the backend
     await TodosStorage.DeleteTodoAsync(todo.Id);
-    
-    // Refresh the todos list from the backend
-    todos = await TodosStorage.GetTodosAsync();
-    
-    UpdateCompletedTasks();
+   await  UpdateCompletedTasks();
 }
 
 
 
-
-    @*private void HandleTakeBack(TodoItem todo)
-    {
-        todo.IsCompleted = false;
-        todo.TimeCompleted = null;
-        UpdateCompletedTasks();
-    }*@
 
     private async Task HandleTakeBack(TodoItem todo)
 {
@@ -239,7 +230,7 @@ else
     // Refresh the todos list to ensure consistency
     todos = await TodosStorage.GetTodosAsync();
 
-    UpdateCompletedTasks();
+    await UpdateCompletedTasks();
 }
 
     

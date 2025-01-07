@@ -49,7 +49,7 @@ namespace TodosApi.Service
         {
             if (todo == null) return;
 
-
+            todo.CurrentDate = DateTime.Now;
             if (todo.IsCompleted == true && todo.TimeCompleted == null)
             {
                 todo.TimeCompleted = DateTime.Now;
@@ -57,6 +57,22 @@ namespace TodosApi.Service
             _todosRepository.AddTodo(todo);
             Log.Information($"Todo {todo.Title} added");
         }
+
+        public void ToggleComplete(int id)
+        {
+            var todo = _todosRepository.GetTodoById(id);
+            if (todo == null)
+            {
+                Log.Warning($"Todo with id {id} doesn't exist.");
+                return;
+            }
+
+            todo.IsCompleted = !todo.IsCompleted;
+
+            _todosRepository.UpdateTodo(todo);
+            Log.Information($"Todo with id {id} marked as {(todo.IsCompleted ? "completed" : "incomplete")}.");
+        }
+
 
         public void UpdateTodo(int id, TodoItem newTodo)
 
@@ -125,6 +141,21 @@ namespace TodosApi.Service
         public IEnumerable<TodoItem> GetCompletedTodosWithCategoryInfo()
         {
             return _todosRepository.GetTodos().Where(todo => todo.IsCompleted).ToList();
+        }
+
+        public string GetCategoryName(int categoryId)
+        {
+            return _todosRepository.GetTodos().FirstOrDefault(todo => todo.CategoryId == categoryId)?.Category.Name;
+        }
+
+        public IEnumerable<TodoItem> GetTodosByPriority(string priority)
+        {
+            return _todosRepository.GetTodos().Where(todo => todo.Priority == priority).ToList();
+        }
+
+        public IEnumerable<TodoItem> GetTodosByDueDate(DateTime dueDate)
+        {
+            return _todosRepository.GetTodos().Where(todo => todo.DueDate == dueDate).ToList();
         }
     }
 }

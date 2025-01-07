@@ -26,14 +26,16 @@ namespace TodoApp.Classes
         [StringLength(500, MinimumLength = 10, ErrorMessage = "Description must have between 10 to 500 characters.")]
         public string? Description { get; set; }
 
-        [Display(Name = "Due Date", Prompt = "YYYY-MM-DD")] 
+        [Display(Name = "Due Date", Prompt = "YYYY-MM-DD")] // Hint for user
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
       
         public DateTime? DueDate { get; set; }
         
         public bool Priority { get; set; }
 
-       
+        public TodoItem()
+        {
+        }
 
         public string TimeDifference => TimeCompleted != null ?
             $"{(TimeCompleted.Value - DateTime.Now).Duration().Days} days {(TimeCompleted.Value - DateTime.Now).Duration().Hours} hours"
