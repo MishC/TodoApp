@@ -22,7 +22,7 @@ namespace TodosApi.Models
 
         public bool IsCompleted { get; set; } = false;
 
-        public DateTime CurrentDate { get; private set; }
+        public DateTime CurrentDate { get; set; }
         public DateTime? TimeCompleted { get; set; }
 
         [StringLength(500, MinimumLength = 10, ErrorMessage = "Description must have between 10 to 500 characters.")]

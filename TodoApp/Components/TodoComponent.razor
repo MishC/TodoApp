@@ -18,7 +18,7 @@
             {
                 @foreach (var category in categories)
                 {
-                    <option value="@category.Id">@category.Name</option>
+                    <option value="@category.Id">@category.Id : @category.Name </option>
                 }
             }
             else
@@ -71,7 +71,7 @@
         
             <span class="justify-content-start px-1 mb-2 mb-sm-0 text-start text-wrap text-justify text-break ps-3">
             <span class="@(todo.Priority ? "text-danger" : "")">@todo.Title</span>   
-            <span>@todo.CategoryName</span><span>@todo.CategoryId</span><span>@todo.Id</span>
+            <span>@todo.CategoryName</span><span>   @todo.CategoryId</span>
             </span>
        
  
@@ -145,6 +145,8 @@ else
         EmojiService.LowSurrogate=0xDD59;
         emojiBytes= EmojiService.GetEmojiBytes();
     }
+
+    //**-----------------------------------------------------------**//
 
    private async Task AddTodo()
 {
