@@ -125,16 +125,17 @@ namespace TodosApi.Service
         }
 
         //other methods
+        //1
         public string GetCategoryName(int categoryId)
         {
             return _todosRepository.GetTodos().FirstOrDefault(todo => todo.CategoryId == categoryId)?.Category.Name;
         }
-
-        public IEnumerable<TodoItem> GetInCompleteTodos()
+        //2
+        public IEnumerable<TodoItem> GetInCompletedTodos()
         {
             return _todosRepository.GetTodos().Where(todo => !todo.IsCompleted).ToList();
         }
-
+        //3
         public IEnumerable<TodoItem> GetTodosByCategoryId(int categoryId)
         {
             return _todosRepository.GetTodos().Where(todo => todo.CategoryId == categoryId).ToList();
@@ -155,9 +156,9 @@ namespace TodosApi.Service
         {
             return _todosRepository.GetTodos().Where(todo => todo.Category.Name == categoryName).ToList();
         }
-        public IEnumerable<TodoItem> GetTodosByPriority(string priority)
+        public IEnumerable<TodoItem> GetTodosByPriority()
         {
-            return _todosRepository.GetTodos().Where(todo => todo.Priority == priority).ToList();
+            return _todosRepository.GetTodos().Where(todo => todo.Priority).ToList();
         }
 
         public IEnumerable<TodoItem> GetTodosByDueDate(DateTime dueDate)

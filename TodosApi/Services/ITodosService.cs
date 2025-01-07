@@ -13,6 +13,8 @@ namespace TodosApi.Service
         IEnumerable<TodoItem> GetTodosByCategoryId(int categoryId);
         int GetTodoCountPerCategory(int categoryId);
         IEnumerable<TodoItem> GetCompletedTodosWithCategoryInfo();
+        string GetCategoryName(int categoryId);
+        IEnumerable<TodoItem> GetInCompletedTodos();
     }
 
 }

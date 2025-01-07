@@ -133,20 +133,14 @@ namespace TodosApi.Controllers
 
         // GET: api/todos/incompleted
         [HttpGet("incompleted")]
-        public IActionResult GetIncompletedTodosWithCategoryInfo()
+        public IActionResult GetInCompletedTodosWithCategoryInfo()
         {
-            var incompletedTodos = _todosService.GetIncompletedTodosWithCategoryInfo();
+            var incompletedTodos = _todosService.GetInCompletedTodos();
             if (!incompletedTodos.Any())
                 return NotFound("No incompleted todos found.");
             return Ok(incompletedTodos);
         }
     }
 
-    // GET: api/todos/category/{categoryId}
-    [HttpGet("category/{categoryId}")]
-    public IActionResult GetTodosByCategory(int categoryId)
-    {
-        var todos = _todosService.GetTodosByCategory(categoryId);
-        return Ok(todos);
-    }
+    
 }
