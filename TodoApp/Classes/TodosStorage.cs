@@ -55,6 +55,15 @@ namespace TodoApp.Classes
         }
 
         //others
+        public async Task<string> GetCategoryName(int id)
+        {
+            return await _httpClient.GetFromJsonAsync<string>($"categories/{id}/name");
+        }
+
+        public async Task<TodoItem> GetTodoByIdAsync(int id)
+        {
+            return await _httpClient.GetFromJsonAsync<TodoItem>($"todos/{id}");
+        }
         // GET: api/todos/category/{categoryId}
         public async Task<List<TodoItem>> GetTodosByCategoryAsync(int categoryId)
         {
