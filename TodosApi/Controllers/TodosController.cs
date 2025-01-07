@@ -91,6 +91,18 @@ namespace TodosApi.Controllers
            return NoContent();
         }
 
+        //Other methods
+
+        //GET: api/todos/category/{categoryId}/name 
+        [HttpGet("category/{categoryId}/name")]
+        public IActionResult GetCategoryName(int categoryId)
+        {
+            var categoryName = _todosService.GetCategoryName(categoryId);
+            if (categoryName == null)
+                return NotFound("Category not found.");
+            return Ok(categoryName);
+        }
+
         // GET: api/todos/category/{categoryId}
         [HttpGet("category/{categoryId}")]
         public IActionResult GetTodosByCategoryId(int categoryId)
@@ -118,5 +130,23 @@ namespace TodosApi.Controllers
                 return NotFound("No completed todos found.");
             return Ok(completedTodos);
         }
+
+        // GET: api/todos/incompleted
+        [HttpGet("incompleted")]
+        public IActionResult GetIncompletedTodosWithCategoryInfo()
+        {
+            var incompletedTodos = _todosService.GetIncompletedTodosWithCategoryInfo();
+            if (!incompletedTodos.Any())
+                return NotFound("No incompleted todos found.");
+            return Ok(incompletedTodos);
+        }
+    }
+
+    // GET: api/todos/category/{categoryId}
+    [HttpGet("category/{categoryId}")]
+    public IActionResult GetTodosByCategory(int categoryId)
+    {
+        var todos = _todosService.GetTodosByCategory(categoryId);
+        return Ok(todos);
     }
 }
