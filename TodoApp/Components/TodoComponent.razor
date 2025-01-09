@@ -9,31 +9,46 @@
    
 <!-- -->
 
-    <div class="d-flex flex-sm-row flex-column w-75 mx-md-4 mx-auto my-5 pt-2">
-    <div class="form-group w-100 mb-3">
-        <label for="categorySelect" class="form-label">Select Category</label>
-        <select id="categorySelect" class="form-select" @bind="selectedCategoryId">
-            <option value="" disabled>Select a category</option>
-            @if (categories?.Any() == true)
-            {
-                @foreach (var category in categories)
-                {
-                    <option value="@category.Id">@category.Id : @category.Name </option>
-                }
-            }
-            else
-            {
-                <option value="" disabled>No categories available</option>
-            }
-        </select>
-    </div>
-    </div>
-<div class="d-flex flex-sm-row flex-column w-75 mx-md-4 mx-auto my-5 pt-2">
-    <input type="text" @bind="newTodo" class="form-control" aria-label="Todo"
-           placeholder="Enter a new todo..." @onkeydown="HandleEnter" />
-    <button class="btn btn-success px-md-4 mt-3 mt-sm-0 mx-auto mx-sm-0 custom-btn-width" type="button" 
-            @onclick="AddTodo">Add</button>
+  <div class="d-flex flex-sm-row flex-column w-75 mx-md-4 mx-auto my-5 pt-2">
+  <div class="form-group w-100 mb-3">
+    <label for="categorySelect" class="form-label">Select Category</label>
+    <select id="categorySelect" class="form-select" @bind="selectedCategoryId">
+      <option value="" selected disabled>Select a category</option>
+      @if (categories?.Any() == true)
+      {
+        @foreach (var category in categories)
+        {
+          <option value="@category.Id">@category.Id : @category.Name</option>
+        }
+      }
+      else
+      {
+        <option value="" disabled>No categories available</option>
+      }
+    </select>
+  </div>
 </div>
+<div class="d-flex flex-sm-row flex-column w-75 mx-md-4 mx-auto my-5 pt-2">
+  <div class="form-group">
+    <label for="dayInput" class="form-label">Day</label>
+    <input type="number" id="dayInput" class="form-control" min="1" max="31" @bind="day" placeholder="DD" style="width: 80px;" />
+  </div>
+  <div class="form-group mx-2">
+    <label for="monthInput" class="form-label">Month</label>
+    <input type="number" id="monthInput" class="form-control" min="1" max="12" @bind="month" placeholder="MM" style="width: 80px;" />
+  </div>
+  <div class="form-group">
+    <label for="yearInput" class="form-label">Year</label>
+    <input type="number" id="yearInput" class="form-control" min="1900" max="2100" @bind="year" placeholder="YYYY" style="width: 100px;" />
+  </div>
+</div>
+<div class="d-flex flex-sm-row flex-column w-75 mx-md-4 mx-auto my-5 pt-2">
+  <input type="text" @bind="newTodo" class="form-control" aria-label="Todo"
+         placeholder="Enter a new todo..." @onkeydown="HandleEnter" />
+  <button class="btn btn-success px-md-4 mt-3 mt-sm-0 mx-auto mx-sm-0 custom-btn-width" type="button" 
+          @onclick="AddTodo">Add</button>
+</div>
+
 
 <!-- -->
     @if (todos?.Count > 0 && todos?.Any(todo => !todo.IsCompleted) == true)
@@ -41,7 +56,7 @@
         <ul class="list-group my-5 pt-2 mx-1 w-75 mx-auto mx-md-4 mb-5">
              <li class="d-none d-md-flex list-group-item list-group-item-primary justify-content-between px-4 text-white"
                 style="background-color:#0056b3">
-                <span class="col-xl-3  col-sm-3 text-start">Created</span>
+                <span class="col-xl-3  col-sm-3 text-start">Created at</span>
                 <span class="col-xl-3  col-sm-6 mx-1 text-start">Category</span>
                  <span class="col-xl-5  col-sm-6 mx-1 text-start">Title</span>
 
@@ -60,7 +75,7 @@
 
    <div class="flex-column bg-sm-light brown align-items-center align-items-sm-start align-items-md-center">
             <span class="brown p-0 text-muted small">
-        @todo.CurrentDate.ToString("HH:mm")&nbsp;&nbsp;  @todo.CurrentDate.ToString("dd/MM/yyyy")
+     @todo.CurrentDate.ToString("dd/MM/yyyy")
             </span>
        
                
@@ -79,7 +94,7 @@
                 @emoji[2]
             </button>
         </span>
-            </div   >
+      </div>
 </li>
 
 
@@ -116,7 +131,18 @@ else
     private List<char> emoji = new(){ (char)0x2610, (char)0x2705,(char)0x274C };
 
     private byte[] emojiBytes { get; set; } = Array.Empty<byte>();
-    private string EmojiString => System.Text.Encoding.Unicode.GetString(emojiBytes);   
+    private string EmojiString => System.Text.Encoding.Unicode.GetString(emojiBytes);  
+    
+    //**-----------------------------------------------------------**//
+
+    private int? day;
+    private int? month;
+    private int? year;
+
+
+  private DateTime? dueDate => (day.HasValue && month.HasValue && year.HasValue) 
+      ? new DateTime(year.Value, month.Value, day.Value) 
+        : (DateTime?)null;
     
     //**-----------------------------------------------------------**//
     
@@ -145,30 +171,43 @@ else
 
     //**-----------------------------------------------------------**//
 
-   private async Task AddTodo()
+  private async Task AddTodo()
+{
+    if (!string.IsNullOrWhiteSpace(newTodo) && selectedCategoryId.HasValue)
     {
-    if (!string.IsNullOrWhiteSpace(newTodo)&&selectedCategoryId.HasValue)
-    {
+        
         var todo = new TodoItem
-            {
-                Title = newTodo,
-                CategoryId = selectedCategoryId.Value,
-                IsCompleted = false
-            };
-        
-        await TodosStorage.AddTodoAsync(todo);
-        
-        todos = await TodosStorage.GetTodosAsync();
-        
-        newTodo = string.Empty; 
-        selectedCategoryId = null;
-    UpdateCompletedTasks();
+        {
+            Title = newTodo,
+            CategoryId = selectedCategoryId.Value,
+            DueDate = dueDate,
+            IsCompleted = false
+        };
+
+        try
+        {
+            await TodosStorage.AddTodoAsync(todo);
+
+            todos = await TodosStorage.GetTodosAsync();
+
+            newTodo = string.Empty;
+            selectedCategoryId = null;
+
+            UpdateCompletedTasks();
+        }
+        catch (Exception ex)
+        {
+            
+            Console.WriteLine($"Error adding todo: {ex.Message}");
+            await ShowErrorMessage("An error occurred while adding the todo. Please try again.");
+        }
     }
     else
-        {
-            await ShowErrorMessage("Please select a category and enter a title.");
-        }
+    {
+        await ShowErrorMessage("Please select a category and enter a title.");
+    }
 }
+
 
 
     private async Task HandleEnter(KeyboardEventArgs e)
