@@ -4,7 +4,7 @@
 
 @if (visible)
 {  
-    <h2 class="mt-md-1 mt-5 mb-2 text-center text-md-start pt-3 mx-md-4"> Add Todos @EmojiString</h2>
+    <h2 class="mt-md-1 mt-5 mb-2 text-center text-md-start pt-3 mx-md-4"> Add Todos</h2>
 
    
 <!-- -->
@@ -42,8 +42,9 @@
              <li class="d-none d-md-flex list-group-item list-group-item-primary justify-content-between px-4 text-white"
                 style="background-color:#0056b3">
                 <span class="col-xl-3  col-sm-3 text-start">Created</span>
-                <span class="col-xl-4  col-sm-6 mx-1 text-start">Title</span>
                 <span class="col-xl-3  col-sm-6 mx-1 text-start">Category</span>
+                 <span class="col-xl-5  col-sm-6 mx-1 text-start">Title</span>
+
 
                 <span class="col-xl-2  col-sm-3"></span>
             </li>
@@ -54,28 +55,22 @@
             { 
                 if (!todo.IsCompleted) 
                 {
-<li class="d-flex flex-column flex-md-row justify-content-md-between list-group-item border-1 w-100 p-md-2 pe-0 m-0 p-0 border-sm-2 @(isFirstVisible ? "border-top-1" : "border-top-0")" 
+<li class="d-flex flex-md-row justify-content-md-between  border-1 w-100 p-md-2 pe-0 m-0 p-0 border-sm-2 @(isFirstVisible ? "border-top-1" : "border-top-0")" 
     @key="todo.Id">
 
-   <div class="d-flex flex-xs-row flex-sm-row flex-md-column flex-lg-row text-start col-xl-3 col-md-3 mx-md-1 m-0 py-xs-2 py-sm-2 p-sm-0  mb-2 mb-md-0 bg-sm-light brown align-items-center align-items-sm-start align-items-lg-center">
-            <span class="brown p-0 px-2">
-        @todo.CurrentDate.ToString("HH:mm")&nbsp;&nbsp;
-            </span>
-        <span class="brown p-0 px-sm-2">
-                @todo.CurrentDate.ToString("dd/MM/yyyy")
-            </span>
-   </div>
-
-    <span class="d-flex col-12 col-md-9 col-lg-9 justify-content-between justify-content-md-start p-2 m-0 align-items-center">
-        <!-- Title (always left-aligned) -->
-        
-            <span class="justify-content-start px-1 mb-2 mb-sm-0 text-start text-wrap text-justify text-break ps-3">
-            <span class="@(todo.Priority ? "text-danger" : "")">@todo.Title</span>   
-            <span>@todo.CategoryName</span><span>   @todo.CategoryId</span>
+   <div class="flex-column bg-sm-light brown align-items-center align-items-sm-start align-items-md-center">
+            <span class="brown p-0 text-muted small">
+        @todo.CurrentDate.ToString("HH:mm")&nbsp;&nbsp;  @todo.CurrentDate.ToString("dd/MM/yyyy")
             </span>
        
+               
+       <span class="text-muted">   @GetCategoryNameById(todo.CategoryId)</span>
+       <span class="@(todo.Priority ? "text-danger" : "")">@todo.Title</span>   
+
+   </div>
+
+        <div>
  
-      </span> 
         <!-- This span contains the checkbox and button, in a row on md+ -->
         <span class="d-flex flex-md-row justify-content-end align-items-center ms-md-auto">
                 <input class="form-check-input form-check cursor-pointer" type="checkbox" value="" id="defaultCheck1" @onchange="async () => await ToggleAsync(todo)" unchecked />
@@ -84,6 +79,7 @@
                 @emoji[2]
             </button>
         </span>
+            </div   >
 </li>
 
 
@@ -106,9 +102,10 @@ else
 <DeleteModal @ref="deleteModal" AlertMessage="@AlertMessage"  OnConfirm="ConfirmDelete" />
 
 @code {
+
+
     [Parameter] public bool visible { get; set; }  
     
-
 
     private string newTodo = string.Empty;
     private int? selectedCategoryId;
@@ -149,7 +146,7 @@ else
     //**-----------------------------------------------------------**//
 
    private async Task AddTodo()
-{
+    {
     if (!string.IsNullOrWhiteSpace(newTodo)&&selectedCategoryId.HasValue)
     {
         var todo = new TodoItem
@@ -187,13 +184,10 @@ else
     todo.IsCompleted = !todo.IsCompleted;
     todo.TimeCompleted = todo.IsCompleted ? DateTime.Now : null;
 
-    // Update the Todo on the backend
     await TodosStorage.UpdateTodoAsync(todo);
     
-    // Optionally refresh the todos list to ensure consistency
     todos = await TodosStorage.GetTodosAsync();
 
-    // Show an alert if the task is completed
     if (todo.IsCompleted)
     {
         await ShowCompletionAlert(todo.Title);
@@ -211,12 +205,22 @@ else
     }
 
    private async Task DeleteTodoAsync(TodoItem todo)
-{
+    {
     await TodosStorage.DeleteTodoAsync(todo.Id);
-   await  UpdateCompletedTasks();
-}
+    await  UpdateCompletedTasks();
+   }
 
 
+    private string GetCategoryNameById(int id)
+    {
+        var category = categories.FirstOrDefault(c => c.Id == id);
+        if (category != null)
+        {
+            return category.Name;
+        }
+        return string.Empty;
+    }
+      
 
 
     private async Task HandleTakeBack(TodoItem todo)
@@ -224,10 +228,8 @@ else
     todo.IsCompleted = false;
     todo.TimeCompleted = null;
 
-    // Update the Todo on the backend
     await TodosStorage.UpdateTodoAsync(todo);
     
-    // Refresh the todos list to ensure consistency
     todos = await TodosStorage.GetTodosAsync();
 
     await UpdateCompletedTasks();

@@ -17,6 +17,10 @@ namespace TodoApp.Classes
         {
             return await _httpClient.GetFromJsonAsync<List<TodoItem>>("todos") ?? new List<TodoItem>();
         }
+        public async Task<TodoItem> GetTodoByIdAsync(int id)
+        {
+            return await _httpClient.GetFromJsonAsync<TodoItem>($"todos/{id}");
+        }
 
         public async Task AddTodoAsync(TodoItem todo)
         {
@@ -55,15 +59,14 @@ namespace TodoApp.Classes
         }
 
         //others
+
+        // GET: api/categories/{id}/name
         public async Task<string> GetCategoryName(int id)
         {
             return await _httpClient.GetFromJsonAsync<string>($"categories/{id}/name");
         }
 
-        public async Task<TodoItem> GetTodoByIdAsync(int id)
-        {
-            return await _httpClient.GetFromJsonAsync<TodoItem>($"todos/{id}");
-        }
+        
         // GET: api/todos/category/{categoryId}
         public async Task<List<TodoItem>> GetTodosByCategoryAsync(int categoryId)
         {
