@@ -28,20 +28,41 @@
     </select>
   </div>
 </div>
-<div class="d-flex flex-sm-row flex-column w-75 mx-md-4 mx-auto my-5 pt-2">
-  <div class="form-group">
-    <label for="dayInput" class="form-label">Day</label>
-    <input type="number" id="dayInput" class="form-control" min="1" max="31" @bind="day" placeholder="DD" style="width: 80px;" />
-  </div>
-  <div class="form-group mx-2">
-    <label for="monthInput" class="form-label">Month</label>
-    <input type="number" id="monthInput" class="form-control" min="1" max="12" @bind="month" placeholder="MM" style="width: 80px;" />
-  </div>
-  <div class="form-group">
-    <label for="yearInput" class="form-label">Year</label>
-    <input type="number" id="yearInput" class="form-control" min="1900" max="2100" @bind="year" placeholder="YYYY" style="width: 100px;" />
-  </div>
+<!--    
+-->
+<h4>Select due date</h4>
+<div class="d-flex">
+<div class="form-group mb-3">
+    <label for="daySelect" class="form-label">Select Day</label>
+    <select id="daySelect" class="form-select" @bind="selectedDay">
+        @for (int i = 1; i <= 31; i++)
+        {
+            <option value="@i">@i</option>
+        }
+    </select>
 </div>
+
+<div class="form-group mb-3">
+    <label for="monthSelect" class="form-label">Select Month</label>
+    <select id="monthSelect" class="form-select" @bind="selectedMonth">
+        @for (int i = 1; i <= 12; i++)
+        {
+            <option value="@i">@i</option>
+        }
+    </select>
+</div>
+
+<div class="form-group mb-3">
+    <label for="yearSelect" class="form-label">Select Year</label>
+    <select id="yearSelect" class="form-select" @bind="selectedYear">
+        @for (int i = DateTime.Now.Year; i <= DateTime.Now.Year + 10; i++) 
+        {
+            <option value="@i">@i</option>
+        }
+    </select>
+</div>
+</div>
+<!---->
 <div class="d-flex flex-sm-row flex-column w-75 mx-md-4 mx-auto my-5 pt-2">
   <input type="text" @bind="newTodo" class="form-control" aria-label="Todo"
          placeholder="Enter a new todo..." @onkeydown="HandleEnter" />
@@ -56,7 +77,7 @@
         <ul class="list-group my-5 pt-2 mx-1 w-75 mx-auto mx-md-4 mb-5">
              <li class="d-none d-md-flex list-group-item list-group-item-primary justify-content-between px-4 text-white"
                 style="background-color:#0056b3">
-                <span class="col-xl-3  col-sm-3 text-start">Created at</span>
+                <span class="col-xl-3  col-sm-3 text-start">Due Date</span>
                 <span class="col-xl-3  col-sm-6 mx-1 text-start">Category</span>
                  <span class="col-xl-5  col-sm-6 mx-1 text-start">Title</span>
 
@@ -75,7 +96,7 @@
 
    <div class="flex-column bg-sm-light brown align-items-center align-items-sm-start align-items-md-center">
             <span class="brown p-0 text-muted small">
-     @todo.CurrentDate.ToString("dd/MM/yyyy")
+     @todo.DueDate
             </span>
        
                
@@ -135,14 +156,11 @@ else
     
     //**-----------------------------------------------------------**//
 
-    private int? day;
-    private int? month;
-    private int? year;
+     private int selectedDay;
+    private int selectedMonth;
+    private int selectedYear;
 
-
-  private DateTime? dueDate => (day.HasValue && month.HasValue && year.HasValue) 
-      ? new DateTime(year.Value, month.Value, day.Value) 
-        : (DateTime?)null;
+   private DateTime? dueDate;
     
     //**-----------------------------------------------------------**//
     
@@ -151,6 +169,8 @@ else
     private ErrorModal? errorModal;        
 
     private string AlertMessage { get; set; }= string.Empty;
+        private string? errorMessage;
+
 
 
     //**-----------------------------------------------------------**//
@@ -170,11 +190,46 @@ else
     }
 
     //**-----------------------------------------------------------**//
+   private void ValidateDate()
+  {
+      try
+      {
+          var selectedDate = new DateTime(selectedYear, selectedMonth, selectedDay);
+
+          if (selectedDate < DateTime.Now.Date)
+          {
+              errorMessage = "The selected date is in the past. Please choose a valid future date.";
+            dueDate=null;
+          }
+          else
+          {
+              errorMessage = string.Empty;
+             dueDate=new DateTime(selectedYear, selectedMonth, selectedDay);
+    
+          }
+      }
+      catch (ArgumentOutOfRangeException)
+      {
+          errorMessage = "Invalid date. Please select a valid day, month, and year.";
+            dueDate=null;
+      }
+  }
+  //**-----------------------------------------------------------**//
 
   private async Task AddTodo()
 {
+     if (dueDate.HasValue)
+        {
+            ValidateDate();
+        }
+        else
+        {
+           ShowErrorMessage(errorMessage ?? "Please select a valid due date.");
+            return;
+        }
     if (!string.IsNullOrWhiteSpace(newTodo) && selectedCategoryId.HasValue)
-    {
+    {  
+
         
         var todo = new TodoItem
         {
@@ -187,7 +242,7 @@ else
         try
         {
             await TodosStorage.AddTodoAsync(todo);
-
+             ValidateDate();   
             todos = await TodosStorage.GetTodosAsync();
 
             newTodo = string.Empty;
@@ -208,8 +263,9 @@ else
     }
 }
 
+          //**-----------------------------------------------------------**//
 
-
+  
     private async Task HandleEnter(KeyboardEventArgs e)
     {
         if (e.Key == "Enter")
