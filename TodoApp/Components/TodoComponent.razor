@@ -284,7 +284,7 @@ else
     }
 }
 
-          //**-----------------------------------------------------------**//
+    //**-----------------------------------------------------------**//
 
   
     private async Task HandleEnter(KeyboardEventArgs e)
@@ -294,6 +294,9 @@ else
             await AddTodo();
         }
     }
+          
+       //**-----------------------------------------------------------**//
+
 
     private async Task ToggleAsync(TodoItem todo)
 {
@@ -309,9 +312,10 @@ else
         await ShowCompletionAlert(todo.Title);
     }
 
-    UpdateCompletedTasks();
+    await UpdateCompletedTasks();
 }
 
+   //**-----------------------------------------------------------**//
 
     private async Task UpdateCompletedTasks()
 
@@ -320,12 +324,15 @@ else
         completedTasks = todos.Where(t => t.IsCompleted).ToList();
     }
 
+  //**-----------------------------------------------------------**//
+
    private async Task DeleteTodoAsync(TodoItem todo)
     {
     await TodosStorage.DeleteTodoAsync(todo.Id);
     await  UpdateCompletedTasks();
    }
 
+    //**-----------------------------------------------------------**//
 
     private string GetCategoryNameById(int id)
     {
@@ -338,6 +345,7 @@ else
     }
       
 
+    //**-----------------------------------------------------------**//
 
     private async Task HandleTakeBack(TodoItem todo)
 {
@@ -363,7 +371,8 @@ else
         
         StateHasChanged(); 
     }
-    
+
+    //**-------------------------------------------------------------------------------------**//
     private async Task ShowCompletionAlert(string title) 
         {
         AlertMessage = $"The task '{title}' has been marked as completed.";
