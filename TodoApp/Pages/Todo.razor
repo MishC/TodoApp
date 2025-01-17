@@ -2,17 +2,17 @@
 
 @if (isAuthenticated)
 
-{   
+{       <div class="d-flex flex-column justify-content-center justify-content-md-start  my-5 mx-md-4">
+<h5 class="text-primary text-md-start text-center">Hi @AuthService.CurrentUsername!  </h5>
+    <div><CurrentTime /></div>
      
-    <div class="row d-flex justify-content-center justify-content-md-start mx-1 mx-xs-0 mb-md-2 mb-0 mt-2">
+    <div class="row d-flex justify-content-center justify-content-md-start mx-1 mx-xs-0 mb-md-2 mb-0 mt-5">
         <button type="button" class="btn btn-success btn-md col-lg-2 col-md-2  @clickedClass1 mb-5" @onclick="ShowComponentA">Todos</button>
         <span class="col-1"></span>
         <button class="btn btn-success btn-md col-lg-2 col-md-2  @clickedClass2 mb-md-5 mb-0 " @onclick="ShowComponentB">Done</button>
     </div>
    
-    <div class="d-flex flex-column justify-content-center justify-content-md-start  my-5 mx-md-4">
-<h4 class="text-primary text-md-start text-center">Hi @AuthService.CurrentUsername!  </h4>
-    <div><CurrentTime /></div>
+   
 </div>
 
     @if (isTodoVisible.HasValue)
