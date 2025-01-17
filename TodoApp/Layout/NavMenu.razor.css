@@ -4,13 +4,12 @@
 
 .top-row {
     height: 3.5rem;
-    background-color: rgba(0,0,0,0.4);
+    background-color: rgb(21, 38, 84);
 }
 
 .navbar-brand {
     font-size: 1.1rem;
 }
-
 .bi {
     display: inline-block;
     position: relative;
