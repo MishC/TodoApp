@@ -1,6 +1,6 @@
 
 .list-group-item:hover {
-    background-color: #a7b6ff93;
+    background-color: #a7b6ff63;
 }
 li:focus {
     outline: none;
@@ -14,7 +14,7 @@ li:focus {
     vertical-align: middle;
 }
 
-}
+.form {background:#59a6f923}
 @media (max-width: 575.98px) {
     .content {
    }
