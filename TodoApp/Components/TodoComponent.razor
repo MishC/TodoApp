@@ -39,17 +39,17 @@
 </div>
 
 
-<!-- -->
-
-  <label class="px-4 mt-4">Due date</label>
-  <div class="d-flex flex-sm-row flex-column w-75 mx-md-4 mx-auto  pt-2">
+<!--Due Date Form -->
+    <div class="w-75 mx-md-4 mx-auto pt-2 mb-3">
+  <label class="">Due date</label>
+  <div class="d-flex flex-row  w-75    pt-2">
 
     <div class="form-group mb-3">
         <label for="daySelect" class="form-label  text-muted small">Day</label>
         <select id="daySelect" class="form-select" @bind="selectedDay">
          @for (int i = 1; i <= 31; i++)
             {
-                <option value="@i">@i</option>
+                <option value="@i" style="max-width:20%">@i</option>
             }
         </select>
     </div>
@@ -74,8 +74,10 @@
         </select>
     </div>
  </div>
-    <div class="add-button w-100  mt-3 mx-4 d-flex d-md-block">
-        <button class="btn btn-success px-4 mt-sm-0  my-auto custom-btn-width" type="button" @onclick="AddTodo">Add</button>
+        </div>
+    <!-- Add Button -->
+    <div class="add-button w-100  mt-4 px-sm-2 px-md-0 mx-sm-5 mx-md-4 mx-auto  text-center text-sm-start d-sm-block  ">
+        <button class="btn btn-success px-5  mt-sm-0 my-auto custom-btn-width" type="button" @onclick="AddTodo">Add</button>
     </div>
 </div>
 <!-- End of form -->  
