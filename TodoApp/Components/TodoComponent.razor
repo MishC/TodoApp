@@ -97,25 +97,25 @@
                 if (!todo.IsCompleted) 
                 {
 <!-- Content -->
-<li class="list-group-item  d-flex  flex-sm-row justify-content-md-between w-100 text-justify pe-0 m-0 p-3 border border-secondary text-wrap text-break @(isFirstVisible ? "border-top-1" : "border-top-0")"
+<li class="list-group-item  d-flex  flex-sm-row justify-content-md-between align-items-center w-100 text-justify pe-0 m-0 p-2 border border-secondary text-wrap text-break @(isFirstVisible ? "border-top-1" : "border-top-0")"
     @key="todo.Id" tabindex="0">
-           <div class="content col-sm-10 col-9">
+           <div class="content col-sm-10 col-9 p-0">
             <div class="d-flex flex-column flex-md-row align-items-center my-auto">
             
 
 
         <!-- Due Date -->
-            <span class="col-md-2 col-12 text-start text-muted small my-auto">
+            <span class="col-md-3 col-12 text-start text-muted small my-auto">
             @(todo.DueDate.HasValue ? todo.DueDate.Value.ToString("dd/MM/yyyy") : "No due date")
              </span>
         
         <!-- Category -->
-            <span class="col-md-3 col-12 text-start text-muted mx-md-1  my-auto">
+            <span class="col-md-3 col-12 text-start text-muted small mx-md-2   my-auto">
             @GetCategoryNameById(todo.CategoryId)
              </span>
         
         <!-- Title -->
-            <span class="col-md-5 col-12 text-start text-middle mx-md-1 my-auto @(todo.Priority ? "text-danger" : "") ">
+            <span class="col-md-4 col-12 text-start text-middle px-1 mx-md-1 my-auto @(todo.Priority ? "text-danger" : "") ">
             @todo.Title
              </span>
         </div>
@@ -123,10 +123,10 @@
         <!-- Actions -->
              <div class="actions col-sm-2 col-3 align-items-center my-auto ">
 
-           <span class="d-flex flex-sm-row justify-content-end text-center  align-middle ms-sm-auto mr-auto my-auto py-auto" >
-                <input class="form-check-input form-check cursor-pointer py-0" type="checkbox" value="" id="defaultCheck1" @onchange="async () => await ToggleAsync(todo)" unchecked />
+           <span class="d-flex flex-sm-row justify-content-end text-center  align-middle ms-sm-auto mr-auto my-auto p-0"  >
+                <input class="form-check-input form-check cursor-pointer py-0" type="checkbox" value="" id="defaultCheck1" @onchange="async () => await ToggleAsync(todo)" unchecked style="height:1rem;"/>
 
-            <button type="button" class="btn btn-sm" @onclick="() => ShowDeleteModalAsync(todo)">
+            <button type="button" class="btn btn-sm" @onclick="() => ShowDeleteModalAsync(todo)" style="height:1rem">
                 @emoji[2]
             </button>
         </span>

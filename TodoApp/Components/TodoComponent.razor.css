@@ -4,7 +4,7 @@
 }
 li:focus {
     outline: none;
-    border-color: ,#007bff;
+   border-color: #007bff;
     /*box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);*/
     /*color:#fff;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;*/
