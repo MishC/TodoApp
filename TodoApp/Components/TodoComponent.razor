@@ -105,12 +105,12 @@
 
 
         <!-- Due Date -->
-            <span class="col-md-2 col-12 text-start text-muted small mb-md-0 my-auto">
+            <span class="col-md-2 col-12 text-start text-muted small my-auto">
             @(todo.DueDate.HasValue ? todo.DueDate.Value.ToString("dd/MM/yyyy") : "No due date")
              </span>
         
         <!-- Category -->
-            <span class="col-md-3 col-12 text-start text-muted mx-md-1 mb-md-0 my-auto">
+            <span class="col-md-3 col-12 text-start text-muted mx-md-1  my-auto">
             @GetCategoryNameById(todo.CategoryId)
              </span>
         
