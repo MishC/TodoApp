@@ -1,15 +1,15 @@
-.list-group-item {
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-}
 
     .list-group-item:hover {
         transform: translateY(-2px);
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
-
-.text-truncate {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+li:focus {
+    outline: none;
+    background-color:#a7b6ff93;
+    border-color: #007bff;
+    /*box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);*/
+    /*color:#fff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;*/
 }
+
 

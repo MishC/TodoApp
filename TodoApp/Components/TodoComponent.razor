@@ -8,8 +8,8 @@
 
    
 <!-- -->
-
-  <div class="d-flex flex-sm-row flex-column w-75 mx-md-4 mx-auto my-5 pt-2">
+<div class="form border-1">
+  <div class="d-flex flex-sm-row flex-column w-75 mx-md-4 mx-auto mt-5 pt-2">
   <div class="form-group w-100 mb-3">
     <label for="categorySelect" class="form-label">Select Category</label>
     <select id="categorySelect" class="form-select" @bind="selectedCategoryId">
@@ -28,62 +28,67 @@
     </select>
   </div>
 </div>
-<!--    
--->
-<h4>Select due date</h4>
-<div class="d-flex">
-<div class="form-group mb-3">
-    <label for="daySelect" class="form-label">Select Day</label>
-    <select id="daySelect" class="form-select" @bind="selectedDay">
-        @for (int i = 1; i <= 31; i++)
-        {
-            <option value="@i">@i</option>
-        }
-    </select>
-</div>
-
-<div class="form-group mb-3">
-    <label for="monthSelect" class="form-label">Select Month</label>
-    <select id="monthSelect" class="form-select" @bind="selectedMonth">
-        @for (int i = 1; i <= 12; i++)
-        {
-            <option value="@i">@i</option>
-        }
-    </select>
-</div>
-
-<div class="form-group mb-3">
-    <label for="yearSelect" class="form-label">Select Year</label>
-    <select id="yearSelect" class="form-select" @bind="selectedYear">
-        @for (int i = DateTime.Now.Year; i <= DateTime.Now.Year + 10; i++) 
-        {
-            <option value="@i">@i</option>
-        }
-    </select>
-</div>
-</div>
 <!---->
-<div class="d-flex flex-sm-row flex-column w-75 mx-md-4 mx-auto my-5 pt-2">
-  <input type="text" @bind="newTodo" class="form-control" aria-label="Todo"
-         placeholder="Enter a new todo..." @onkeydown="HandleEnter" />
-  <button class="btn btn-success px-md-4 mt-3 mt-sm-0 mx-auto mx-sm-0 custom-btn-width" type="button" 
-          @onclick="AddTodo">Add</button>
+   
+
+<div class="w-75 mx-md-4 mx-auto pt-2"> <label>Todo Title</label>
+  <input type="text" @bind="newTodo" class="form-control" aria-label="Todo" placeholder="Enter a new todo..." @onkeydown="HandleEnter" />
 </div>
 
 
 <!-- -->
+
+  <label class="px-4 mt-4">Due date</label>
+  <div class="d-flex flex-sm-row flex-column w-75 mx-md-4 mx-auto  pt-2">
+
+    <div class="form-group mb-3">
+        <label for="daySelect" class="form-label  text-muted small">Day</label>
+        <select id="daySelect" class="form-select" @bind="selectedDay">
+         @for (int i = 1; i <= 31; i++)
+            {
+                <option value="@i">@i</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="monthSelect" class="form-label  text-muted small">Month</label>
+        <select id="monthSelect" class="form-select" @bind="selectedMonth">
+          @for (int i = 1; i <= 12; i++)
+            {
+                <option value="@i">@i</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="yearSelect" class="form-label  text-muted small">Year</label>
+        <select id="yearSelect" class="form-select" @bind="selectedYear">
+            @for (int i = DateTime.Now.Year; i <= DateTime.Now.Year + 10; i++) 
+            {
+                <option value="@i">@i</option>
+            }
+        </select>
+    </div>
+ </div>
+    <div class=" px-4 mt-3">
+        <button class="btn btn-success px-4 mt-sm-0 mx-auto mx-sm-0 custom-btn-width" type="button" @onclick="AddTodo">Add</button>
+    </div>
+</div>
+<!-- End of form -->  
+
     @if (todos?.Count > 0 && todos?.Any(todo => !todo.IsCompleted) == true)
     {
-        <ul class="list-group my-5 pt-2 mx-1 w-75 mx-auto mx-md-4 mb-5">
-             <li class="d-none d-md-flex list-group-item list-group-item-primary justify-content-between px-4 text-white"
-                style="background-color:#0056b3">
-                <span class="col-xl-3  col-sm-3 text-start">Due Date</span>
-                <span class="col-xl-3  col-sm-6 mx-1 text-start">Category</span>
-                 <span class="col-xl-5  col-sm-6 mx-1 text-start">Title</span>
+        <ul class="list-group my-5 pt-2 mx-1 px-auto mx-auto mx-md-4 mb-5">
+    <!-- Heading for MD and Above -->
+    <li class="d-none d-md-flex list-group-item justify-content-between px-4 text-white text-justify"
+        style="background-color:#0056b3">
+        <span class="col-md-2 text-start">Due Date</span>
+        <span class="col-md-3 mx-1 text-start">Category</span>
+        <span class="col-md-5 mx-1 text-start">Title</span>
+        <span class="col-md-2 text-end">Actions</span>
+    </li>
 
-
-                <span class="col-xl-2  col-sm-3"></span>
-            </li>
             @{
                 bool isFirstVisible = true;
             }
@@ -91,31 +96,41 @@
             { 
                 if (!todo.IsCompleted) 
                 {
-<li class="d-flex flex-md-row justify-content-md-between  border-1 w-100 p-md-2 pe-0 m-0 p-0 border-sm-2 @(isFirstVisible ? "border-top-1" : "border-top-0")" 
-    @key="todo.Id">
+<!-- Content -->
+<li class="list-group-item d-flex flex-column  flex-sm-row justify-content-md-between w-100 text-justify pe-0 m-0 p-3 border border-secondary text-wrap text-break @(isFirstVisible ? "border-top-1" : "border-top-0")"
+    @key="todo.Id" tabindex="0">
+           <div class="col-sm-10 col-*">
+            <div class="d-flex flex-column flex-md-row align-items-center my-auto">
+            
 
-   <div class="flex-column bg-sm-light brown align-items-center align-items-sm-start align-items-md-center">
-            <span class="brown p-0 text-muted small">
-     @todo.DueDate
-            </span>
-       
-               
-       <span class="text-muted">   @GetCategoryNameById(todo.CategoryId)</span>
-       <span class="@(todo.Priority ? "text-danger" : "")">@todo.Title</span>   
 
-   </div>
+        <!-- Due Date -->
+            <span class="col-md-2 col-12 text-start text-muted small mb-md-0 mb-2">
+            @(todo.DueDate.HasValue ? todo.DueDate.Value.ToString("dd/MM/yyyy") : "No due date")
+             </span>
+        
+        <!-- Category -->
+            <span class="col-md-3 col-12 text-start text-muted mx-md-1 mb-md-0 mb-2">
+            @GetCategoryNameById(todo.CategoryId)
+             </span>
+        
+        <!-- Title -->
+            <span class="col-md-5 col-12 text-start @(todo.Priority ? "text-danger" : "") mx-md-1 mb-md-0 mb-2">
+            @todo.Title
+             </span>
+        </div>
+        </div>
+        <!-- Actions -->
+             <div class="col-sm-2 col-*">
 
-        <div>
- 
-        <!-- This span contains the checkbox and button, in a row on md+ -->
-        <span class="d-flex flex-md-row justify-content-end align-items-center ms-md-auto">
-                <input class="form-check-input form-check cursor-pointer" type="checkbox" value="" id="defaultCheck1" @onchange="async () => await ToggleAsync(todo)" unchecked />
+           <span class="d-flex flex-sm-row justify-content-end align-items-start ms-auto mr-auto my-auto" >
+                <input class="form-check-input form-check cursor-pointer py-0" type="checkbox" value="" id="defaultCheck1" @onchange="async () => await ToggleAsync(todo)" unchecked />
 
             <button type="button" class="btn btn-sm" @onclick="() => ShowDeleteModalAsync(todo)">
                 @emoji[2]
             </button>
         </span>
-      </div>
+        </div>
 </li>
 
 
@@ -197,9 +212,13 @@ else
           var selectedDate = new DateTime(selectedYear, selectedMonth, selectedDay);
 
           if (selectedDate < DateTime.Now.Date)
+
           {
               errorMessage = "The selected date is in the past. Please choose a valid future date.";
             dueDate=null;
+               ShowErrorMessage(errorMessage ?? "Please select a valid due date.");
+
+            
           }
           else
           {
@@ -212,21 +231,18 @@ else
       {
           errorMessage = "Invalid date. Please select a valid day, month, and year.";
             dueDate=null;
+             ShowErrorMessage(errorMessage ?? "Please select a valid due date.");
       }
+
+            
   }
   //**-----------------------------------------------------------**//
 
   private async Task AddTodo()
 {
-     if (dueDate.HasValue)
-        {
+     
             ValidateDate();
-        }
-        else
-        {
-           ShowErrorMessage(errorMessage ?? "Please select a valid due date.");
-            return;
-        }
+
     if (!string.IsNullOrWhiteSpace(newTodo) && selectedCategoryId.HasValue)
     {  
 
