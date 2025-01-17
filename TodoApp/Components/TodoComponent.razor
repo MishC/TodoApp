@@ -97,33 +97,33 @@
                 if (!todo.IsCompleted) 
                 {
 <!-- Content -->
-<li class="list-group-item d-flex flex-column  flex-sm-row justify-content-md-between w-100 text-justify pe-0 m-0 p-3 border border-secondary text-wrap text-break @(isFirstVisible ? "border-top-1" : "border-top-0")"
+<li class="list-group-item  d-flex  flex-sm-row justify-content-md-between w-100 text-justify pe-0 m-0 p-3 border border-secondary text-wrap text-break @(isFirstVisible ? "border-top-1" : "border-top-0")"
     @key="todo.Id" tabindex="0">
-           <div class="col-sm-10 col-*">
+           <div class="content col-sm-10 col-9">
             <div class="d-flex flex-column flex-md-row align-items-center my-auto">
             
 
 
         <!-- Due Date -->
-            <span class="col-md-2 col-12 text-start text-muted small mb-md-0 mb-2">
+            <span class="col-md-2 col-12 text-start text-muted small mb-md-0 my-auto">
             @(todo.DueDate.HasValue ? todo.DueDate.Value.ToString("dd/MM/yyyy") : "No due date")
              </span>
         
         <!-- Category -->
-            <span class="col-md-3 col-12 text-start text-muted mx-md-1 mb-md-0 mb-2">
+            <span class="col-md-3 col-12 text-start text-muted mx-md-1 mb-md-0 my-auto">
             @GetCategoryNameById(todo.CategoryId)
              </span>
         
         <!-- Title -->
-            <span class="col-md-5 col-12 text-start @(todo.Priority ? "text-danger" : "") mx-md-1 mb-md-0 mb-2">
+            <span class="col-md-5 col-12 text-start text-middle mx-md-1 my-auto @(todo.Priority ? "text-danger" : "") ">
             @todo.Title
              </span>
         </div>
         </div>
         <!-- Actions -->
-             <div class="col-sm-2 col-*">
+             <div class="actions col-sm-2 col-3 align-items-center my-auto ">
 
-           <span class="d-flex flex-sm-row justify-content-end align-items-start ms-auto mr-auto my-auto" >
+           <span class="d-flex flex-sm-row justify-content-end text-center  align-middle ms-sm-auto mr-auto my-auto py-auto" >
                 <input class="form-check-input form-check cursor-pointer py-0" type="checkbox" value="" id="defaultCheck1" @onchange="async () => await ToggleAsync(todo)" unchecked />
 
             <button type="button" class="btn btn-sm" @onclick="() => ShowDeleteModalAsync(todo)">
