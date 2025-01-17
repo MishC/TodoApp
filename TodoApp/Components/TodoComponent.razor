@@ -7,8 +7,9 @@
     <h2 class="mt-md-1 mt-5 mb-2 text-center text-md-start pt-3 mx-md-4"> Add Todos</h2>
 
    
-<!-- -->
-<div class="form border-1">
+<!-- Add Todo -->
+<div class="form border-1 mx-auto d-table">
+    <!--Select Category  -->
   <div class="d-flex flex-sm-row flex-column w-75 mx-md-4 mx-auto mt-5 pt-2">
   <div class="form-group w-100 mb-3">
     <label for="categorySelect" class="form-label">Select Category</label>
@@ -28,7 +29,7 @@
     </select>
   </div>
 </div>
-<!---->
+<!--End of Select Category-->
    
 
 <div class="w-75 mx-md-4 mx-auto pt-2"> <label>Todo Title</label>
@@ -71,8 +72,8 @@
         </select>
     </div>
  </div>
-    <div class=" px-4 mt-3">
-        <button class="btn btn-success px-4 mt-sm-0 mx-auto mx-sm-0 custom-btn-width" type="button" @onclick="AddTodo">Add</button>
+    <div class="add-button w-100  mt-3 mx-4 d-flex d-md-block">
+        <button class="btn btn-success px-4 mt-sm-0  my-auto custom-btn-width" type="button" @onclick="AddTodo">Add</button>
     </div>
 </div>
 <!-- End of form -->  
