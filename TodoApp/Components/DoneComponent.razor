@@ -51,9 +51,9 @@ else {
         </div>
 }
 @code {
-    [CascadingParameter] protected List<TodoItem>? completedTasks { get; set; }
     [Parameter] public EventCallback<TodoItem> OnTakeBack { get; set; }
-         private bool isAuthenticated { get; set; }
+    [CascadingParameter]  private bool isAuthenticated { get; set; }
+    
     public List<TodoItem> CompletedTodos; 
 
 
@@ -71,7 +71,7 @@ else {
  
 if (isAuthenticated)
 {
-     navigation.NavigateTo("/todos/done");
+     navigation.NavigateTo("/todos?done");
    
  }
          CompletedTodos = await  TodosStorage.GetCompletedTodosAsync();

@@ -33,7 +33,7 @@
         bool success = await AuthService?.Login(userLogin?.Username?.Trim(), userLogin?.Password);
         if(success)
         {   
-            navigation.NavigateTo($"/todos?userId={userLogin.Username}");
+            navigation.NavigateTo($"/?userId={userLogin.Username}");
         }
         else
         {

@@ -1,6 +1,9 @@
 ﻿@inject HttpClient Http
 @inject IJSRuntime JSRuntime
 @inject TodosStorage TodosStorage
+@page "/todos"
+@page "/todos/{visible:bool}"
+
 
 @if (visible)
 {  
@@ -146,8 +149,7 @@
     }
 }
 else
-{ 
-    <CascadingValue Value="completedTasks">
+{      <CascadingValue Value="isAuthenticated">
         <DoneComponent OnTakeBack="HandleTakeBack"/>
     </CascadingValue>
 }
@@ -162,6 +164,7 @@ else
 
     [Parameter] public bool visible { get; set; }  
     
+    private bool isAuthenticated { get; set; }
 
     private string newTodo = string.Empty;
     private int? selectedCategoryId;
@@ -199,7 +202,11 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        
+       
+     navigation.NavigateTo("/todos");
+   
+ 
+
         todos = await TodosStorage.GetTodosAsync();
          categories = await TodosStorage.GetCategoriesAsync();
         UpdateCompletedTasks();
@@ -207,6 +214,9 @@ else
         EmojiService.HighSurrogate=0xD83D;
         EmojiService.LowSurrogate=0xDD59;
         emojiBytes= EmojiService.GetEmojiBytes();
+         isAuthenticated = await AuthService.IsAuthenticated();
+ 
+
     }
 
     //**-----------------------------------------------------------**//

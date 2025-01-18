@@ -1,9 +1,13 @@
-﻿@page "/"
+﻿@inject HttpClient Http
+@inject IJSRuntime JSRuntime
+@page "/"
+ 
 
-   
-        <Todo />
-
-
+<div class="d-flex flex-column justify-content-center justify-content-md-start  my-5 mx-md-4">
+<h5 class="text-primary text-md-start text-center">Hi @AuthService.CurrentUsername!  </h5>
+    <div><CurrentTime />    </div>
+        <Todo /> 
+    </div>
 @code {
     protected bool isAuthenticated=false;
 
