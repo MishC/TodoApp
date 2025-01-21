@@ -1,7 +1,7 @@
 # This workflow will build a .NET project
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
 
-name: .NET
+name: Build and Test TodoApp and TodosApi
 
 on:
   push:
@@ -10,20 +10,41 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
+
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v2
-    - name: Build and Start Services
-      run: |
-        docker-compose -f docker-compose.yml up --build --abort-on-container-exit
-    - name: Run Tests
-      run: |
-        docker-compose -f docker-compose.yml exec backend dotnet test
-    - name: Tear Down
-      run: |
-        docker-compose -f docker-compose.yml down
+      # Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v3
 
+      # Set up Docker Buildx
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
- 
+    
+
+      # Build TodoApp
+      - name: Build TodoApp
+        run: |
+          docker build -f TodoApp/Dockerfile1 -t todoapp ./TodoApp
+
+      # Build TodosApi
+      - name: Build TodosApi
+        run: |
+          docker build -f TodosApi/Dockerfile2 -t todosapi ./TodosApi
+
+      # Start Services
+      - name: Start Services
+        run: |
+          docker-compose up -d
+
+      # Run Tests
+      - name: Run Tests
+        run: |
+          docker-compose exec todosapi dotnet test
+          docker-compose exec todoapp npm run test
+
+      # Tear Down Services
+      - name: Tear Down Services
+        run: docker-compose down
