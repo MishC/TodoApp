@@ -11,18 +11,19 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v4
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 8.0.x
-    - name: Restore dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build --no-restore
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+    - name: Checkout Code
+      uses: actions/checkout@v2
+    - name: Build and Start Services
+      run: |
+        docker-compose -f docker-compose.yml up --build --abort-on-container-exit
+    - name: Run Tests
+      run: |
+        docker-compose -f docker-compose.yml exec backend dotnet test
+    - name: Tear Down
+      run: |
+        docker-compose -f docker-compose.yml down
+
+
+ 
