@@ -1,19 +1,16 @@
 version: '3.8'
 
 services:
+  services:
   todosapi:
     build:
-      context: ./TodosApi
-      dockerfile: Dockerfile2
+      context: .
+      dockerfile: ./TodosApi/Dockerfile2
     image: todosapi
-    ports:
-      - "5075:5075"
     environment:
       ASPNETCORE_ENVIRONMENT: Development
-      DB_FILE: /app/todos.db
     volumes:
-      - todos-data:/app
-
+      - ./test-results:/app/TestResults
   todoapp:
     build:
       context: ./TodoApp

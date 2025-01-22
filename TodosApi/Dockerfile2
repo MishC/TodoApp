@@ -5,32 +5,29 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
 
 # Copy the project file and restore dependencies
-COPY ./TodosApi.csproj .
-RUN dotnet restore
+COPY ./TodosApi.csproj ./TodosApi/
+RUN dotnet restore ./TodosApi/TodosApi.csproj
 
 # Copy the entire source code
-COPY . .
+COPY . ./TodosApi/
 
-# Clean old build artifacts
-RUN rm -rf /app/bin /app/obj
+WORKDIR /app/TodosApi
+RUN dotnet build -c Release
 
-# Build the application
-RUN dotnet build --ignore-failed-sources -c Release -o /app/build
 
-# Publish the application
-RUN dotnet publish -c Release -o /app/publish
+# Use the same SDK image to run tests (testing stage)
+FROM build AS test
+WORKDIR /app/TodosApi
+RUN dotnet test /app/TodosApi.sln --logger:trx
 
-# Use a smaller runtime image
+# Publish the app (if needed)
+FROM build AS publish
+WORKDIR /app/TodosApi
+RUN dotnet publish -c Release -o /app/out
+
+# Use the .NET runtime image to run the application
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
-
-# Set the working directory for runtime
 WORKDIR /app
-
-# Copy the published app from the build stage
-COPY --from=build /app/publish .
-
-# Expose the port
+COPY --from=publish /app/out .
 EXPOSE 5075
-
-# Run the application
 ENTRYPOINT ["dotnet", "TodosApi.dll"]
