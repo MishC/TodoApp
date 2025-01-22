@@ -29,9 +29,6 @@ jobs:
       - name: Build Frontend Service (TodoApp)
         run: docker build -f TodoApp/Dockerfile1 -t todoapp ./TodoApp
 
-      # Verify Backend Files
-      - name: Verify Backend Files
-        run: docker run --rm todosapi ls /app
 
       # Run Backend Tests
       - name: Run Backend Tests
