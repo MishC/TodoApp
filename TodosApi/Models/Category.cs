@@ -12,10 +12,10 @@ namespace TodosApi.Models
         [Key]
         public int Id { get; set; }
 
-        //[Required(ErrorMessage = "Category name is required.")]
+        [Required(ErrorMessage = "Category name is required.")]
         [StringLength(30, ErrorMessage = "Category name cannot exceed 20 characters.")]
-        public string Name {  get; set; }
-
+        public required string Name { get; set; }
+       
         public string CategoryDescription { get; set; }= string.Empty;
 
         [JsonIgnore]
