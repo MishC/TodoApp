@@ -2,26 +2,38 @@ version: '3.8'
 
 services:
   todosapi:
-    image: todosapi
     build:
       context: .
       dockerfile: ./TodosApi/Dockerfile2
+    image: todosapi
     ports:
-      - "5075:5075"  # Backend mapped to port 5075
+      - "5075:5075"
     environment:
-      ASPNETCORE_ENVIRONMENT: Development  # Development mode
-      DB_FILE: /app/todos.db  # Path to the SQLite database file inside the container
+      ASPNETCORE_ENVIRONMENT: Development
+      DB_FILE: /app/todos.db
     volumes:
-      - todos-data:/app 
+      - todos-data:/app
+
   todoapp:
-    image: todoapp
     build:
       context: .
       dockerfile: ./TodoApp/Dockerfile1
+    image: todoapp
     ports:
-      - "5000:80"  # Frontend mapped to port 5000
+      - "5000:80"
     environment:
-      API_URL: "http://localhost:5075"  # Backend API URL
+      API_URL: "http://localhost:5075"
+
+  test:
+    build:
+      context: .
+      dockerfile: ./TodosApi/Dockerfile2  # Reuse the same Dockerfile for tests
+    image: todosapi-tests
+    command: dotnet test /app/TodosApi.sln --logger:trx
+    volumes:
+      - todos-data:/app
+    depends_on:
+      - todosapi
 
 volumes:
   todos-data:
