@@ -3,8 +3,8 @@ version: '3.8'
 services:
   todosapi:
     build:
-      context: .
-      dockerfile: ./TodosApi/Dockerfile2
+      context: ./TodosApi
+      dockerfile: Dockerfile2
     image: todosapi
     ports:
       - "5075:5075"
@@ -16,24 +16,13 @@ services:
 
   todoapp:
     build:
-      context: .
-      dockerfile: ./TodoApp/Dockerfile1
+      context: ./TodoApp
+      dockerfile: Dockerfile1
     image: todoapp
     ports:
       - "5000:80"
     environment:
       API_URL: "http://localhost:5075"
-
-  test:
-  build:
-    context: .
-    dockerfile: ./TodosApi/Dockerfile2
-  command: dotnet test ./TodosApi/TodosApi.sln --logger:trx
-  volumes:
-    - ./test-results:/app/TestResults
-  depends_on:
-    - todosapi
-
 
 volumes:
   todos-data:
