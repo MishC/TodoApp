@@ -21,18 +21,25 @@ jobs:
       - name: Set up Docker
         uses: docker/setup-buildx-action@v2
 
-      # Build and Run Tests
-      - name: Build and Test Services
-        run: |
-          docker compose build
-          docker compose up test
+      # Build Backend Service
+      - name: Build Backend Service (TodosApi)
+        run: docker build -f TodosApi/Dockerfile2 -t todosapi ./TodosApi
 
-      # Upload Test Results
-      - name: Upload Test Results
-        uses: actions/upload-artifact@v3
-        with:
-          name: dotnet-test-results
-          path: ./test-results
+      # Build Frontend Service
+      - name: Build Frontend Service (TodoApp)
+        run: docker build -f TodoApp/Dockerfile1 -t todoapp ./TodoApp
+
+      # Verify Backend Files
+      - name: Verify Backend Files
+        run: docker run --rm todosapi ls /app
+
+      # Run Backend Tests
+      - name: Run Backend Tests
+        run: docker run --rm todosapi dotnet test /app/TodosApi.sln --logger:trx
+
+      # Run Frontend Tests
+      - name: Run Frontend Tests
+        run: docker run --rm todoapp npm run test
 
 
       # Tear Down Services
