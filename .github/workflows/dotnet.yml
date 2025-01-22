@@ -39,19 +39,15 @@ jobs:
       - name: Build Frontend Service (TodoApp)
         run: docker build -f TodoApp/Dockerfile1 -t todoapp ./TodoApp
 
-      # Step 7: Build and Start Services
-      - name: Start Services
-        run: docker compose up -d
+      - name: Build and Run Docker Compose
+        run: docker compose up --build -d
 
-      # Run Backend Tests
-     # - name: Run Backend Tests
-      #  run: docker compose exec todosapi dotnet test /app/TodosApi.sln --logger:trx
+      - name: Run Backend Tests
+        run: docker compose run testapi
 
-
-      # Step 9: Run Frontend Tests
       - name: Run Frontend Tests
-        run: docker compose exec todoapp dotnet test
-
+        run: docker compose run testapp
       # Step 10: Tear Down Services
+      
       - name: Tear Down Services
         run: docker compose down
