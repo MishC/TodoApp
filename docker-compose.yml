@@ -25,15 +25,15 @@ services:
       API_URL: "http://localhost:5075"
 
   test:
-    build:
-      context: .
-      dockerfile: ./TodosApi/Dockerfile2  # Reuse the same Dockerfile for tests
-    image: todosapi-tests
-    command: dotnet test /app/TodosApi.sln --logger:trx
-    volumes:
-      - todos-data:/app
-    depends_on:
-      - todosapi
+  build:
+    context: .
+    dockerfile: ./TodosApi/Dockerfile2
+  command: dotnet test ./TodosApi/TodosApi.sln --logger:trx
+  volumes:
+    - ./test-results:/app/TestResults
+  depends_on:
+    - todosapi
+
 
 volumes:
   todos-data:
