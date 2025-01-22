@@ -3,12 +3,12 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
 
 # Step 2: Copy the project file and restore dependencies
-COPY ./TodoApp/TodoApp.csproj ./TodoApp/
-RUN dotnet restore ./TodoApp/TodoApp.csproj
+COPY ./TodoApp.csproj .
+RUN dotnet restore
 
 # Step 3: Copy the rest of the application files
-COPY ./TodoApp /app/TodoApp
-WORKDIR /app/TodoApp
+COPY . .
+WORKDIR /app
 
 # Step 4: Build the application
 RUN dotnet publish -c Release -o /app/out
