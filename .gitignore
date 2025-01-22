@@ -372,3 +372,7 @@ FodyWeavers.xsd
 
 # ignore Auth config files
 AuthConfig.cs
+
+# Ignore build directories in TodoApp and TodoApi
+TodoApp/build/*
+TodosApi/build/*

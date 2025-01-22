@@ -93,11 +93,11 @@ namespace TodosApi.Service
             }
             if (newTodo.IsCompleted == false) existingTodo.TimeCompleted = null;
 
-            if (newTodo.TimeCompleted != null) existingTodo.TimeCompleted = newTodo.TimeCompleted;
-            if (newTodo.TimeCompleted != null) existingTodo.TimeCompleted = newTodo.TimeCompleted;
-            if (newTodo.CategoryId!=0) existingTodo.CategoryId = newTodo.CategoryId;
-            if (newTodo.Priority != null) existingTodo.Priority = newTodo.Priority;
-            if (newTodo.DueDate != null) existingTodo.DueDate = newTodo.DueDate;
+             existingTodo.TimeCompleted = newTodo.TimeCompleted;
+             existingTodo.TimeCompleted = newTodo.TimeCompleted;
+             existingTodo.CategoryId = newTodo.CategoryId;
+             existingTodo.Priority = newTodo.Priority;
+            existingTodo.DueDate = newTodo.DueDate;
 
 
             _todosRepository.UpdateTodo(existingTodo);

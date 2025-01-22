@@ -1,0 +1,21 @@
+# Step 1: Use the .NET SDK image for building
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /app
+
+# Step 2: Copy the project file and restore dependencies
+COPY ./TodoApp/TodoApp.csproj ./TodoApp/
+RUN dotnet restore ./TodoApp/TodoApp.csproj
+
+# Step 3: Copy the rest of the application files
+COPY ./TodoApp /app/TodoApp
+WORKDIR /app/TodoApp
+
+# Step 4: Build the application
+RUN dotnet publish -c Release -o /app/out
+
+# Step 5: Use Nginx to serve the Blazor WebAssembly app
+FROM nginx:1.21 AS runtime
+WORKDIR /usr/share/nginx/html
+COPY --from=build /app/out/wwwroot .
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

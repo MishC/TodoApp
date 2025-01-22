@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  todosapi:
+    image: todosapi
+    build:
+      context: .
+      dockerfile: ./TodosApi/Dockerfile2
+    ports:
+      - "5075:5075"  # Backend mapped to port 5075
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development  # Development mode
+      DB_AUTHENTICATION: false  # Disable DB authentication for development
+    depends_on:
+      - db  # Database dependency
+
+  todoapp:
+    image: todoapp
+    build:
+      context: .
+      dockerfile: ./TodoApp/Dockerfile1
+    ports:
+      - "5000:80"  # Frontend mapped to port 5000
+    environment:
+      API_URL: "http://localhost:5075"  # Backend API URL
+
+  db:
+    image: postgres:15
+    container_name: todos-db
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: todosdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data:

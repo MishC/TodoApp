@@ -1,0 +1,40 @@
+# Use the official .NET SDK image for building the app
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the project files
+COPY ./TodosApi/TodosApi.csproj ./TodosApi/
+
+# Restore dependencies
+WORKDIR /app/TodosApi
+RUN dotnet restore
+
+# Copy the entire source code
+COPY ./TodosApi/ /app/TodosApi/
+
+# Clean old build artifacts
+RUN rm -rf /app/TodosApi/bin /app/TodosApi/obj
+
+# Build the application
+RUN dotnet build --ignore-failed-sources -c Release -o /app/build
+
+
+# Publish the application
+RUN dotnet publish -c Release -o /app/publish
+
+# Use a smaller runtime image
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+
+# Set the working directory for runtime
+WORKDIR /app
+
+# Copy the published app from the build stage
+COPY --from=build /app/publish .
+
+# Expose the port
+EXPOSE 5075
+
+# Run the application
+ENTRYPOINT ["dotnet", "TodosApi.dll"]
