@@ -10,9 +10,10 @@ services:
       - "5075:5075"  # Backend mapped to port 5075
     environment:
       ASPNETCORE_ENVIRONMENT: Development  # Development mode
-      DB_AUTHENTICATION: false  # Disable DB authentication for development
-    depends_on:
-      - db  # Database dependency
+      DB_PROVIDER: sqlite  # Specify SQLite as the provider
+      DB_FILE: /app/data/todos.db  # Path to the SQLite database file inside the container
+    volumes:
+      - todos-data:/app/data  # Mount a volume for database persistence
 
   todoapp:
     image: todoapp
@@ -24,17 +25,5 @@ services:
     environment:
       API_URL: "http://localhost:5075"  # Backend API URL
 
-  db:
-    image: postgres:15
-    container_name: todos-db
-    environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: todosdb
-    ports:
-      - "5432:5432"
-    volumes:
-      - db-data:/var/lib/postgresql/data
-
 volumes:
-  db-data:
+  todos-data:
