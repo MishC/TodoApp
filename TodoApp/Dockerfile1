@@ -16,6 +16,6 @@ RUN dotnet publish -c Release -o /app/TodoApp/out
 # Step 5: Use Nginx to serve the Blazor WebAssembly app
 FROM nginx:1.21 AS runtime
 WORKDIR /usr/share/nginx/html
-COPY --from=build /app/out/wwwroot .
+COPY --from=build /app/TodoApp/out/wwwroot .
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
