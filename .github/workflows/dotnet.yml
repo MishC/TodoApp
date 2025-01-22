@@ -13,35 +13,44 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the code
+      # Step 1: Checkout the Code
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # Set up Docker
+      # Step 2: Set up Docker
       - name: Set up Docker
         uses: docker/setup-buildx-action@v2
 
-      # Build Backend Service
+      # Step 3: Install the Required .NET SDK
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.405'
+
+      # Step 4: Verify .NET SDK Installation
+      - name: Verify .NET SDK Version
+        run: dotnet --version
+
+      # Step 5: Build Backend Service
       - name: Build Backend Service (TodosApi)
         run: docker build -f TodosApi/Dockerfile2 -t todosapi ./TodosApi
 
-      # Build Frontend Service
+      # Step 6: Build Frontend Service
       - name: Build Frontend Service (TodoApp)
         run: docker build -f TodoApp/Dockerfile1 -t todoapp ./TodoApp
 
-      # Verify Backend Files
-      - name: Verify Backend Files
-        run: docker run --rm todosapi ls /app
+      # Step 7: Build and Start Services
+      - name: Start Services
+        run: docker compose up -d
 
-      # Run Backend Tests
+      # Step 8: Run Backend Tests
       - name: Run Backend Tests
-        run: docker run --rm todosapi dotnet test /app/TodosApi.sln --logger:trx
+        run: docker compose exec todosapi dotnet test /app/TodosApi.sln --logger:trx
 
-      # Run Frontend Tests
+      # Step 9: Run Frontend Tests
       - name: Run Frontend Tests
-        run: docker run --rm todoapp npm run test
+        run: docker compose exec todoapp npm run test
 
-
-      # Tear Down Services
+      # Step 10: Tear Down Services
       - name: Tear Down Services
         run: docker compose down
