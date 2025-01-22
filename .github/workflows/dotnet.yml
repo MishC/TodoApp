@@ -40,13 +40,13 @@ jobs:
         run: docker build -f TodoApp/Dockerfile1 -t todoapp ./TodoApp
 
       - name: Build and Run Docker Compose
-        run: docker-compose up --build -d
+        run: docker compose up --build -d
 
       - name: Run Backend Tests
-        run: docker-compose run testapi
+        run: docker compose run testapi
 
       - name: Run Frontend Tests
-        run: docker-compose run testapp
+        run: docker compose run testapp
       # Step 10: Tear Down Services
       
       - name: Tear Down Services
