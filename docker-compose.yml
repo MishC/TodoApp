@@ -10,11 +10,9 @@ services:
       - "5075:5075"  # Backend mapped to port 5075
     environment:
       ASPNETCORE_ENVIRONMENT: Development  # Development mode
-      DB_PROVIDER: sqlite  # Specify SQLite as the provider
-      DB_FILE: /app/data/todos.db  # Path to the SQLite database file inside the container
+      DB_FILE: /app/todos.db  # Path to the SQLite database file inside the container
     volumes:
-      - todos-data:/app/data  # Mount a volume for database persistence
-
+      - todos-data:/app 
   todoapp:
     image: todoapp
     build:
@@ -27,3 +25,4 @@ services:
 
 volumes:
   todos-data:
+    driver: local
