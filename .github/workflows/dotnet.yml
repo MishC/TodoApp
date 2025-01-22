@@ -30,14 +30,21 @@ jobs:
         run: docker build -f TodoApp/Dockerfile1 -t todoapp ./TodoApp
 
 
+      # Build and Start Services
+      - name: Start Services
+        run: docker compose up -d
+
       # Run Backend Tests
       - name: Run Backend Tests
-        run: docker run --rm todosapi dotnet test /app/TodosApi.sln --logger:trx
+        run: docker compose exec todosapi dotnet test /app/TodosApi.sln --logger:trx
 
       # Run Frontend Tests
       - name: Run Frontend Tests
-        run: docker run --rm todoapp npm run test
+        run: docker compose exec todoapp npm run test
 
+      # Tear Down Services
+      - name: Tear Down Services
+        run: docker compose down
 
       # Tear Down Services
       - name: Tear Down Services
