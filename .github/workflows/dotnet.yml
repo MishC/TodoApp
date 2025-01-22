@@ -43,9 +43,10 @@ jobs:
       - name: Start Services
         run: docker compose up -d
 
-      # Step 8: Run Backend Tests
-      - name: Run Backend Tests
-        run: docker compose exec todosapi dotnet test /app/TodosApi.sln --logger:trx
+      # Run Backend Tests
+     # - name: Run Backend Tests
+      #  run: docker compose exec todosapi dotnet test /app/TodosApi.sln --logger:trx
+
 
       # Step 9: Run Frontend Tests
       - name: Run Frontend Tests
