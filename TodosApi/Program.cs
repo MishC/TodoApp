@@ -64,7 +64,7 @@ builder.Services.AddScoped<ICategoriesRepository, CategoriesRepository>();
 
 //Configure Authentication
 
-var key = Encoding.ASCII.GetBytes(AuthConfig.SigningKey);
+/* var key = Encoding.ASCII.GetBytes(AuthConfig.SigningKey);
 
 
 builder.Services.AddAuthentication(options =>
@@ -84,7 +84,7 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(key)
     };
-});
+}); */
 
 var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>();
 
