@@ -5,7 +5,7 @@ services:
   todosapi:
     build:
       context: .
-      dockerfile: ./TodosApi/Dockerfile
+      dockerfile: ./TodosApi/Dockerfile2
     ports:
       - "5075:5075"  # Map API service to port 5075
     environment:
@@ -17,7 +17,7 @@ services:
   todoapp:
     build:
       context: .
-      dockerfile: ./TodoApp/Dockerfile
+      dockerfile: ./TodoApp/Dockerfile1
     ports:
       - "5000:80"  # Map frontend to port 5000
     environment:
