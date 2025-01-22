@@ -86,8 +86,8 @@ builder.Services.AddAuthentication(options =>
     };
 }); */
 
-var allowedOrigins = Configuration.GetSection("AllowedOrigins").Get<string[]>() ?? Array.Empty<string>();
-app.UseCors(builder => builder.WithOrigins(allowedOrigins));
+var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>();
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
