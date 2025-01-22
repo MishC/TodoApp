@@ -2,16 +2,15 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 
 # Set the working directory inside the container
-WORKDIR /app
+WORKDIR /app/TodosApi
 
 # Copy the project file and restore dependencies
-COPY ./TodosApi.csproj ./TodosApi/
-RUN dotnet restore ./TodosApi/TodosApi.csproj
+COPY ./TodosApi.csproj ./
+RUN dotnet restore ./TodosApi.csproj
 
 # Copy the entire source code
-COPY . ./TodosApi/
+COPY . .
 
-WORKDIR /app/TodosApi
 RUN dotnet build -c Release
 
 
