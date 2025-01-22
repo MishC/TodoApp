@@ -1,7 +1,6 @@
 version: '3.8'
 
 services:
-  services:
   todosapi:
     build:
       context: .
@@ -11,6 +10,9 @@ services:
       ASPNETCORE_ENVIRONMENT: Development
     volumes:
       - ./test-results:/app/TestResults
+    ports:
+      - "5075:5075"  # Expose the backend API if needed for local development
+
   todoapp:
     build:
       context: ./TodoApp
@@ -19,7 +21,7 @@ services:
     ports:
       - "5000:80"
     environment:
-      API_URL: "http://localhost:5075"
+      API_URL: "http://localhost:5075"  # Connect frontend to backend service
 
 volumes:
   todos-data:
