@@ -39,9 +39,9 @@ jobs:
       # Run Tests
       - name: Run Tests
         run: |
-          docker-compose exec todosapi dotnet test
-          docker-compose exec todoapp npm run test
+          docker compose exec todosapi dotnet test
+          docker compose exec todoapp npm run test
 
       # Tear Down Services
       - name: Tear Down Services
-        run: docker-compose down
+        run: docker compose down
