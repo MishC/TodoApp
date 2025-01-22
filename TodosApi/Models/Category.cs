@@ -18,9 +18,9 @@ namespace TodosApi.Models
        
         public string CategoryDescription { get; set; }= string.Empty;
 
-        [JsonIgnore]
-        [ValidateNever]
-        public ICollection<TodoItem> Todos { get; set; } // many todos
+        //[JsonIgnore]
+        //[ValidateNever]
+        //public ICollection<TodoItem> Todos { get; set; } // many todos
 
     }
 }

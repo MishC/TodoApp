@@ -16,12 +16,12 @@ namespace TodoApp.Classes
         
         public string CategoryDescription { get; set; } = string.Empty;
 
-        public required List<Todo> Todos { get; set; }
+        //public required List<Todo> Todos { get; set; }
 
-        public Category()
-        {
-            Todos = new List<Todo>();
-        }
+        //public Category()
+        //{
+        //    Todos = new List<Todo>();
+        //}
 
     }
 }
