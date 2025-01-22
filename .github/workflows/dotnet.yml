@@ -34,7 +34,7 @@ jobs:
       # Start Services
       - name: Start Services
         run: |
-          docker-compose up -d
+          docker compose up -d
 
       # Run Tests
       - name: Run Tests
