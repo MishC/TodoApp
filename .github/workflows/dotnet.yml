@@ -50,7 +50,7 @@ jobs:
 
       # Step 9: Run Frontend Tests
       - name: Run Frontend Tests
-        run: docker compose exec todoapp npm run test
+        run: docker compose exec todoapp dotnet test
 
       # Step 10: Tear Down Services
       - name: Tear Down Services
