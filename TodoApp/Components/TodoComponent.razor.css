@@ -23,8 +23,8 @@ li:focus {
    
 }
 @media (min-width: 768px) and (max-width: 1199.98px) {
-   .content{font-size:14px;}
+   .content{font-size:13px;}
     .header {
-    font-size:14px;}
+    font-size:15px;}
 }
 
