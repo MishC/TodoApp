@@ -104,6 +104,30 @@ code {
 }
 
 /*Added*/
+
+/*NavBar*/
+
+@media (min-width: 841px) {
+    .navbar-toggler[b-t2b2p0czmj] {
+        display: none;
+    }
+
+    .collapse[b-t2b2p0czmj] {
+        display: block;
+    }
+
+    .nav-scrollable[b-t2b2p0czmj] {
+        height: calc(100vh - 3.5rem);
+        overflow-y: auto;
+    }
+}
+/* /Pages/Login.razor.rz.scp.css */
+@media (max-width: 841px) {
+    .custom-btn-width[b-6aana5eld6] {
+        width: fit-content;
+    }
+}
+
 /*Google Fonts*/
 passion-one-regular {
     font-family: "Passion One", sans-serif;

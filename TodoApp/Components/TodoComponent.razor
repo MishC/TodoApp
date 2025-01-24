@@ -7,10 +7,10 @@
 
 @if (visible)
 {  
-    <h2 class="mt-md-1 mt-5 mb-4 text-center text-md-start  pt-3 mx-3"> Add Todos</h2>
+    <h2 class="mt-md-1 mt-5 mb-4 text-center" style="color:#0056b3">  Todos</h2>
 
 <!-- Add Todo -->   
-<div class="content mx-md-4">
+<div class="content mx-md-5 px-lg-5 mx-0 px-0 w-100 ">
 
     <AddTodos OnTodoAdded="OnTodoAdded" OnShowError="ShowErrorMessage" />
 
@@ -19,15 +19,37 @@
 <!-- End of form -->  
     @if (todos?.Count > 0 && todos?.Any(todo => !todo.IsCompleted) == true)
     {
-        <ul class="list-group my-5 pt-2 mx-1 px-auto mx-auto mx-md-4 mb-5">
-    <!-- Heading for MD and Above -->
-    <li class="d-none d-md-flex list-group-item justify-content-between px-4 text-white text-justify"
-        style="background-color:#0056b3">
-        <span class="col-md-2 text-start">Due Date</span>
-        <span class="col-md-3 mx-1 text-start">Category</span>
-        <span class="col-md-5 mx-1 text-start">Title</span>
-        <span class="col-md-2 text-end">Actions</span>
-    </li>
+        <ul class="list-group my-5 pt-2 px-lg-5 mx-auto mx-md-5 mb-5 fs-6 px-0 w-100">
+   <!-- Header Row -->
+        <li class="header list-group-item d-none d-md-flex flex-md-row justify-content-between align-items-center w-100 text-justify px-1  text-white text-wrap text-break"
+            style="background-color:#0056b3">
+    <div class="col-sm-10 col-9 p-0">
+        <div class="d-flex flex-row justify-content-between align-items-center px-1">
+            <!-- Due Date Header -->
+            <span class="col-md-3 col-lg-3 text-start  fs-md-5 fw-bold">
+                Due Date
+            </span>
+
+            <!-- Category Header -->
+            <span class="col-md-4 col-lg-3 text-start fs-md-5  fw-bold">
+                Category
+            </span>
+
+            <!-- Title Header -->
+            <span class="header-title col-md-5 col-lg-6 text-start fs-md-5  fw-bold">
+                Title
+            </span>
+        </div>
+    </div>
+
+    <!-- Actions Header -->
+    <div class="col-sm-2 col-3 text-end my-auto pe-lg-0">
+        <span class="text-center  fs-md-5 fw-bold pe-lg-2">
+            Actions
+        </span>
+    </div>
+</li>
+
 
             @{
                 bool isFirstVisible = true;
@@ -37,31 +59,31 @@
                 if (!todo.IsCompleted) 
                 {
 <!-- Content -->
-<li class="list-group-item  d-flex  flex-sm-row justify-content-md-between align-items-center w-100 text-justify pe-0 m-0 p-2 border border-secondary text-wrap text-break @(isFirstVisible ? "border-top-1" : "border-top-0")"
+<li class="list-group-item d-flex flex-sm-row justify-content-md-between align-items-center w-100 text-justify px-1 border border-secondary text-wrap text-break @(isFirstVisible ? "border-top-1" : "border-top-0")"
     @key="todo.Id" tabindex="0">
            <div class="content col-sm-10 col-9 p-0">
-            <div class="d-flex flex-column flex-md-row align-items-center my-auto">
+            <div class="d-flex flex-column flex-md-row align-items-md-center my-auto px-1">
             
 
 
         <!-- Due Date -->
-            <span class="col-md-3 col-12 text-start text-muted small my-auto">
+            <span class="col-md-3 col-lg-3 text-start text-muted small my-auto ps-1">
             @(todo.DueDate.HasValue ? todo.DueDate.Value.ToString("dd/MM/yyyy") : "No due date")
              </span>
         
         <!-- Category -->
-            <span class="col-md-3 col-12 text-start text-muted small mx-md-2   my-auto">
+            <span class="col-md-4 col-lg-3  text-start text-muted small    my-auto">
             @GetCategoryNameById(todo.CategoryId)
              </span>
         
         <!-- Title -->
-            <span class="col-md-4 col-12 text-start text-middle px-md-1 mx-md-1 my-auto @(todo.Priority ? "text-danger" : "") ">
+            <span class="col-md-5 col-lg-6  text-start text-middle  my-auto @(todo.Priority ? "text-danger" : "") ">
             @todo.Title
              </span>
         </div>
         </div>
         <!-- Actions -->
-             <div class="actions col-sm-2 col-3 align-items-center my-auto ">
+             <div class="actions col-sm-2 col-3 align-items-center my-auto pe-2">
 
            <span class="d-flex flex-sm-row justify-content-end text-center  align-middle ms-sm-auto mr-auto my-auto p-0"  >
                 <input class="form-check-input form-check cursor-pointer py-0" type="checkbox" value="" id="defaultCheck1" @onchange="async () => await ToggleAsync(todo)" unchecked style="height:1rem;"/>

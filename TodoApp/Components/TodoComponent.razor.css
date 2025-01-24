@@ -15,11 +15,16 @@ li:focus {
 }
 
 .form {background:#59a6f923}
+.content-title {font-weight:bold;}
 @media (max-width: 575.98px) {
     .content {
    }
     .actions {  vertical-align:middle; }
    
 }
-
+@media (min-width: 768px) and (max-width: 1199.98px) {
+   .content{font-size:14px;}
+    .header {
+    font-size:14px;}
+}
 
