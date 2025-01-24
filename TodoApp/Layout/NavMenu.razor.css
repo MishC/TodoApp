@@ -70,7 +70,7 @@ a:visited, .nav-link:visited {
     color: white !important;
 }
 
-@media (min-width: 700px) {
+@media (min-width: 641px) {
     .navbar-toggler {
         display: none;
     }

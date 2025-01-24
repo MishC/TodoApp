@@ -108,8 +108,7 @@ else {
 }
 else
 {    
-
-        <DoneComponent OnTakeBack="HandleTakeBack"/>
+    <DoneComponent  />
 }
 }
 
@@ -229,19 +228,9 @@ else
     }
       
 
-    //**-----------------------------------------------------------**//
-
-   public async Task HandleTakeBack(TodoItem todo)
-{
-    Console.WriteLine("TakeBack will be processed");
-await TodosStorage.ToggleCompleteAsync(todo.Id);
-    await UpdateCompletedTasks();
-    StateHasChanged(); 
-
-}
-    
+    //**-----------------------------------------------------------**//    
     //** Errors and Alerts messages**// 
-    //**-------------------------------------------------------------------------------------**//
+    //**------------------------------------------------------------------------------------------------------------------------------------------------------**//
 
     private async Task ShowErrorMessage(string message)
     {

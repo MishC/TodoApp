@@ -1,5 +1,7 @@
 ﻿@inject TodosStorage TodosStorage
+
 @page "/todos/done"
+
 
 @if (!isAuthenticated) 
 {<div class="mt-5">Sorry, you are not authenticated. First, <a href="/login">log in</a></div>}
@@ -51,13 +53,13 @@ else {
         </div>
 }
 @code {
-    [Parameter] 
-    public EventCallback<TodoItem> OnTakeBack { get; set; }
-   
+
+    
+       protected List<TodoItem>? CompletedTodos {get;set;}
+
+
     private bool isAuthenticated { get; set; }
-
-    public List<TodoItem> CompletedTodos; 
-
+   
 
     private byte[] emojiBytes { get; set; } = Array.Empty<byte>();
     private string EmojiString => System.Text.Encoding.Unicode.GetString(emojiBytes);
@@ -71,19 +73,15 @@ else {
       emojiBytes= EmojiService.GetEmojiBytes();
      isAuthenticated = await AuthService.IsAuthenticated();
 
-         CompletedTodos = await  TodosStorage.GetCompletedTodosAsync();
+        CompletedTodos = await  TodosStorage.GetCompletedTodosAsync();
 
     }
    
   
     
-    private async Task TakeBack(TodoItem todo)
+  private async Task TakeBack(TodoItem todo)
     {
-        if (OnTakeBack.HasDelegate)
-        {   Console.WriteLine("TakeBack will be processed");
-            await OnTakeBack.InvokeAsync(todo);
-            CompletedTodos = await TodosStorage.GetCompletedTodosAsync();
-            StateHasChanged(); // Ensure UI updates properly
-        }
+        await TodosStorage.ToggleCompleteAsync(todo.Id);
+        CompletedTodos = await TodosStorage.GetCompletedTodosAsync();
     }
 }
