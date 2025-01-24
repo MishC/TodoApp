@@ -1,11 +1,15 @@
 ﻿@inject HttpClient Http
 @inject IJSRuntime JSRuntime
 @inject TodosStorage TodosStorage
+
 @page "/todos"
 @page "/todos/{visible:bool}"
 
 
-@if (visible)
+@if (!isAuthenticated) 
+{<div class="mt-5">Sorry, you are not authenticated. First, <a href="/login">log in</a></div>}
+else {
+@if (visible )
 {  
     <h2 class="mt-md-1 mt-5 mb-4 text-center" style="color:#0056b3">  Todos</h2>
 
@@ -107,6 +111,7 @@ else
         <DoneComponent OnTakeBack="HandleTakeBack"/>
     </CascadingValue>
 }
+}
 
 <AlertModal @ref="alertModal" AlertMessage="@AlertMessage"  />
 <ErrorModal @ref="errorModal" AlertMessage="@AlertMessage"  />
@@ -162,6 +167,8 @@ else
         EmojiService.LowSurrogate=0xDD59;
         emojiBytes= EmojiService.GetEmojiBytes();
          isAuthenticated = await AuthService.IsAuthenticated();
+   
+
  }
 
   //**-----------------------------------------------------------**//

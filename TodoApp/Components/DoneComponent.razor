@@ -69,11 +69,11 @@ else {
       emojiBytes= EmojiService.GetEmojiBytes();
      isAuthenticated = await AuthService.IsAuthenticated();
  
-if (isAuthenticated)
+@*if (isAuthenticated)
 {
      navigation.NavigateTo("/todos/done");
    
- }
+ }*@
          CompletedTodos = await  TodosStorage.GetCompletedTodosAsync();
     Console.WriteLine(JsonSerializer.Serialize(CompletedTodos, new JsonSerializerOptions { WriteIndented = true }));
 //Console.WriteLine(JsonSerializer.Serialize(completedTasks, new JsonSerializerOptions { WriteIndented = true }));

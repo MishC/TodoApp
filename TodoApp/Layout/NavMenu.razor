@@ -1,4 +1,6 @@
 ﻿@inject AuthService AuthService
+@inject NavigationManager NavigationManager
+
 
 <div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
@@ -7,26 +9,37 @@
         </button>
     </div>
 </div>
-
 <div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
     <nav class="flex-column" style="color:#fff">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All" style="color:lemonchiffon">
-                 Home
-            </NavLink>
-        </div>
-    
-   
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="/todos/true" style="color:lemonchiffon">
-              Todos
-            </NavLink>
-        </div>
-         <div class="nav-item px-3">
-     <NavLink class="nav-link" href="/todos/done" style="color:lemonchiffon">
-       Done
-     </NavLink>
- </div>
+<div class="nav-item px-3">
+    <NavLink 
+        class="nav-link" 
+        href="/" 
+        Match="NavLinkMatch.All" 
+        style="color: lemonchiffon;">
+        <span class="@(IsActive("/") ? "fw-bold fs-6" : "")">Home</span>
+    </NavLink>
+</div>
+
+<div class="nav-item px-3">
+    <NavLink 
+        class="nav-link" 
+        href="/todos/true" 
+        style="color: lemonchiffon;" 
+        Match="NavLinkMatch.Prefix">
+        <span class="@(IsActive("/todos/true") ? "fw-bold fs-6" : "")">Todos</span>
+    </NavLink>
+</div>
+
+<div class="nav-item px-3">
+    <NavLink 
+        class="nav-link" 
+        href="/todos/done" 
+        style="color: lemonchiffon;">
+        <span class="@(IsActive("/todos/done") ? "fw-bold fs-6" : "")">Done</span>
+    </NavLink>
+</div>
+
     @if (isAuthenticated)
         {
             <div class="nav-item px-3">
@@ -49,6 +62,7 @@
 @code {
     private bool collapseNavMenu = true;
 private bool isAuthenticated=false;
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -75,5 +89,18 @@ private string NavMenuCssClass => collapseNavMenu ? "collapse" : "";
  public void Dispose()
     {
         AuthService.OnAuthStateChanged -= UpdateAuthState;
+    }
+
+private bool IsActive(string href)
+    {
+        var currentUri = NavigationManager.Uri.TrimEnd('/');
+        var baseUri = NavigationManager.BaseUri.TrimEnd('/');
+
+        if (string.Equals(href, "/", StringComparison.OrdinalIgnoreCase))
+        {
+            return string.Equals(currentUri, baseUri, StringComparison.OrdinalIgnoreCase);
+        }
+
+        return currentUri.Contains(href, StringComparison.OrdinalIgnoreCase);
     }
 }
