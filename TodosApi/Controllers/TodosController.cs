@@ -81,6 +81,20 @@ namespace TodosApi.Controllers
             return NoContent();
         }
 
+        // PUT: api/todos/toggle/{id}
+        [HttpPut("toggle/{id}")]
+        public IActionResult ToggleTodoComplete(int id)
+        {
+            try
+            {
+                _todosService.ToggleTodoComplete(id);
+                return Ok(new { message = "Todo completion status toggled successfully." });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = $"Error toggling todo completion status: {ex.Message}" });
+            }
+        }
 
         //DELETE: api/todos/{id}
         [HttpDelete("{id}")]

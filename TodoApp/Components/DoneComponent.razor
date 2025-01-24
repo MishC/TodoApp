@@ -51,9 +51,11 @@ else {
         </div>
 }
 @code {
-    [Parameter] public EventCallback<TodoItem> OnTakeBack { get; set; }
-    [CascadingParameter]  private bool isAuthenticated { get; set; }
-    
+    [Parameter] 
+    public EventCallback<TodoItem> OnTakeBack { get; set; }
+   
+    private bool isAuthenticated { get; set; }
+
     public List<TodoItem> CompletedTodos; 
 
 
@@ -68,26 +70,20 @@ else {
        EmojiService.LowSurrogate=0xDC4F;
       emojiBytes= EmojiService.GetEmojiBytes();
      isAuthenticated = await AuthService.IsAuthenticated();
- 
-@*if (isAuthenticated)
-{
-     navigation.NavigateTo("/todos/done");
-   
- }*@
+
          CompletedTodos = await  TodosStorage.GetCompletedTodosAsync();
-    Console.WriteLine(JsonSerializer.Serialize(CompletedTodos, new JsonSerializerOptions { WriteIndented = true }));
-//Console.WriteLine(JsonSerializer.Serialize(completedTasks, new JsonSerializerOptions { WriteIndented = true }));
 
     }
    
   
     
- private async Task TakeBack(TodoItem todo)
+    private async Task TakeBack(TodoItem todo)
     {
-
         if (OnTakeBack.HasDelegate)
-        {
+        {   Console.WriteLine("TakeBack will be processed");
             await OnTakeBack.InvokeAsync(todo);
+            CompletedTodos = await TodosStorage.GetCompletedTodosAsync();
+            StateHasChanged(); // Ensure UI updates properly
         }
     }
 }

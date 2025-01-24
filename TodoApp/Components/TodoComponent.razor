@@ -107,9 +107,9 @@ else {
     }
 }
 else
-{      <CascadingValue Value="isAuthenticated">
+{    
+
         <DoneComponent OnTakeBack="HandleTakeBack"/>
-    </CascadingValue>
 }
 }
 
@@ -186,17 +186,15 @@ else
 
     private async Task ToggleAsync(TodoItem todo)
 {
-    todo.IsCompleted = !todo.IsCompleted;
-    todo.TimeCompleted = todo.IsCompleted ? DateTime.Now : null;
+   await TodosStorage.ToggleCompleteAsync(todo.Id);
 
-    await TodosStorage.UpdateTodoAsync(todo);
-    
-    todos = await TodosStorage.GetTodosAsync();
+
 
     if (todo.IsCompleted)
     {
         await ShowCompletionAlert(todo.Title);
     }
+        
 
     await UpdateCompletedTasks();
 }
@@ -233,20 +231,16 @@ else
 
     //**-----------------------------------------------------------**//
 
-    private async Task HandleTakeBack(TodoItem todo)
+   public async Task HandleTakeBack(TodoItem todo)
 {
-    todo.IsCompleted = false;
-    todo.TimeCompleted = null;
-
-    await TodosStorage.UpdateTodoAsync(todo);
-    
-    todos = await TodosStorage.GetTodosAsync();
-
+    Console.WriteLine("TakeBack will be processed");
+await TodosStorage.ToggleCompleteAsync(todo.Id);
     await UpdateCompletedTasks();
-}
+    StateHasChanged(); 
 
+}
     
-    
+    //** Errors and Alerts messages**// 
     //**-------------------------------------------------------------------------------------**//
 
     private async Task ShowErrorMessage(string message)

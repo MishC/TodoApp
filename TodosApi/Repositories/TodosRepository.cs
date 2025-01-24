@@ -31,6 +31,19 @@ namespace TodosApi.Repository
             _context.SaveChanges();
         }
 
+        public void ToggleTodoComplete(int id)
+        {
+            var todo = GetTodoById(id);
+            if (todo != null)
+            {
+                todo.IsCompleted = !todo.IsCompleted;
+                todo.TimeCompleted = todo.IsCompleted ? System.DateTime.Now : null;
+                _context.Todos.Update(todo);
+
+                _context.SaveChanges();
+            }
+        }
+
         public void DeleteTodo(int id)
         {
             var todo = GetTodoById(id);

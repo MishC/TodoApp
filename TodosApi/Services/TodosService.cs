@@ -58,7 +58,7 @@ namespace TodosApi.Service
             Log.Information($"Todo {todo.Title} added");
         }
 
-        public void ToggleComplete(int id)
+        public void ToggleTodoComplete(int id)
         {
             var todo = _todosRepository.GetTodoById(id);
             if (todo == null)
@@ -67,44 +67,50 @@ namespace TodosApi.Service
                 return;
             }
 
-            todo.IsCompleted = !todo.IsCompleted;
+            
 
-            _todosRepository.UpdateTodo(todo);
+            _todosRepository.ToggleTodoComplete(id);
             Log.Information($"Todo with id {id} marked as {(todo.IsCompleted ? "completed" : "incomplete")}.");
         }
 
 
+
+
         public void UpdateTodo(int id, TodoItem newTodo)
-
         {
-
             var existingTodo = _todosRepository.GetTodoById(id);
+
             if (existingTodo == null)
             {
                 Log.Warning($"Todo with id {id} doesn't exist.");
-
+                return; 
             }
-            if (newTodo.Title != null) existingTodo.Title = newTodo.Title;
-            if (newTodo.Description != null) existingTodo.Description = newTodo.Description;
-            if (newTodo.IsCompleted == true && newTodo.TimeCompleted == null)
+
+            if (!string.IsNullOrWhiteSpace(newTodo.Title))
+                existingTodo.Title = newTodo.Title;
+
+            if (!string.IsNullOrWhiteSpace(newTodo.Description))
+                existingTodo.Description = newTodo.Description;
+
+            if (newTodo.IsCompleted)
             {
-                existingTodo.IsCompleted = newTodo.IsCompleted;
-                existingTodo.TimeCompleted = DateTime.Now;
+                existingTodo.IsCompleted = true;
+                existingTodo.TimeCompleted ??= DateTime.Now; 
             }
-            if (newTodo.IsCompleted == false) existingTodo.TimeCompleted = null;
+            else
+            {
+                existingTodo.IsCompleted = false;
+                existingTodo.TimeCompleted = null; 
+            }
 
-             existingTodo.TimeCompleted = newTodo.TimeCompleted;
-             existingTodo.TimeCompleted = newTodo.TimeCompleted;
-             existingTodo.CategoryId = newTodo.CategoryId;
-             existingTodo.Priority = newTodo.Priority;
+            existingTodo.CategoryId = newTodo.CategoryId;
+            existingTodo.Priority = newTodo.Priority;
             existingTodo.DueDate = newTodo.DueDate;
 
-
             _todosRepository.UpdateTodo(existingTodo);
-            Log.Information($"Todo with id {id} was updated.");
-
-
+            Log.Information($"Todo with id {id} was updated successfully.");
         }
+
 
         public void DeleteTodo(int id)
         {

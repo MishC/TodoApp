@@ -9,6 +9,7 @@ namespace TodosApi.Repository
         void AddTodo(TodoItem todo);
         void UpdateTodo(TodoItem todo);
         void DeleteTodo(int id);
+        void ToggleTodoComplete(int id);
 
         IEnumerable<TodoItem> GetTodosByCategoryId(int categoryId);
         int GetTodoCountPerCategory(int categoryId);

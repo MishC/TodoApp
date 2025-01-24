@@ -32,6 +32,11 @@ namespace TodoApp.Classes
             await _httpClient.PutAsJsonAsync($"todos/{todo.Id}", todo);
         }
 
+        public async Task ToggleCompleteAsync(int id)
+        {
+            await _httpClient.PutAsJsonAsync($"todos/toggle/{id}",id);
+        }
+
         public async Task DeleteTodoAsync(int id)
         {
             await _httpClient.DeleteAsync($"todos/{id}");
