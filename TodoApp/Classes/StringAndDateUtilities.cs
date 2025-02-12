@@ -1,6 +1,6 @@
 using System;
 
-namespace Utilities
+namespace TodoApp.Classes
 {
 	public static class StringAndDateUtilities
 	{

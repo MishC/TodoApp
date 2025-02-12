@@ -42,12 +42,14 @@ namespace TodosApi.Models
             $"{(TimeCompleted.Value - DateTime.Now).Duration().Days} days {(TimeCompleted.Value - DateTime.Now).Duration().Hours} hours"
             : "Not completed yet";
 
+        // Foreign Key: Links to the Category table
 
         [ForeignKey("Category")]
         public int CategoryId { get; set; }
 
         [ValidateNever]
         [JsonIgnore]
+        // Navigation property: A Todo belongs to one Category
         public Category Category { get; set; }
 
     } //end of class

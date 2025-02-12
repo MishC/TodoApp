@@ -18,9 +18,10 @@ namespace TodosApi.Models
        
         public string CategoryDescription { get; set; }= string.Empty;
 
-        //[JsonIgnore]
-        //[ValidateNever]
-        //public ICollection<TodoItem> Todos { get; set; } // many todos
+       
+        // many todos
+        // Navigation property: A Category can have many Todos
+        public ICollection<TodoItem> Todos { get; set; }
 
     }
 }

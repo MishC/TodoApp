@@ -15,6 +15,13 @@ namespace TodosApi.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+
+            builder.Entity<TodoItem>()
+            .HasOne(t => t.Category)    // A Todo has ONE Category
+            .WithMany(c => c.Todos)     // A Category has MANY Todos
+            .HasForeignKey(t => t.CategoryId) // Foreign Key in TodoItem
+            .OnDelete(DeleteBehavior.Cascade); // If a category is deleted, its todos are deleted too
+
             builder.Entity<Category>().HasData(
                 new Category { Id = 1, Name = "Appointments", CategoryDescription = "Appointment at offices, government institutions, doctor's"},
                 new Category { Id = 2, Name = "Family&Friends", CategoryDescription = "Todos related to family and friends"},
@@ -31,7 +38,9 @@ namespace TodosApi.Data
                 new TodoItem { Id = 2, Title = "Take kids from the school before 4.20pm", CategoryId = 2, Priority = true }
             );
 		}
-		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+
+        //Inore warnings about pending model changes
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 			optionsBuilder.ConfigureWarnings(warnings =>
 				warnings.Ignore(RelationalEventId.PendingModelChangesWarning));
