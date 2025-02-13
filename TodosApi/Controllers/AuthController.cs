@@ -9,6 +9,10 @@ namespace TodosApi.Controllers
     [ApiController, Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
+public static class AuthConfig
+{
+    public static string SigningKey { get; } = "your-secret-key"; // Replace with your actual secret key
+}
         private readonly string _secretKey = AuthConfig.SigningKey;
         [HttpPost]
         public IActionResult Login(string username, string password)
