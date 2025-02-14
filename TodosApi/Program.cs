@@ -99,10 +99,14 @@ builder.Services.AddCors(options =>
 
 
 builder.Services.AddAuthorization();
+// Add user-secrets support
+builder.Configuration.AddUserSecrets<Program>();
 
+// Retrieve the password from user-secrets
+var dbPassword = builder.Configuration["Database:Password"];
 // Configure SQLite (todos.db)
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlite("Data Source=todos.db;Mode=ReadWriteCreate;Password=" + dbPassword));
 
 // Add controllers
 builder.Services.AddControllers();
