@@ -6,9 +6,9 @@
 1. **TodoApp**: A Blazor WebAssembly project for managing tasks.
 2. **TodosApi**: An ASP.NET Core Web API project providing backend services for TodoApp.
 
+---
 Link: https://staging.d2lnm6vmiw33x9.amplifyapp.com/
 log in: username: admin password: password
----
 
 ## Prerequisites
 
