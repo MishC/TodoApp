@@ -64,7 +64,7 @@ dotnet build
 
 ### See live
 
-Deployed on AWS for free
+Deployed on AWS Amplify for free
 
 [https://staging.d2lnm6vmiw33x9.amplifyapp.com/](https://staging.d2lnm6vmiw33x9.amplifyapp.com/)
 
