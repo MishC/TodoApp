@@ -57,10 +57,16 @@ dotnet run --project TodosApi
 dotnet run 
 
 
-## Building the Solution
+### Building the Solution
 
 dotnet build
 
+
+### See live
+
+Deployed on AWS for free
+
+[https://staging.d2lnm6vmiw33x9.amplifyapp.com/](https://staging.d2lnm6vmiw33x9.amplifyapp.com/)
 
 ### TODO
 
