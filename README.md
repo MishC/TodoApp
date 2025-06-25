@@ -62,4 +62,9 @@ dotnet run
 dotnet build
 
 
+### TODO
+
+Set up authentication with  JwtSecurityTokenHandler.
+
+
 
