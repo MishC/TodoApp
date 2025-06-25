@@ -39,6 +39,11 @@ jobs:
       - name: Build Frontend Service (TodoApp)
         run: docker build -f TodoApp/Dockerfile1 -t todoapp ./TodoApp
 
+      - name: Enable Docker Compose v2
+        run: |
+          docker --version
+          docker compose version || echo "Docker Compose v2 not available"
+
       - name: Build and Run Docker Compose
         run: docker compose up --build -d
 
