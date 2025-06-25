@@ -7,6 +7,13 @@
 2. **TodosApi**: An ASP.NET Core Web API project providing backend services for TodoApp.
 
 ---
+#### Link: https://staging.d2lnm6vmiw33x9.amplifyapp.com/
+
+#### Log in credentials: 
+
+username: admin
+
+password: password
 
 ## Prerequisites
 
@@ -48,6 +55,7 @@ dotnet run --project TodosApi
 #### From TodosApi directory
 
 dotnet run 
+
 
 ## Building the Solution
 
