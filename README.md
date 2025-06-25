@@ -17,9 +17,17 @@
 
 ## Running the Applications
 
-### Running TodoApp
+### Frontend Running TodoApp
 
-#### From Parent Directory TodoAppSolution
+Frontend is runnig on port 5000 [http://localhost:5000](http://localhost:5000/)
+
+Use this login data  for testing:
+
+username: `admin` 
+
+password: `password`
+
+#### Frontend:From Parent Directory TodoAppSolution
 
 dotnet run --project TodoApp
 
@@ -27,7 +35,11 @@ dotnet run --project TodoApp
 
 dotnet run 
 
-### Running TodosApi
+### Backend Running TodosApi
+
+Backend is runnig on [http://localhost:5075](http://localhost:5075)
+
+See Swagger API documentation [http://localhost:5075/swagger/index.html](http://localhost:5075/swagger/index.html)
 
 #### From Parent Directory TodoAppSolution
 
@@ -40,4 +52,6 @@ dotnet run
 ## Building the Solution
 
 dotnet build
+
+
 
